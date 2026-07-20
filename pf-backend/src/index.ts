@@ -34,7 +34,7 @@ app.use(express.json());
  */
 app.get("/", (_req, res) => {
   res.status(200).json({
-    message: "PF Backend is running",
+    message: "PF Backend is running hahaha",
   });
 });
 
