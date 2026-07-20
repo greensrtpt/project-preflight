@@ -1,51 +1,39 @@
 import "dotenv/config";
 import { dbClient } from "@db/client.js";
+import {
+  postsTable,
+  topicsTable,
+  usersTable,
+} from "@db/schema.js";
 import cors from "cors";
-import Debug from "debug";
-import type { ErrorRequestHandler } from "express";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 
-const debug = Debug("pf-backend");
-
-// สร้าง Express application
 const app = express();
 
-// Middleware สำหรับแสดง HTTP request ใน Terminal
-app.use(morgan("dev", { immediate: false }));
-
-// เพิ่ม HTTP security headers
+app.use(morgan("dev"));
 app.use(helmet());
-
-// ตอนนี้อนุญาตให้ Frontend เรียก Backend ได้ทุก origin
-// เหมาะสำหรับช่วงพัฒนา
-app.use(
-  cors({
-    origin: "*",
-  }),
-);
-
-// แปลง JSON request body แล้วเก็บไว้ใน req.body
+app.use(cors());
 app.use(express.json());
 
 /**
- * Route ทดสอบว่า Backend ยังทำงานอยู่
+ * ตรวจว่า Backend ทำงานอยู่
  */
 app.get("/", (_req, res) => {
   res.status(200).json({
-    message: "PF Backend is running hahaha sss",
+    message: "PF Backend is running",
   });
 });
 
 /**
- * Route ทดสอบว่า Backend เชื่อม Database และอ่านตารางได้
+ * ตรวจการเชื่อมต่อ Database
  */
-app.get("/health/database", async (_req, res, next) => {
+app.get("/health/database", async (_req, res) => {
   try {
-    const users = await dbClient.query.usersTable.findMany();
-    const topics = await dbClient.query.topicsTable.findMany();
-    const posts = await dbClient.query.postsTable.findMany();
+    const users = await dbClient.select().from(usersTable);
+    const topics = await dbClient.select().from(topicsTable);
+    const posts = await dbClient.select().from(postsTable);
 
     res.status(200).json({
       message: "Database connection is working",
@@ -55,33 +43,110 @@ app.get("/health/database", async (_req, res, next) => {
         posts: posts.length,
       },
     });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Database connection failed",
+    });
   }
 });
 
 /**
- * Error-handling middleware
- * ต้องอยู่หลัง Routes ทั้งหมด
+ * ดึง Topic ทั้งหมด
  */
-const jsonErrorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
-  debug(err.message);
+app.get("/topics", async (_req, res) => {
+  try {
+    const topics = await dbClient.select().from(topicsTable);
 
-  const errorResponse = {
-    message: err.message || "Internal Server Error",
-    type: err.name || "Error",
-  };
+    res.status(200).json(topics);
+  } catch (error) {
+    console.error(error);
 
-  res.status(500).json(errorResponse);
-};
+    res.status(500).json({
+      message: "Cannot get topics",
+    });
+  }
+});
 
-app.use(jsonErrorHandler);
+/**
+ * สร้าง Topic ใหม่
+ */
+app.post("/topics", async (req, res) => {
+  try {
+    const { name, description } = req.body;
 
-// ใช้ PORT จาก .env ถ้าไม่มีให้ใช้ 3000
+    const newTopic = await dbClient
+      .insert(topicsTable)
+      .values({
+        name,
+        description,
+      })
+      .returning();
+
+    res.status(201).json(newTopic);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Cannot create topic",
+    });
+  }
+});
+
+/**
+ * สร้าง User ใหม่
+ */
+app.post("/users", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    const newUser = await dbClient
+      .insert(usersTable)
+      .values({
+        username,
+        passwordHash: password,
+      })
+      .returning();
+
+    res.status(201).json(newUser);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Cannot create user",
+    });
+  }
+});
+
+/**
+ * ดึง Post ทั้งหมด
+ */
+app.get("/posts", async (_req, res) => {
+  try {
+    const posts = await dbClient.select().from(postsTable);
+
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Cannot get posts",
+    });
+  }
+});
+
+// ถ้าไม่มี Route นี้ ให้ตอบ 404
+app.use((_req, res) => {
+  res.status(404).json({
+    message: "Route not found",
+  });
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  debug(`Listening on port ${PORT}: http://localhost:${PORT}`);
+  console.log(`Backend running at http://localhost:${PORT}`);
 });
 
 export default app;

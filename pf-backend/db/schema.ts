@@ -1,88 +1,72 @@
 import {
   pgTable,
-  timestamp,
   uuid,
   varchar,
-  text, //ข้อความ
+  text,
+  timestamp,
 } from "drizzle-orm/pg-core";
 
 /**
- * ผู้ใช้งานระบบ
- * ใช้ username สำหรับสมัครและเข้าสู่ระบบ
+ * ตารางผู้ใช้งาน
  */
 export const usersTable = pgTable("users", {
+  // รหัสผู้ใช้
   id: uuid("id").primaryKey().defaultRandom(),
 
+  // ชื่อผู้ใช้
   username: varchar("username", { length: 50 })
     .notNull()
     .unique(),
 
-  // ชื่อ field ใช้ passwordHash เพื่อเตรียมรองรับการ hash รหัสผ่าน
+  // รหัสผ่าน
   passwordHash: varchar("password_hash", { length: 255 }).notNull(),
 
-  createdAt: timestamp("created_at", {
-    mode: "date",
-    precision: 3,
-  })
-    .defaultNow()
-    .notNull(),
+  // วันที่สร้าง
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 /**
- * หัวข้อที่ Backend เตรียมไว้
- * ผู้ใช้ทั่วไปไม่สามารถสร้าง Topic เองได้
+ * ตารางหัวข้อ
  */
 export const topicsTable = pgTable("topics", {
+  // รหัสหัวข้อ
   id: uuid("id").primaryKey().defaultRandom(),
 
+  // ชื่อหัวข้อ
   name: varchar("name", { length: 100 })
     .notNull()
     .unique(),
 
+  // รายละเอียด
   description: text("description"),
 
-  createdAt: timestamp("created_at", {
-    mode: "date",
-    precision: 3,
-  })
-    .defaultNow()
-    .notNull(),
+  // วันที่สร้าง
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 /**
- * โพสต์ภายในแต่ละ Topic
+ * ตารางโพสต์
  */
 export const postsTable = pgTable("posts", {
+  // รหัสโพสต์
   id: uuid("id").primaryKey().defaultRandom(),
 
+  // หัวข้อโพสต์
   title: varchar("title", { length: 200 }).notNull(),
 
+  // เนื้อหาโพสต์
   content: text("content").notNull(),
 
+  // รหัสผู้สร้างโพสต์
   authorId: uuid("author_id")
-    .notNull()
-    .references(() => usersTable.id, {
-      onDelete: "cascade",
-    }),
-
-  topicId: uuid("topic_id")
-    .notNull()
-    .references(() => topicsTable.id, {
-      onDelete: "cascade",
-    }),
-
-  createdAt: timestamp("created_at", {
-    mode: "date",
-    precision: 3,
-  })
-    .defaultNow()
+    .references(() => usersTable.id)
     .notNull(),
 
-  updatedAt: timestamp("updated_at", {
-    mode: "date",
-    precision: 3,
-  })
-    .defaultNow()
-    .notNull()
-    .$onUpdate(() => new Date()),
+  // รหัสหัวข้อ
+  topicId: uuid("topic_id")
+    .references(() => topicsTable.id)
+    .notNull(),
+
+  // วันที่สร้าง
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
