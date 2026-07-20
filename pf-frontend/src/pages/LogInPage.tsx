@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
 
 const LogInPage: React.FC = () => {
   const [username, setUsername] = useState<string>('');

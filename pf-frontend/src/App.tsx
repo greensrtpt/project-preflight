@@ -1,4 +1,3 @@
-import React from 'react';
 import Searchpage from './pages/Searchpage';
 import LogInPage from './pages/LogInPage';
 import CreateAccPage from './pages/CreateAccPage';
