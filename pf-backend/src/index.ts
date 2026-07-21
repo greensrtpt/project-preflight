@@ -1,17 +1,11 @@
 import "dotenv/config";
 import { dbClient } from "@db/client.js";
-import {
-  Posts,
-  Topics,
-  Users,
-} from "@db/schema.js";
-import { eq } from "drizzle-orm";
+import { Posts, Topics, Users } from "@db/schema.js";
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 
-// 1. Import ไฟล์ Route ที่เราแยกไว้
 import topicRouter from "./routes/Topics.route.js";
 import userRouter from "./routes/Users.route.js";
 import postRouter from "./routes/Posts.route.js";
@@ -50,21 +44,25 @@ app.get("/health/database", async (_req, res) => {
       },
     });
   } catch (error) {
-  console.error(error);
+    console.error(error);
 
-  res.status(500).json({
-    message: "Database connection failed",
-    error: error instanceof Error ? error.message : String(error),
-  });
- }
+    res.status(500).json({
+      message: "Database connection failed",
+      error: error instanceof Error ? error.message : String(error),
+    });
+  }
 });
 
-// 2. นำ Route มาใช้งาน พร้อมกำหนด Path หลัก
-app.use("/topics", topicRouter); // ทุกอย่างใน topicRouter จะขึ้นต้นด้วย /topics
-app.use("/users", userRouter);   // ทุกอย่างใน userRouter จะขึ้นต้นด้วย /users
-app.use("/posts", postRouter);   // ทุกอย่างใน postRouter จะขึ้นต้นด้วย /posts
+/**
+ * เชื่อม Route แต่ละส่วน
+ */
+app.use("/topics", topicRouter);
+app.use("/users", userRouter);
+app.use("/posts", postRouter);
 
-// ถ้าไม่มี Route นี้ ให้ตอบ 404
+/**
+ * Route ไม่พบ
+ */
 app.use((_req, res) => {
   res.status(404).json({
     message: "Route not found",
