@@ -26,7 +26,7 @@ const LogInPage: React.FC = () => {
           {/* ช่องกรอก User name */}
           <div className="flex flex-col gap-2">
             <label className="text-lg font-medium text-black pl-1">
-              User name
+              Username
             </label>
             <input
               type="text"

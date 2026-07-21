@@ -11,7 +11,7 @@ const CreateAccPage: React.FC = () => {
   const hasUpperCase = /[A-Z]/.test(password);
   const hasLowerCase = /[a-z]/.test(password);
   const hasNumber = /[0-9]/.test(password);
-
+  const isUsernameEmpty = username.trim() === '';
   const isAllValid = hasMinLength && hasUpperCase && hasLowerCase && hasNumber;
   const navigate = useNavigate();
 
@@ -38,13 +38,18 @@ const CreateAccPage: React.FC = () => {
           </h1>
 
           {/* ช่องกรอก Username */}
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-2">
             <label className="text-lg font-medium text-black pl-1">Username</label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full bg-white text-black text-lg py-3 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-400 shadow-sm"
+              placeholder="Username is required"
+              className={`w-full bg-white text-black text-lg py-3 px-4 rounded-xl focus:outline-none focus:ring-2 shadow-sm transition-colors ${
+                         isUsernameEmpty
+               ? 'border-2 border-red-500 focus:ring-red-400 placeholder-red-500' // ถ้าว่าง ให้ขอบแดง + ข้อความ placeholder สีแดง
+               : 'border border-transparent focus:ring-gray-400 placeholder-gray-400' // สถานะปกติ
+               }`}
               required
             />
           </div>
@@ -56,13 +61,18 @@ const CreateAccPage: React.FC = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-white text-black text-lg py-3 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-400 shadow-sm"
+              placeholder="Password is required"
+              className={`w-full bg-white text-black text-lg py-3 px-4 rounded-xl focus:outline-none focus:ring-2 shadow-sm transition-colors ${
+                         !isAllValid
+               ? 'border-2 border-red-500 focus:ring-red-400 placeholder-red-500' // ถ้าว่าง ให้ขอบแดง + ข้อความ placeholder สีแดง
+               : 'border border-transparent focus:ring-gray-400 placeholder-gray-400' // สถานะปกติ
+               }`}
               required
             />
           </div>
 
           {/* ข้อความเตือน (ใช้เงื่อนไข && ซ่อนข้อความที่ผ่านแล้ว เพื่อให้ดูสะอาดตา) */}
-          <div className="flex flex-col gap-1 mt-2">
+          <div className="flex flex-col gap-1">
             {!hasMinLength && (
               <p className="text-xs font-medium text-red-600">Password must be at least 8 characters long</p>
             )}
@@ -76,7 +86,6 @@ const CreateAccPage: React.FC = () => {
               <p className="text-xs font-medium text-red-600">Password must contain at least one number (0-9)</p>
             )}
           </div>
-
         </div>
 
         {/* --- ส่วนล่าง: ปุ่ม Create Account ถูกย้ายกลับเข้ามาในกล่องเทาแล้ว --- */}
