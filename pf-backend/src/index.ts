@@ -136,6 +136,61 @@ app.get("/posts", async (_req, res) => {
   }
 });
 
+/**
+ * สร้าง Post ใหม่
+ */
+app.post("/posts", async (req, res) => {
+  try {
+    const { title, content, authorId, topicId } = req.body;
+
+    const newPost = await dbClient
+      .insert(postsTable)
+      .values({
+        title,
+        content,
+        authorId,
+        topicId,
+      })
+      .returning();
+
+    res.status(201).json(newPost);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Cannot create post",
+    });
+  }
+});
+
+/**
+ * ดึง Post ตาม id
+ */
+app.get("/posts/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const posts = await dbClient.select().from(postsTable);
+
+    const post = posts.find((p) => p.id === id);
+
+    if (!post) {
+      res.status(404).json({
+        message: "Post not found",
+      });
+      return;
+    }
+
+    res.status(200).json(post);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Cannot get post",
+    });
+  }
+});
+
 // ถ้าไม่มี Route นี้ ให้ตอบ 404
 app.use((_req, res) => {
   res.status(404).json({
