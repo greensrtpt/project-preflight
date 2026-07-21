@@ -26,6 +26,7 @@
   "type": "module",
   "dependencies": {
     "@tsconfig/node-ts": "^23.6.4",
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "debug": "^4.4.3",
     "dotenv": "^17.4.2",
@@ -41,6 +42,7 @@
   "devDependencies": {
     "@tsconfig/node-lts": "^24.0.0",
     "@tsconfig/node22": "^22.0.5",
+    "@types/bcrypt": "^6.0.0",
     "@types/cors": "^2.8.19",
     "@types/debug": "^4.1.13",
     "@types/express": "^5.0.6",
