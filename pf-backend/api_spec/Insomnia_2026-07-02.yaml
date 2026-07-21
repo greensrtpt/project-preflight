@@ -6,8 +6,11 @@ meta:
   modified: 1751883456421
   description: ""
 collection:
+
   - url: http://localhost:3001/todo
+
     name: Create
+
     meta:
       id: req_71a66379da464dc09de10eeca62f96c8
       created: 1720142917465
@@ -15,6 +18,7 @@ collection:
       isPrivate: false
       description: ""
       sortKey: -1720142917466
+
     method: PUT
     body:
       mimeType: application/json

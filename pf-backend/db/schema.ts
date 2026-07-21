@@ -9,64 +9,55 @@ import {
 /**
  * ตารางผู้ใช้งาน
  */
-export const usersTable = pgTable("users", {
+export const Users = pgTable("Users", {
   // รหัสผู้ใช้
-  id: uuid("id").primaryKey().defaultRandom(),
+  user_id: uuid("user_id").primaryKey().defaultRandom(),
 
   // ชื่อผู้ใช้
-  username: varchar("username", { length: 50 })
+  username: varchar("username", { length: 30 })
     .notNull()
-    .unique(),
+    .unique(),/////////////////////////////////
 
   // รหัสผ่าน
-  passwordHash: varchar("password_hash", { length: 255 }).notNull(),
-
-  // วันที่สร้าง
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+  password: varchar("password", { length: 30 }).notNull(),
 });
 
 /**
  * ตารางหัวข้อ
  */
-export const topicsTable = pgTable("topics", {
+export const Topics = pgTable("Topics", {
   // รหัสหัวข้อ
-  id: uuid("id").primaryKey().defaultRandom(),
+  topic_id: uuid("topic_id").primaryKey().defaultRandom(),
 
   // ชื่อหัวข้อ
-  name: varchar("name", { length: 100 })
+  topic_name: varchar("name", { length: 20 })
     .notNull()
     .unique(),
-
-  // รายละเอียด
-  description: text("description"),
-
-  // วันที่สร้าง
-  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 /**
  * ตารางโพสต์
  */
-export const postsTable = pgTable("posts", {
+export const Posts = pgTable("Posts", {
   // รหัสโพสต์
-  id: uuid("id").primaryKey().defaultRandom(),
+  post_id: uuid("post_id").primaryKey().defaultRandom(),
 
   // หัวข้อโพสต์
-  title: varchar("title", { length: 200 }).notNull(),
+  title: varchar("title", { length: 20 }).notNull(),
 
   // เนื้อหาโพสต์
-  content: text("content").notNull(),
+  descriptions: varchar("descriptions", { length: 150 }).notNull(),
 
   // รหัสผู้สร้างโพสต์
-  authorId: uuid("author_id")
-    .references(() => usersTable.id)
+  author_id: uuid("author_id")
+    .references(() => Users.user_id)
     .notNull(),
 
   // รหัสหัวข้อ
-  topicId: uuid("topic_id")
-    .references(() => topicsTable.id)
+  topic_id: uuid("topic_id")
+    .references(() => Topics.topic_id)
     .notNull(),
 
   // วันที่สร้าง
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+  edit_at: timestamp("edit_at").defaultNow().notNull(),
 });

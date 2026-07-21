@@ -1,14 +1,19 @@
 import "dotenv/config";
 import { dbClient } from "@db/client.js";
 import {
-  postsTable,
-  topicsTable,
-  usersTable,
+  Posts,
+  Topics,
+  Users,
 } from "@db/schema.js";
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
+
+// 1. Import ไฟล์ Route ที่เราแยกไว้
+import topicRouter from "./routes/Topics.route.js";
+import userRouter from "./routes/Users.route.js";
+import postRouter from "./routes/Posts.route.js";
 
 const app = express();
 
@@ -31,9 +36,9 @@ app.get("/", (_req, res) => {
  */
 app.get("/health/database", async (_req, res) => {
   try {
-    const users = await dbClient.select().from(usersTable);
-    const topics = await dbClient.select().from(topicsTable);
-    const posts = await dbClient.select().from(postsTable);
+    const users = await dbClient.select().from(Users);
+    const topics = await dbClient.select().from(Topics);
+    const posts = await dbClient.select().from(Posts);
 
     res.status(200).json({
       message: "Database connection is working",
@@ -52,89 +57,10 @@ app.get("/health/database", async (_req, res) => {
   }
 });
 
-/**
- * ดึง Topic ทั้งหมด
- */
-app.get("/topics", async (_req, res) => {
-  try {
-    const topics = await dbClient.select().from(topicsTable);
-
-    res.status(200).json(topics);
-  } catch (error) {
-    console.error(error);
-
-    res.status(500).json({
-      message: "Cannot get topics",
-    });
-  }
-});
-
-/**
- * สร้าง Topic ใหม่
- */
-app.post("/topics", async (req, res) => {
-  try {
-    const { name, description } = req.body;
-
-    const newTopic = await dbClient
-      .insert(topicsTable)
-      .values({
-        name,
-        description,
-      })
-      .returning();
-
-    res.status(201).json(newTopic);
-  } catch (error) {
-    console.error(error);
-
-    res.status(500).json({
-      message: "Cannot create topic",
-    });
-  }
-});
-
-/**
- * สร้าง User ใหม่
- */
-app.post("/users", async (req, res) => {
-  try {
-    const { username, password } = req.body;
-
-    const newUser = await dbClient
-      .insert(usersTable)
-      .values({
-        username,
-        passwordHash: password,
-      })
-      .returning();
-
-    res.status(201).json(newUser);
-  } catch (error) {
-    console.error(error);
-
-    res.status(500).json({
-      message: "Cannot create user",
-    });
-  }
-});
-
-/**
- * ดึง Post ทั้งหมด
- */
-app.get("/posts", async (_req, res) => {
-  try {
-    const posts = await dbClient.select().from(postsTable);
-
-    res.status(200).json(posts);
-  } catch (error) {
-    console.error(error);
-
-    res.status(500).json({
-      message: "Cannot get posts",
-    });
-  }
-});
+// 2. นำ Route มาใช้งาน พร้อมกำหนด Path หลัก
+app.use("/topics", topicRouter); // ทุกอย่างใน topicRouter จะขึ้นต้นด้วย /topics
+app.use("/users", userRouter);   // ทุกอย่างใน userRouter จะขึ้นต้นด้วย /users
+app.use("/posts", postRouter);   // ทุกอย่างใน postRouter จะขึ้นต้นด้วย /posts
 
 // ถ้าไม่มี Route นี้ ให้ตอบ 404
 app.use((_req, res) => {
