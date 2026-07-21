@@ -1,20 +1,16 @@
 info:
-  name: Create Topic copy
+  name: POST /topics
   type: http
   seq: 2
 
 http:
   method: POST
   url: "{{base_url}}/topics"
-  headers:
-    - name: Content-Type
-      value: " application/json"
-      disabled: true
   body:
     type: json
     data: |-
       {
-        "topic_name": "การเรียน"
+        "topic_name": "กิจกรรม"
       }
   auth: inherit
 

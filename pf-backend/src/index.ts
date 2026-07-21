@@ -5,6 +5,7 @@ import {
   topicsTable,
   usersTable,
 } from "@db/schema.js";
+import { eq } from "drizzle-orm";
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
@@ -44,12 +45,13 @@ app.get("/health/database", async (_req, res) => {
       },
     });
   } catch (error) {
-    console.error(error);
+  console.error(error);
 
-    res.status(500).json({
-      message: "Database connection failed",
-    });
-  }
+  res.status(500).json({
+    message: "Database connection failed",
+    error: error instanceof Error ? error.message : String(error),
+  });
+ }
 });
 
 /**
@@ -58,13 +60,108 @@ app.get("/health/database", async (_req, res) => {
 app.get("/topics/all", async (_req, res) => {
   try {
     const topics = await dbClient.select().from(topicsTable);
+    const posts = await dbClient.select().from(postsTable);
 
-    res.status(200).json(topics);
+    const topicsWithPosts = topics.map((topic) => ({
+      topic_id: topic.topic_id,
+      topic_name: topic.topic_name,
+      post: posts.filter(
+        (post) => post.topic_id === topic.topic_id,
+      ),
+    }));
+
+    res.status(200).json(topicsWithPosts);
   } catch (error) {
     console.error(error);
 
     res.status(500).json({
       message: "Cannot get topics",
+    });
+  }
+});
+
+/**
+ * ดึง Topic ตาม topic_id
+ */
+app.get("/topics/:topic_id", async (req, res) => {
+  try {
+    const { topic_id } = req.params;
+
+    const topics = await dbClient.select().from(topicsTable);
+    const posts = await dbClient.select().from(postsTable);
+
+    const topic = topics.find(
+      (currentTopic) => currentTopic.topic_id === topic_id,
+    );
+
+    if (!topic) {
+      res.status(404).json({
+        message: "Topic not found",
+      });
+      return;
+    }
+
+    const topicPosts = posts.filter(
+      (post) => post.topic_id === topic_id,
+    );
+
+    res.status(200).json({
+      topic_id: topic.topic_id,
+      topic_name: topic.topic_name,
+      post: topicPosts,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Cannot get topic",
+    });
+  }
+});
+
+/**
+ * ลบ Topic ตาม topic_id
+ */
+app.delete("/topics/:topic_id", async (req, res) => {
+  try {
+    const { topic_id } = req.params;
+
+    const topics = await dbClient.select().from(topicsTable);
+    const posts = await dbClient.select().from(postsTable);
+
+    const topic = topics.find(
+      (currentTopic) => currentTopic.topic_id === topic_id,
+    );
+
+    if (!topic) {
+      res.status(404).json({
+        message: "Topic not found",
+      });
+      return;
+    }
+
+    const topicPostIds = posts
+      .filter((post) => post.topic_id === topic_id)
+      .map((post) => post.post_id);
+
+    await dbClient
+      .delete(postsTable)
+      .where(eq(postsTable.topic_id, topic_id));
+
+    await dbClient
+      .delete(topicsTable)
+      .where(eq(topicsTable.topic_id, topic_id));
+
+    res.status(200).json({
+      topic_id,
+      post_id: topicPostIds,
+      delete_topic_success: true,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Cannot delete topic",
     });
   }
 });
