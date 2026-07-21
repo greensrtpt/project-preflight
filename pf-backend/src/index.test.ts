@@ -10,8 +10,8 @@ describe("Backend API", () => {
     expect(response.body.message).toBe("PF Backend is running");
   });
 
-  it("GET /topics should return an array", async () => {
-    const response = await request(app).get("/topics");
+  it("GET /topics/all should return an array", async () => {
+    const response = await request(app).get("/topics/all");
 
     expect(response.status).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);

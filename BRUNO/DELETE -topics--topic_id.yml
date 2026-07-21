@@ -1,0 +1,15 @@
+info:
+  name: DELETE /topics/:topic_id
+  type: http
+  seq: 5
+
+http:
+  method: DELETE
+  url: http://localhost:3001/topics/f8c36caa-0786-4aa8-ae5a-4937b68dcc9d
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
