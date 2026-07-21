@@ -55,7 +55,7 @@ app.get("/health/database", async (_req, res) => {
 /**
  * ดึง Topic ทั้งหมด
  */
-app.get("/topics", async (_req, res) => {
+app.get("/topics/all", async (_req, res) => {
   try {
     const topics = await dbClient.select().from(topicsTable);
 
@@ -74,17 +74,23 @@ app.get("/topics", async (_req, res) => {
  */
 app.post("/topics", async (req, res) => {
   try {
-    const { name, description } = req.body;
+    const { topic_name } = req.body;
+
+    if (!topic_name) {
+      res.status(400).json({
+        message: "topic_name is required",
+      });
+      return;
+    }
 
     const newTopic = await dbClient
       .insert(topicsTable)
       .values({
-        name,
-        description,
+        topic_name,
       })
       .returning();
 
-    res.status(201).json(newTopic);
+    res.status(201).json(newTopic[0]);
   } catch (error) {
     console.error(error);
 
@@ -101,15 +107,22 @@ app.post("/users", async (req, res) => {
   try {
     const { username, password } = req.body;
 
+    if (!username || !password) {
+      res.status(400).json({
+        message: "username and password are required",
+      });
+      return;
+    }
+
     const newUser = await dbClient
       .insert(usersTable)
       .values({
         username,
-        passwordHash: password,
+        password,
       })
       .returning();
 
-    res.status(201).json(newUser);
+    res.status(201).json(newUser[0]);
   } catch (error) {
     console.error(error);
 
@@ -141,19 +154,32 @@ app.get("/posts", async (_req, res) => {
  */
 app.post("/posts", async (req, res) => {
   try {
-    const { title, content, authorId, topicId } = req.body;
+    const {
+      topic_id,
+      author_id,
+      title,
+      descriptions,
+    } = req.body;
+
+    if (!topic_id || !author_id || !title || !descriptions) {
+      res.status(400).json({
+        message:
+          "topic_id, author_id, title and descriptions are required",
+      });
+      return;
+    }
 
     const newPost = await dbClient
       .insert(postsTable)
       .values({
+        topic_id,
+        author_id,
         title,
-        content,
-        authorId,
-        topicId,
+        descriptions,
       })
       .returning();
 
-    res.status(201).json(newPost);
+    res.status(201).json(newPost[0]);
   } catch (error) {
     console.error(error);
 
@@ -172,7 +198,9 @@ app.get("/posts/:id", async (req, res) => {
 
     const posts = await dbClient.select().from(postsTable);
 
-    const post = posts.find((p) => p.id === id);
+    const post = posts.find(
+      (currentPost) => currentPost.post_id === id,
+    );
 
     if (!post) {
       res.status(404).json({
@@ -198,7 +226,7 @@ app.use((_req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
   console.log(`Backend running at http://localhost:${PORT}`);

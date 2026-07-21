@@ -1,112 +1,157 @@
 {
   "info": {
     "_postman_id": "c1221b5a-c1e8-463d-896a-39a8c087f056",
-    "name": "pf-backend",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "9164733"
+    "name": "pf-backend-community",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "todo",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:3001/todo",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3001",
-          "path": ["todo"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "todo",
-      "request": {
-        "method": "PUT",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \"todoText\": \"Finish\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:3001/todo",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3001",
-          "path": ["todo"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "todo",
-      "request": {
-        "method": "PATCH",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \"id\": \"51df155d-1ba7-4261-a818-38254a1ba489\",\r\n    \"todoText\": \"dfsdf\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:3001/todo",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3001",
-          "path": ["todo"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "todo",
-      "request": {
-        "method": "DELETE",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \"id\": \"51df155d-1ba7-4261-a818-38254a1ba489\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:3001/todo",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3001",
-          "path": ["todo"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "todo/all",
+      "name": "Create Topic",
       "request": {
         "method": "POST",
-        "header": [],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"topic_name\": \"Study\"\n}"
+        },
         "url": {
-          "raw": "http://localhost:3001/todo/all",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3001",
-          "path": ["todo", "all"]
+          "raw": "http://localhost:3001/topics"
         }
-      },
-      "response": []
+      }
+    },
+    {
+      "name": "Get All Topics",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3001/topics/all"
+        }
+      }
+    },
+    {
+      "name": "Get Topic",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3001/topics/{topic_id}"
+        }
+      }
+    },
+    {
+      "name": "Create User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"green\",\n  \"password\": \"123456\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3001/users"
+        }
+      }
+    },
+    {
+      "name": "Get User",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3001/users/{user_id}"
+        }
+      }
+    },
+    {
+      "name": "Create Post",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"topic_id\": \"UUID\",\n  \"author_id\": \"UUID\",\n  \"title\": \"Need Book\",\n  \"descriptions\": \"Need Calculus book\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3001/posts"
+        }
+      }
+    },
+    {
+      "name": "Get Posts",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3001/posts/{topic_id}"
+        }
+      }
+    },
+    {
+      "name": "Get Post",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3001/posts/{topic_id}/{post_id}"
+        }
+      }
+    },
+    {
+      "name": "Update Post",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"topic_id\": \"UUID\",\n  \"post_id\": \"UUID\",\n  \"author_id\": \"UUID\",\n  \"title\": \"Updated Title\",\n  \"descriptions\": \"Updated Description\",\n  \"edit_at\": \"2026-07-21\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3001/posts/{topic_id}/{post_id}"
+        }
+      }
+    },
+    {
+      "name": "Delete Topic",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "http://localhost:3001/topics/{topic_id}"
+        }
+      }
+    },
+    {
+      "name": "Delete User",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "http://localhost:3001/users/{user_id}"
+        }
+      }
+    },
+    {
+      "name": "Delete Post",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "http://localhost:3001/posts/{topic_id}/{post_id}"
+        }
+      }
     }
   ]
 }
