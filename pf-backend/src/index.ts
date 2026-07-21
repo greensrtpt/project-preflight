@@ -85,7 +85,7 @@ app.post("/posts", async (req, res) => {
     }
 
     const newPost = await dbClient
-      .insert(postsTable)
+      .insert(Posts)
       .values({
         topic_id,
         author_id,
@@ -111,7 +111,7 @@ app.get("/posts/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    const posts = await dbClient.select().from(postsTable);
+    const posts = await dbClient.select().from(Posts);
 
     const post = posts.find(
       (currentPost) => currentPost.post_id === id,
