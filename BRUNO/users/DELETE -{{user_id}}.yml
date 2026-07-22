@@ -1,11 +1,13 @@
 info:
-  name: POST /:topic_id
+  name: DELETE /{{user_id}}
   type: http
-  seq: 4
+  seq: 6
 
 http:
-  method: POST
-  url: "{{base_url}}/posts/91f50a83-ba73-4670-9c90-148f666da0bd"
+  method: GET
+  url: |-
+    DELETE
+    {{base_url}}/users/{{user_id}}
   auth: inherit
 
 settings:

@@ -1,7 +1,7 @@
 info:
   name: POST /users
   type: http
-  seq: 5
+  seq: 7
 
 http:
   method: POST
@@ -10,7 +10,7 @@ http:
     type: json
     data: |-
       {
-        "username": "green_test3",
+        "username": "green_test5",
         "password": "123456789"
       }
   auth: inherit
