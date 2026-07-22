@@ -2,25 +2,29 @@ import { Router } from "express";
 import { dbClient } from "@db/client.js";
 import { Posts } from "@db/schema.js";
 import { eq } from "drizzle-orm";
+import { authenticateToken } from "@src/Middleware/auth.js";
 
 const router = Router();
 
 /**
  * POST /posts
  */
-router.post("/:topic_id", async (req, res) => {
+router.post("/:topic_id",
+  authenticateToken,
+  async (req, res) => {
   try {
     const {
-      topic_id,
       title,
       descriptions,
-      edit_at
     } = req.body;
 
-    if (!topic_id || !author_id || !title || !descriptions) {
+    const topic_id = req.params.topic_id;
+    const author_id = (req.user!).user_id;
+
+    if (!topic_id || !title || !descriptions) {
       res.status(400).json({
         message:
-          "topic_id, author_id, title and descriptions are required",
+          "topic_id, title and descriptions are required",
       });
       return;
     }
@@ -29,17 +33,20 @@ router.post("/:topic_id", async (req, res) => {
       .insert(Posts)
       .values({
         topic_id,
-        author_id,
         title,
         descriptions,
+        author_id,
+        edit_at: new Date(),
       })
       .returning();
 
-    res.status(201).json(newPost[0]);
+    return res.status(201).json({
+      message: "Post created successfully",
+      data:newPost[0]});
   } catch (error) {
     console.error(error);
 
-    res.status(500).json({
+    return res.status(500).json({
       message: "Cannot create post",
     });
   }

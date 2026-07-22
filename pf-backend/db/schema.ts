@@ -38,6 +38,10 @@ export const Topics = pgTable("Topics", {
  * ตารางโพสต์
  */
 export const Posts = pgTable("Posts", {
+    // รหัสหัวข้อ
+  topic_id: uuid("topic_id")
+    .references(() => Topics.topic_id)
+    .notNull(),
   // รหัสโพสต์
   post_id: uuid("post_id").primaryKey().defaultRandom(),
 
@@ -50,11 +54,6 @@ export const Posts = pgTable("Posts", {
   // รหัสผู้สร้างโพสต์
   author_id: uuid("author_id")
     .references(() => Users.user_id)
-    .notNull(),
-
-  // รหัสหัวข้อ
-  topic_id: uuid("topic_id")
-    .references(() => Topics.topic_id)
     .notNull(),
 
   // วันที่สร้าง
