@@ -4,7 +4,7 @@ import {
   varchar,
   timestamp,
 } from "drizzle-orm/pg-core";
-
+//ทดลองอัพ
 /**
  * ตารางผู้ใช้งาน
  */
