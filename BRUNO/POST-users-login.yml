@@ -1,11 +1,18 @@
 info:
   name: POST/users/login
   type: http
-  seq: 8
+  seq: 9
 
 http:
   method: POST
-  url: " http://localhost:3001/users/login"
+  url: http://localhost:3001/users/login
+  body:
+    type: json
+    data: |-
+      {
+        "username": "green_test",
+        "password": "12345678"
+      }
   auth: inherit
 
 settings:
