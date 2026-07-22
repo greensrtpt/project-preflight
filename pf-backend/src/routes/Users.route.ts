@@ -3,6 +3,7 @@ import { dbClient } from "@db/client.js";
 import { Users } from "@db/schema.js";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcrypt";
+import { authUsers } from "drizzle-orm/supabase";
 
 const router = Router();
 
@@ -107,6 +108,30 @@ router.post("/", async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * GET ALL USERS
+ */
+router.get("/", async (_req: Request, res: Response) => {
+  try{
+    const users = await dbClient.select({
+        user_id: Users.user_id,
+        username: Users.username,
+      }); // ดึงข้อมูลจาก Database
+
+    res.status(200).json({
+      get_users_success: true,
+      message: "Get users successfully",
+      data: users,
+    });
+  }
+  catch (error) {
+    console.error("Error logging in:", error);
+    res.status(500).json({
+      message: "Something went wrong with Server",
+    });
+  }
+});
+
 
 /**
  * GET /users/:user_id
@@ -114,6 +139,15 @@ router.post("/", async (req: Request, res: Response) => {
 router.get("/:user_id", async (req, res) => {
   try {
     const { user_id } = req.params;
+
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+    if (!uuidRegex.test(user_id)) {
+      res.status(400).json({
+        message: "Invalid user_id format. It should be a valid UUID.",
+      });
+      return;
+    }
 
     const users = await dbClient
       .select({
@@ -132,12 +166,16 @@ router.get("/:user_id", async (req, res) => {
       return;
     }
 
-    res.status(200).json(user);
+    res.status(200).json({
+      get_user_success : true,
+      message: "Get user successfully",
+      data: user,
+    });
   } catch (error) {
     console.error(error);
 
     res.status(500).json({
-      message: "Cannot get user",
+      message: "Something went wrong with Server",
     });
   }
 });
@@ -148,6 +186,14 @@ router.get("/:user_id", async (req, res) => {
 router.delete("/:user_id", async (req, res) => {
   try {
     const { user_id } = req.params;
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+    if (!uuidRegex.test(user_id)) {
+      res.status(400).json({
+        message: "Invalid user_id format. It should be a valid UUID.",
+      });
+      return;
+    }
 
     const deletedUsers = await dbClient
       .delete(Users)
@@ -164,6 +210,7 @@ router.delete("/:user_id", async (req, res) => {
     }
 
     res.status(200).json({
+      message: "Delete data success",
       user_id,
       delete_user_success: true,
     });
