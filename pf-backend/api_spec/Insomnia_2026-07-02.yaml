@@ -42,3 +42,9 @@ collection:
   - url: http://localhost:3001/posts/{topic_id}/{post_id}
     name: Delete Post
     method: DELETE
+
+
+    {
+      "title":"aaa",
+      "descriptions":"aaa"
+    }

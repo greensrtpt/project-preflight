@@ -1,87 +1,59 @@
 import { Router } from "express";
 import { dbClient } from "@db/client.js";
-import { Posts } from "@db/schema.js";
+import { Posts,Topics } from "@db/schema.js";
 import { eq } from "drizzle-orm";
 import { authenticateToken } from "@src/Middleware/auth.js";
+import { validate as isUUID } from "uuid";
 
 const router = Router();
 
-// /**
-//  * POST /posts
-//  */
-// router.post("/:topic_id",
-//   authenticateToken,
-//   async (req, res) => {
-//   try {
-//     const {
-//       title,
-//       descriptions,
-//     } = req.body;
+/**
+ * POST /posts
+ */
+router.get("/:topic_id", async (req, res) => {
+  try{
+    const topic_id = req.params.topic_id;
+    
+  }
+  catch(error){
+    console.error(error);
 
-//     const topic_id = req.params.topic_id;
-//     const author_id = (req.user!).user_id;
+    res.status(500).json({
+      message: "Cannot get posts",
+    });
+  }
+});
 
-//     if (!topic_id || !title || !descriptions) {
-//       res.status(400).json({
-//         message:
-//           "topic_id, title and descriptions are required",
-//       });
-//       return;
-//     }
+/**
+ * GET /posts/:id
+ */
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
 
-//     const newPost = await dbClient
-//       .insert(Posts)
-//       .values({
-//         topic_id,
-//         title,
-//         descriptions,
-//         author_id,
-//         edit_at: new Date(),
-//       })
-//       .returning();
+    const posts = await dbClient
+      .select()
+      .from(Posts)
+      .where(eq(Posts.post_id, id));
 
-//     return res.status(201).json({
-//       message: "Post created successfully",
-//       data:newPost[0]});
-//   } catch (error) {
-//     console.error(error);
+    const post = posts[0];
 
-//     return res.status(500).json({
-//       message: "Cannot create post",
-//     });
-//   }
-// });
+    if (!post) {
+      res.status(404).json({
+        message: "Post not found",
+      });
+      return;
+    }
 
-// /**
-//  * GET /posts/:id
-//  */
-// router.get("/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
+    res.status(200).json(post);
+  } catch (error) {
+    console.error(error);
 
-//     const posts = await dbClient
-//       .select()
-//       .from(Posts)
-//       .where(eq(Posts.post_id, id));
-
-//     const post = posts[0];
-
-//     if (!post) {
-//       res.status(404).json({
-//         message: "Post not found",
-//       });
-//       return;
-//     }
-
-//     res.status(200).json(post);
-//   } catch (error) {
-//     console.error(error);
-
-//     res.status(500).json({
-//       message: "Cannot get post",
-//     });
-//   }
-// });
+    res.status(500).json({
+      message: "Cannot get post",
+    });
+  }
+});
 
 
 export default router;
