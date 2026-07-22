@@ -1,11 +1,15 @@
 info:
-  name: GET /:topic_id
+  name: GET /:user_id
   type: http
   seq: 5
 
 http:
   method: GET
-  url: "{{base_url}}/posts/783d78d3-0aa1-4c10-b7d8-8388e786e125"
+  url: "{{base_url}}/users/:user_id"
+  params:
+    - name: user_id
+      value: ""
+      type: path
   auth: inherit
 
 settings:

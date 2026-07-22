@@ -1,10 +1,10 @@
 info:
-  name: POST post
+  name: GET /:topic_id
   type: http
-  seq: 5
+  seq: 2
 
 http:
-  method: POST
+  method: GET
   url: "{{base_url}}/posts/{{topic_id}}"
   auth: inherit
 

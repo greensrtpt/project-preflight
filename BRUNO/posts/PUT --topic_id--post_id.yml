@@ -1,11 +1,11 @@
 info:
-  name: POST post
+  name: PUT /:topic_id/:post_id
   type: http
-  seq: 5
+  seq: 4
 
 http:
-  method: POST
-  url: "{{base_url}}/posts/{{topic_id}}"
+  method: PUT
+  url: "{{base_url}}/posts/{{topic_id}}/{{post_id}}"
   auth: inherit
 
 settings:

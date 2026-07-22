@@ -1,11 +1,11 @@
 info:
-  name: POST post
+  name: DELETE /:topic_id/:post_id
   type: http
   seq: 5
 
 http:
-  method: POST
-  url: "{{base_url}}/posts/{{topic_id}}"
+  method: DELETE
+  url: "{{base_url}}/posts/{{topic_id}}/{{post_id}}"
   auth: inherit
 
 settings:
