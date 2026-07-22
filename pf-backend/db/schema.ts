@@ -18,7 +18,7 @@ export const Users = pgTable("Users", {
     .unique(),/////////////////////////////////
 
   // รหัสผ่าน
-  password: varchar("password", { length: 30 }).notNull(),
+  password: varchar("password", { length: 60 }).notNull(),
 });
 
 /**

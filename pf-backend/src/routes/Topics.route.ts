@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { dbClient } from "@db/client.js";
 import { Posts, Topics } from "@db/schema.js";
-import { eq } from "drizzle-orm";
+import { eq, ilike } from "drizzle-orm";
 
 const router = Router();
 
@@ -57,6 +57,38 @@ router.get("/all", async (_req, res) => {
 
     res.status(500).json({
       message: "Cannot get topics",
+    });
+  }
+});
+
+/**
+ * GET /topics/search?query=...
+ */
+router.get("/search", async (req, res) => {
+  try {
+    const query = String(req.query.query ?? "").trim();
+
+    if (!query) {
+      return res.status(400).json({
+        message: "query is required",
+      });
+    }
+
+    const topics = await dbClient
+      .select()
+      .from(Topics)
+      .where(ilike(Topics.topic_name, `%${query}%`));
+
+    return res.status(200).json({
+      search_success: true,
+      message: "Search topics successfully",
+      data: topics,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      message: "Cannot search topics",
     });
   }
 });
