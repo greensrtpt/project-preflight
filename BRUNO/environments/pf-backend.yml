@@ -3,4 +3,10 @@ variables:
   - name: base_url
     value: http://localhost:3001
   - name: token
-    value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiOWMyYTkyYjktOTQ2YS00Mzg1LWE0Y2EtODRiY2NhYjA1NTM2IiwidXNlcm5hbWUiOiJncmVlbiIsImlhdCI6MTc4NDczNDEzMSwiZXhwIjoxNzkxOTM0MTMxfQ.GtVr94a86MbUNyTBLeOvKd33t3cPfvjdpeHj8G1C46g
+    value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZjEzODAwYjMtZjMyNy00YjRmLWIyZWMtYWRhYzJmN2QyODk1IiwidXNlcm5hbWUiOiJncmVlbl90ZXN0IiwiaWF0IjoxNzg0NzM3ODMyLCJleHAiOjE3OTE5Mzc4MzJ9.FoQ1kVCFbVEZ17thm-i7qdQg7eOFO_vAqZO-8TddBRM
+  - name: post_id
+    value: ""
+  - name: topic_id
+    value: 783d78d3-0aa1-4c10-b7d8-8388e786e125
+  - name: user_id
+    value: 854d8d70-be07-4362-8170-3e9ea662c970

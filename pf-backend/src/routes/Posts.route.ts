@@ -11,7 +11,7 @@ const router = Router();
 /**
  * POST /posts
  */
-router.get("/:topic_id", async (req, res) => {
+router.post("/:topic_id", async (req, res) => {
   try{
     const topic_id = req.params.topic_id;
     
@@ -28,13 +28,13 @@ router.get("/:topic_id", async (req, res) => {
 /**
  * GET all post from topic_id
  */
-router.get("/:ttopic_id", async (req, res) => {
+router.get("/:topic_id", async (req, res) => {
   try {
-    const { ttopic_id } = req.params;
+    const { topic_id } = req.params;
 
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-    if (!uuidRegex.test(ttopic_id)) {
+    if (!uuidRegex.test(topic_id)) {
       return res.status(400).json({
         message: "Invalid topic_id format. It should be a valid UUID.",
       });
@@ -50,7 +50,7 @@ router.get("/:ttopic_id", async (req, res) => {
       })
       .from(Posts)
       .innerJoin(Users, eq(Posts.author_id, Users.user_id))
-      .where(eq(Posts.topic_id, ttopic_id));
+      .where(eq(Posts.topic_id, topic_id));
 
     if (!posts || posts.length === 0) {
       return res.status(404).json({
