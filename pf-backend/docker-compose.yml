@@ -4,7 +4,7 @@ services:
     container_name: pf-backend
     build: .
     ports:
-      - ${PORT}:3000
+      - ${PROD_PORT}:3000
     networks:
       - preflight_pf-net
     environment:
