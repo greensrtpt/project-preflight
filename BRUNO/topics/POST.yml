@@ -1,17 +1,16 @@
 info:
-  name: POST /users
+  name: "POST "
   type: http
-  seq: 8
+  seq: 5
 
 http:
   method: POST
-  url: http://localhost:3001/users
+  url: "{{base_url}}/topics"
   body:
     type: json
     data: |-
       {
-        "username": "green_test",
-        "password": "12345678"
+        "topic_name": "กิจกรรม"
       }
   auth: inherit
 
