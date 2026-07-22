@@ -60,38 +60,38 @@ router.get("/all", async (_req, res) => {
     });
   }
 });
+ 
+// /**
+//  * GET /topics/search?query=...
+//  */
+// router.get("/search", async (req, res) => {
+//   try {
+//     const query = String(req.query.query ?? "").trim();
 
-/**
- * GET /topics/search?query=...
- */
-router.get("/search", async (req, res) => {
-  try {
-    const query = String(req.query.query ?? "").trim();
+//     if (!query) {
+//       return res.status(400).json({
+//         message: "query is required",
+//       });
+//     }
 
-    if (!query) {
-      return res.status(400).json({
-        message: "query is required",
-      });
-    }
+//     const topics = await dbClient
+//       .select()
+//       .from(Topics)
+//       .where(ilike(Topics.topic_name, `%${query}%`));
 
-    const topics = await dbClient
-      .select()
-      .from(Topics)
-      .where(ilike(Topics.topic_name, `%${query}%`));
+//     return res.status(200).json({
+//       search_success: true,
+//       message: "Search topics successfully",
+//       data: topics,
+//     });
+//   } catch (error) {
+//     console.error(error);
 
-    return res.status(200).json({
-      search_success: true,
-      message: "Search topics successfully",
-      data: topics,
-    });
-  } catch (error) {
-    console.error(error);
-
-    return res.status(500).json({
-      message: "Cannot search topics",
-    });
-  }
-});
+//     return res.status(500).json({
+//       message: "Cannot search topics",
+//     });
+//   }
+// });
 
 /**
  * GET /topics/:topic_id
