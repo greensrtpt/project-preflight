@@ -1,17 +1,17 @@
 info:
   name: POST/users/login
   type: http
-  seq: 9
+  seq: 2
 
 http:
   method: POST
-  url: http://localhost:3001/users/login
+  url: "{{base_url}}/users/login"
   body:
     type: json
     data: |-
       {
-        "username": "green_test",
-        "password": "12345678"
+        "username": "green_testถ",
+        "password": "123456789"
       }
   auth: inherit
 
