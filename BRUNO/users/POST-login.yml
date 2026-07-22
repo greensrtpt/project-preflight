@@ -1,5 +1,5 @@
 info:
-  name: POST/users/login
+  name: POST/login
   type: http
   seq: 2
 

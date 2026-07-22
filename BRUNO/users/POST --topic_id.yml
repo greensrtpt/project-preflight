@@ -1,11 +1,11 @@
 info:
-  name: GET /:topic_id
+  name: POST /:topic_id
   type: http
-  seq: 3
+  seq: 1
 
 http:
-  method: GET
-  url: "{{base_url}}/topics/656e0e88-767c-4fe2-8192-efe4951a9f3d"
+  method: POST
+  url: "{{base_url}}/posts/783d78d3-0aa1-4c10-b7d8-8388e786e125"
   auth: inherit
 
 settings:

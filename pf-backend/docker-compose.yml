@@ -42,7 +42,7 @@ services:
 
 volumes:
   pf-data:
+
 networks:
   pf-net:
-  preflight_pf-net: # Check by using `docker network ls` command
-    external: true
+  preflight_pf-net:
