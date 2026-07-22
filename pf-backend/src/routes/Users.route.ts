@@ -17,17 +17,15 @@ router.post("/", async (req: Request, res: Response) => {
     const { username, password } = req.body;
 
     if (!username || !password) {
-      res.status(400).json({
+      return res.status(400).json({
         message: "Please provide both username and password",
       });
-      return;
     }
 
     if (password.length < 8) {
-      res.status(400).json({
+      return res.status(400).json({
         message: "Password must be at least 8 characters long",
       });
-      return;
     }
 
     const existingUser = await dbClient
@@ -37,11 +35,10 @@ router.post("/", async (req: Request, res: Response) => {
       .limit(1);
 
     if (existingUser.length > 0) {
-      res.status(409).json({
+      return res.status(409).json({
         message:
           "Username already exists. Please choose a different username.",
       });
-      return;
     }
 
     const saltRounds = 10;
@@ -62,7 +59,7 @@ router.post("/", async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error creating user:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       message: "Something went wrong with Server",
     });
   }
@@ -76,6 +73,12 @@ router.post("/login", async (req: Request, res: Response) => {
   try {
     const { username, password } = req.body;
 
+    if (!username || !password) {
+    return res.status(400).json({
+     message: "Username and password are required",
+    });
+    }
+
     const existingUser = await dbClient
       .select()
       .from(Users)
@@ -83,19 +86,21 @@ router.post("/login", async (req: Request, res: Response) => {
       .limit(1);
 
     if (existingUser.length === 0) {
-      res.status(404).json({
+      return res.status(404).json({
         message: "User not found",
       });
-      return;
     }
 
     const isMatch = await bcrypt.compare(password, existingUser[0].password);
 
     if (!isMatch) {
-      res.status(401).json({
+      return res.status(401).json({
         message: "Invalid password",
       });
-      return;
+    }
+
+     if (!process.env.JWT_SECRET) {
+      throw new Error("JWT_SECRET is missing");
     }
 
     const token = jwt.sign(
@@ -115,7 +120,7 @@ router.post("/login", async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error("Error logging in:", error);
-    res.status(500).json({
+    return res.status(500).json({
       message: "Something went wrong with Server",
     });
   }
@@ -131,7 +136,7 @@ router.get("/", async (_req: Request, res: Response) => {
         username: Users.username,
       }); // ดึงข้อมูลจาก Database
 
-    res.status(200).json({
+    return res.status(200).json({
       get_users_success: true,
       message: "Get users successfully",
       data: users,
@@ -139,7 +144,7 @@ router.get("/", async (_req: Request, res: Response) => {
   }
   catch (error) {
     console.error("Error logging in:", error);
-    res.status(500).json({
+    return res.status(500).json({
       message: "Something went wrong with Server",
     });
   }
@@ -156,10 +161,9 @@ router.get("/:user_id", async (req, res) => {
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
     if (!uuidRegex.test(user_id)) {
-      res.status(400).json({
+      return res.status(400).json({
         message: "Invalid user_id format. It should be a valid UUID.",
       });
-      return;
     }
 
     const users = await dbClient
@@ -173,13 +177,12 @@ router.get("/:user_id", async (req, res) => {
     const user = users[0];
 
     if (!user) {
-      res.status(404).json({
+      return res.status(404).json({
         message: "User not found",
       });
-      return;
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       get_user_success : true,
       message: "Get user successfully",
       data: user,
@@ -187,7 +190,7 @@ router.get("/:user_id", async (req, res) => {
   } catch (error) {
     console.error(error);
 
-    res.status(500).json({
+    return res.status(500).json({
       message: "Something went wrong with Server",
     });
   }
@@ -202,10 +205,10 @@ router.delete("/:user_id", async (req, res) => {
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
     if (!uuidRegex.test(user_id)) {
-      res.status(400).json({
+      return res.status(400).json({
         message: "Invalid user_id format. It should be a valid UUID.",
       });
-      return;
+
     }
 
     const deletedUsers = await dbClient
@@ -216,13 +219,12 @@ router.delete("/:user_id", async (req, res) => {
       });
 
     if (deletedUsers.length === 0) {
-      res.status(404).json({
+      return res.status(404).json({
         message: "User not found",
       });
-      return;
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "Delete data success",
       user_id,
       delete_user_success: true,
@@ -230,7 +232,7 @@ router.delete("/:user_id", async (req, res) => {
   } catch (error) {
     console.error(error);
 
-    res.status(500).json({
+    return res.status(500).json({
       message: "Cannot delete user",
     });
   }
