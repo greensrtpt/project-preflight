@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import { authUsers } from "drizzle-orm/supabase";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
+import { validate as isUUID } from "uuid";
 
 const router = Router();
 /**
@@ -158,9 +159,7 @@ router.get("/:user_id", async (req, res) => {
   try {
     const { user_id } = req.params;
 
-    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-
-    if (!uuidRegex.test(user_id)) {
+    if (!isUUID(user_id)) {
       return res.status(400).json({
         message: "Invalid user_id format. It should be a valid UUID.",
       });
@@ -202,9 +201,8 @@ router.get("/:user_id", async (req, res) => {
 router.delete("/:user_id", async (req, res) => {
   try {
     const { user_id } = req.params;
-    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-    if (!uuidRegex.test(user_id)) {
+    if (!isUUID(user_id)) {
       return res.status(400).json({
         message: "Invalid user_id format. It should be a valid UUID.",
       });
@@ -225,7 +223,7 @@ router.delete("/:user_id", async (req, res) => {
     }
 
     return res.status(200).json({
-      message: "Delete data success",
+      message: "Delete user success",
       user_id,
       delete_user_success: true,
     });
