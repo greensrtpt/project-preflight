@@ -17,7 +17,7 @@ router.post("/:topic_id", authenticateToken, async (req, res) => {
     const topicParam = req.params.topic_id;
     const topic_id = Array.isArray(topicParam) ? topicParam[0] : topicParam;
     const author_id = req.user?.user_id;
-    const { title, descriptions } = req.body ?? {};
+    const { title, descriptions, edit_at } = req.body ?? {};
 
     if (!uuidRegex.test(topic_id)) {
       return res.status(400).json({
@@ -104,7 +104,7 @@ router.post("/:topic_id", authenticateToken, async (req, res) => {
         title: title.trim(),
         descriptions: descriptions.trim(),
         author_id,
-        edit_at: new Date(),
+        edit_at: new Date,
       })
       .returning();
 
