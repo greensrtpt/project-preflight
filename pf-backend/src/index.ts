@@ -17,6 +17,8 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
+// console.log(process.env.JWT_SECRET);
+
 /**
  * ตรวจว่า Backend ทำงานอยู่
  */

@@ -8,13 +8,13 @@ const router = Router();
 /**
  * POST /posts
  */
-router.post("/", async (req, res) => {
+router.post("/:topic_id", async (req, res) => {
   try {
     const {
       topic_id,
-      author_id,
       title,
       descriptions,
+      edit_at
     } = req.body;
 
     if (!topic_id || !author_id || !title || !descriptions) {

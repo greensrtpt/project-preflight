@@ -4,9 +4,10 @@ import { Users } from "@db/schema.js";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcrypt";
 import { authUsers } from "drizzle-orm/supabase";
+import jwt from "jsonwebtoken";
+import "dotenv/config";
 
 const router = Router();
-
 /**
  * POST /users
  * สร้างผู้ใช้ใหม่
@@ -71,7 +72,7 @@ router.post("/", async (req: Request, res: Response) => {
  * POST /users
  * login
  */
-router.post("/", async (req: Request, res: Response) => {
+router.post("/login", async (req: Request, res: Response) => {
   try {
     const { username, password } = req.body;
 
@@ -97,8 +98,20 @@ router.post("/", async (req: Request, res: Response) => {
       return;
     }
 
+    const token = jwt.sign(
+    {
+      user_id: existingUser[0].user_id,
+      username: existingUser[0].username,
+    },
+    process.env.JWT_SECRET!,
+    {
+      expiresIn: "1h"
+    }
+  );
+
     res.status(200).json({
       message: "Login successful",
+      token
     });
   } catch (error) {
     console.error("Error logging in:", error);
