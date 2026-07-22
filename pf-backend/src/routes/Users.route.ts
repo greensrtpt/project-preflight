@@ -67,6 +67,48 @@ router.post("/", async (req: Request, res: Response) => {
 });
 
 /**
+ * POST /users
+ * login
+ */
+router.post("/", async (req: Request, res: Response) => {
+  try {
+    const { username, password } = req.body;
+
+    const existingUser = await dbClient
+      .select()
+      .from(Users)
+      .where(eq(Users.username, username))
+      .limit(1);
+
+    if (existingUser.length === 0) {
+      res.status(404).json({
+        message: "User not found",
+      });
+      return;
+    }
+
+    const isMatch = await bcrypt.compare(password, existingUser[0].password);
+
+    if (!isMatch) {
+      res.status(401).json({
+        message: "Invalid password",
+      });
+      return;
+    }
+
+    res.status(200).json({
+      message: "Login successful",
+    });
+  } catch (error) {
+    console.error("Error logging in:", error);
+    res.status(500).json({
+      message: "Something went wrong with Server",
+    });
+  }
+});
+
+
+/**
  * GET /users/:user_id
  */
 router.get("/:user_id", async (req, res) => {
