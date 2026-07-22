@@ -134,7 +134,7 @@ router.get("/", async (_req: Request, res: Response) => {
     const users = await dbClient.select({
         user_id: Users.user_id,
         username: Users.username,
-      }); // ดึงข้อมูลจาก Database
+      }).from(Users); // ดึงข้อมูลจาก Database
 
     return res.status(200).json({
       get_users_success: true,

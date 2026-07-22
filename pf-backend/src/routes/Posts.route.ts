@@ -2,6 +2,7 @@ import { Router } from "express";
 import { dbClient } from "@db/client.js";
 import { Posts,Topics } from "@db/schema.js";
 import { eq } from "drizzle-orm";
+import { Users } from "@db/schema.js";
 import { authenticateToken } from "@src/Middleware/auth.js";
 import { validate as isUUID } from "uuid";
 
@@ -25,27 +26,41 @@ router.get("/:topic_id", async (req, res) => {
 });
 
 /**
- * GET /posts/:id
+ * GET all post from topic_id
  */
-router.get("/:id", async (req, res) => {
+router.get("/:ttopic_id", async (req, res) => {
   try {
-    const { id } = req.params;
+    const { ttopic_id } = req.params;
 
-    const posts = await dbClient
-      .select()
-      .from(Posts)
-      .where(eq(Posts.post_id, id));
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-    const post = posts[0];
-
-    if (!post) {
-      res.status(404).json({
-        message: "Post not found",
+    if (!uuidRegex.test(ttopic_id)) {
+      return res.status(400).json({
+        message: "Invalid topic_id format. It should be a valid UUID.",
       });
-      return;
     }
 
-    res.status(200).json(post);
+    const posts = await dbClient
+      .select({
+        post_id:Posts.post_id,
+        title:Posts.title,
+        descriptions:Posts.descriptions,
+        auther:Users.username,
+        edit_at:Posts.edit_at
+      })
+      .from(Posts)
+      .innerJoin(Users, eq(Posts.author_id, Users.user_id))
+      .where(eq(Posts.topic_id, ttopic_id));
+
+    if (!posts || posts.length === 0) {
+      return res.status(404).json({
+        message: "Post not found",
+      });
+    }
+
+    return res.status(200).json({
+      data:posts
+    });
   } catch (error) {
     console.error(error);
 

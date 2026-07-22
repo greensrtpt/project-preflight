@@ -27,7 +27,7 @@ export const Users = pgTable("Users", {
 export const Topics = pgTable("Topics", {
   // รหัสหัวข้อ
   topic_id: uuid("topic_id").primaryKey().defaultRandom(),
-
+    
   // ชื่อหัวข้อ
   topic_name: varchar("name", { length: 20 })
     .notNull()
