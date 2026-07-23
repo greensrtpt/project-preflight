@@ -6,7 +6,6 @@ import type {DataFromTopic} from "../Types/APIresultFromSearchPage.types"
 
 const Searchpage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [Data,setData] = useState<DataFromTopic|null>(null)
   const navigate = useNavigate();
   // const [Loading, setLoading] = useState<boolean>(false);
 
@@ -21,14 +20,7 @@ const Searchpage: React.FC = () => {
   const handleSelectTopic = async (selectedOption: DropdownOption) => {
     console.log('User chooses topic ID:', selectedOption.topic_id);
     console.log('User chooses topic name:', selectedOption.topic_name);
-    try{
-    const res = await fetch('http://localhost:3001/topics/'+selectedOption.topic_id);
-          const resultTopic = await res.json();
-          setData(resultTopic);
-    navigate('/showAllPost');
-    } catch (error) {
-      console.error('something went wrong with API:', error);
-    } 
+    navigate(`/showAllPost/${selectedOption.topic_id}`);
     // finally {
     //   setLoading(false);
     // }

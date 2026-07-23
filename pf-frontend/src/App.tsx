@@ -16,7 +16,7 @@ function App() {
 
         {/* หน้าสร้างAccount */}
          <Route path="/createAcc" element={<CreateAccPage />} />
-         <Route path="/showAllPost" element={<ShowAllPostPage />} />
+         <Route path="/showAllPost/:topic_id" element={<ShowAllPostPage />} />
       </Routes>
     </Router>
   );
