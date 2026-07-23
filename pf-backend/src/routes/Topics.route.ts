@@ -82,8 +82,16 @@ router.get("/:topic_id", async (req, res) => {
       return;
     }
 
+    // 🌟 เลือกระบุ Column เฉพาะที่จะใช้งาน ป้องกัน Error เรื่อง Column mismatch
     const posts = await dbClient
-      .select()
+      .select({
+        post_id: Posts.post_id,
+        title: Posts.title,
+        descriptions: Posts.descriptions,
+        author_id: Posts.author_id,
+        author_name: Posts.author_name, // 👈 หรือ Posts.username (ตามที่ตั้งใน Schema)
+        edit_at: Posts.edit_at,
+      })
       .from(Posts)
       .where(eq(Posts.topic_id, topic_id));
 
@@ -94,6 +102,8 @@ router.get("/:topic_id", async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+
+    console.error("GET /topics/:topic_id Error:", error);
 
     res.status(500).json({
       message: "Cannot get topic",
