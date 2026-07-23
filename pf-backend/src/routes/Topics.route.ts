@@ -82,14 +82,14 @@ router.get("/:topic_id", async (req, res) => {
       return;
     }
 
-    // 🌟 เลือกระบุ Column เฉพาะที่จะใช้งาน ป้องกัน Error เรื่อง Column mismatch
+    //เลือกระบุ Column เฉพาะที่จะใช้งาน ป้องกัน Error เรื่อง Column mismatch
     const posts = await dbClient
       .select({
         post_id: Posts.post_id,
         title: Posts.title,
         descriptions: Posts.descriptions,
         author_id: Posts.author_id,
-        author_name: Posts.author_name, // 👈 หรือ Posts.username (ตามที่ตั้งใน Schema)
+        author_name: Posts.author_name, //Posts.username (ตามที่ตั้งใน Schema)
         edit_at: Posts.edit_at,
       })
       .from(Posts)

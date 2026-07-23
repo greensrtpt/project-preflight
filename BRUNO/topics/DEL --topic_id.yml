@@ -5,7 +5,7 @@ info:
 
 http:
   method: DELETE
-  url: "{{base_url}}/topics/f8c36caa-0786-4aa8-ae5a-4937b68dcc9d"
+  url: "{{base_url}}/topics/88100fd3-bb45-4629-9d6a-ad32a1fbb8b"
   auth: inherit
 
 settings:
