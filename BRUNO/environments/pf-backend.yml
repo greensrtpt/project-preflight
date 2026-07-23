@@ -5,7 +5,7 @@ variables:
   - name: token
     value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZjEzODAwYjMtZjMyNy00YjRmLWIyZWMtYWRhYzJmN2QyODk1IiwidXNlcm5hbWUiOiJncmVlbl90ZXN0IiwiaWF0IjoxNzg0NzM3ODMyLCJleHAiOjE3OTE5Mzc4MzJ9.FoQ1kVCFbVEZ17thm-i7qdQg7eOFO_vAqZO-8TddBRM
   - name: post_id
-    value: ""
+    value: d3703799-a183-4a50-921e-28dbe18a81ca
   - name: topic_id
     value: 19c3696f-5c4e-46a6-b036-12d2b8bb59c6
   - name: user_id
