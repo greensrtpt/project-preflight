@@ -12,7 +12,72 @@ const router = Router();
 /**
  * POST /posts
  */
+router.post("/:topic_id",authenticateToken,async (req, res) => {
+    try {
+      const { topic_id } = req.params as {
+       topic_id: string;
+       };
+      const { title, descriptions } = req.body;
 
+      // user จาก token
+      const user_id = req.user?.user_id;
+
+      if (!user_id) {
+      return res.status(401).json({
+      message: "Unauthorized: User not logged in",
+      });
+      }
+ 
+      if (!isUUID(topic_id)) {
+      return res.status(400).json({
+        message: "Invalid topic_id Format. It should be a valid UUID.",
+      });
+      }
+
+      if (!title || !descriptions) {
+        return res.status(400).json({
+          message: "title and descriptions are required",
+        });
+      }
+
+      // หา post และเช็ค owner
+      const ExistingTopic = await dbClient
+        .select()
+        .from(Topics)
+        .where(
+            eq(Topics.topic_id, topic_id)
+        )
+
+      if (ExistingTopic.length === 0) {
+        return res.status(404).json({
+          message: "Topic not found",
+        });
+      }
+
+      const createPost = await dbClient
+        .insert(Posts)
+        .values({
+          title:title,
+          descriptions:descriptions,
+          author_id:user_id,
+          topic_id:topic_id,
+          edit_at:new Date()
+        })
+
+      return res.status(201).json({
+        message: "Post created successfully"
+      });
+
+
+    } catch(err) {
+      console.error(err);
+
+      return res.status(500).json({
+        message: "something went wrong with server",
+      });
+    }
+  }
+);
 
 /**
  * GET all post from topic_id
