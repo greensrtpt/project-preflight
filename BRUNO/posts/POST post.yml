@@ -6,7 +6,16 @@ info:
 http:
   method: POST
   url: "{{base_url}}/posts/{{topic_id}}"
-  auth: inherit
+  body:
+    type: json
+    data: |-
+      {
+        "title": "ห้องสมุด",
+        "descriptions": "ช่วง Reading Week หอสมุดเปิดให้บริการตลอด 24 ชั่วโมง"
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
 
 settings:
   encodeUrl: true
