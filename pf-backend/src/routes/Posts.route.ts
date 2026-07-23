@@ -97,7 +97,7 @@ router.get("/:topic_id", async (req, res) => {
         post_id:Posts.post_id,
         title:Posts.title,
         descriptions:Posts.descriptions,
-        auther:Users.username,
+        author_name: Users.username,
         edit_at:Posts.edit_at
       })
       .from(Posts)
@@ -158,7 +158,7 @@ router.get("/:topic_id/:post_id", async (req, res) => {
         post_id:Posts.post_id,
         title:Posts.title,
         descriptions:Posts.descriptions,
-        auther_name:Users.username,
+        author_name:Users.username,
         topic_id:Posts.topic_id,
         edit_at:Posts.edit_at,
       })
@@ -342,10 +342,10 @@ router.delete("/:topic_id/:post_id",authenticateToken,async (req, res) => {
 
       return res.status(200).json({
       message: "Delete post success",
-      user_id,
+      topic_id,
+      post_id,
       delete_post_success: true,
     });
-
 
     } catch(err) {
       console.error(err);
