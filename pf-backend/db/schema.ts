@@ -56,7 +56,7 @@ export const Posts = pgTable("Posts", {
     .references(() => Users.user_id)
     .notNull(),
 
-  author_name: varchar("username", { length: 30 })
+  author_name: varchar("author_name", { length: 30 })
     .notNull()
     .unique(),/////////////////////////////////
 
