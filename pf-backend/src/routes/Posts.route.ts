@@ -19,10 +19,12 @@ router.post("/:topic_id",authenticateToken,async (req, res) => {
        };
       const { title, descriptions } = req.body;
 
+
       // user จาก token
       const user_id = req.user?.user_id;
+      const username = req.user?.username;
 
-      if (!user_id) {
+      if (!user_id || !username) {
       return res.status(401).json({
       message: "Unauthorized: User not logged in",
       });
@@ -60,12 +62,15 @@ router.post("/:topic_id",authenticateToken,async (req, res) => {
           title:title,
           descriptions:descriptions,
           author_id:user_id,
+          author_name:username,
           topic_id:topic_id,
           edit_at:new Date()
         })
+        .returning();
 
       return res.status(201).json({
-        message: "Post created successfully"
+        message: "Post created successfully",
+        data:createPost
       });
 
 

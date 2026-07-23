@@ -56,6 +56,10 @@ export const Posts = pgTable("Posts", {
     .references(() => Users.user_id)
     .notNull(),
 
+  author_name: varchar("username", { length: 30 })
+    .notNull()
+    .unique(),/////////////////////////////////
+
   // วันที่สร้าง
   edit_at: timestamp("edit_at").defaultNow().notNull(),
 });
