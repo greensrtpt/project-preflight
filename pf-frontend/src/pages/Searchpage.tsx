@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import SmoothDropdown from '../components/SmoothDropdown';
 import type { DropdownOption } from '../Types/dropdown.types';
-import { Link } from 'react-router-dom';
-import { ChevronDown } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import type {DataFromTopic} from "../Types/APIresultFromSearchPage.types"
 
 const Searchpage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [Data,setData] = useState<DataFromTopic|null>(null)
+  const navigate = useNavigate();
   // const [Loading, setLoading] = useState<boolean>(false);
 
   // 1. เตรียมข้อมูล Options (ต้องมี topic_id และ topic_name ตรงตาม Interface)
@@ -25,6 +25,7 @@ const Searchpage: React.FC = () => {
     const res = await fetch('http://localhost:3001/topics/'+selectedOption.topic_id);
           const resultTopic = await res.json();
           setData(resultTopic);
+    navigate('/showAllPost');
     } catch (error) {
       console.error('something went wrong with API:', error);
     } 

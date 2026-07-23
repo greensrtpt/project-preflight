@@ -63,7 +63,7 @@ const LogInPage: React.FC = () => {
         </div>
 
         {/* ปุ่ม Create An Account */}
-        <Link to="/createACc"
+        <Link to="/createAcc"
           type="button"
           className="flex items-center justify-center w-full bg-[#9E9E9E] hover:bg-gray-500 text-white text-lg font-medium py-3.5 rounded-xl transition duration-150 shadow-sm"
         >
