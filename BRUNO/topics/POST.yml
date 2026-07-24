@@ -10,7 +10,7 @@ http:
     type: json
     data: |-
       {
-        "topic_name": "กิจกรรม"
+        "topic_name": "university life"
       }
   auth: inherit
 

@@ -10,3 +10,9 @@ variables:
     value: ff1a87aa-3f12-4825-a7d0-b57b8e7991c9
   - name: user_id
     value: bffa9c34-e414-44c6-943c-1a4bde3507d4
+  - name: activities
+    value: 996c5d4e-2fb3-4436-bfbf-00c65e62685c
+  - name: study
+    value: 965b6a4c-b18e-41f9-b824-34dbec8ec82a
+  - name: university_life
+    value: 42fa09c9-2f6a-44e6-9236-6e1905a6d047

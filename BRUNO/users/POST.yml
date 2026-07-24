@@ -5,9 +5,14 @@ info:
 
 http:
   method: POST
-  url: |-
-    POST
-    {{base_url}}/users
+  url: "{{base_url}}/users"
+  body:
+    type: json
+    data: |-
+      {
+        "username":"noodee",
+        "password":"1Aa112233444"
+      }
   auth: inherit
 
 settings:

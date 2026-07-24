@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{base_url}}/topics/656e0e88-767c-4fe2-8192-efe4951a9f3d"
+  url: "{{base_url}}/topics/{{activities}}"
   auth: inherit
 
 settings:

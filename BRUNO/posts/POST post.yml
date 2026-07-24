@@ -5,8 +5,17 @@ info:
 
 http:
   method: POST
-  url: "{{base_url}}/posts/{{topic_id}}"
-  auth: inherit
+  url: "{{base_url}}/posts/{{activities}}"
+  body:
+    type: json
+    data: |-
+      {
+        "title":"อาสาสมัคร",
+        "descriptions":"ชมรมเพื่อนผู้พิการเปิดรับอาสาสมัครและจัดกิจกรรมให้ความรู้เกี่ยวกับการช่วยเหลือผู้พิการ เป็นอีกกิจกรรมที่ได้ทั้งประสบการณ์และการเรียนรู้"
+      }
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiOGI2MDJiMWMtMzM2Yy00YjI4LWFlMTctMTVlYzg0YTk3ODViIiwidXNlcm5hbWUiOiJub29kZWUiLCJpYXQiOjE3ODQ4MjMyMTIsImV4cCI6MTc5MjAyMzIxMn0.p62FhPwsAljEPvvk3oYlGIIxic0cceOTXTyDZLCj0U8
 
 settings:
   encodeUrl: true
