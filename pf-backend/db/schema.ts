@@ -57,8 +57,8 @@ export const Posts = pgTable("Posts", {
     .notNull(),
 
   author_name: varchar("author_name", { length: 30 })
-    .notNull()
-    .unique(),/////////////////////////////////
+    .notNull(),
+   ///////////////////////////////// .unique()
 
   // วันที่สร้าง
   edit_at: timestamp("edit_at").defaultNow().notNull(),

@@ -3,7 +3,7 @@ variables:
   - name: base_url
     value: http://localhost:3001
   - name: token
-    value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZjEzODAwYjMtZjMyNy00YjRmLWIyZWMtYWRhYzJmN2QyODk1IiwidXNlcm5hbWUiOiJncmVlbl90ZXN0IiwiaWF0IjoxNzg0NzM3ODMyLCJleHAiOjE3OTE5Mzc4MzJ9.FoQ1kVCFbVEZ17thm-i7qdQg7eOFO_vAqZO-8TddBRM
+    value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTk3OWYwYjgtODZiNy00NmViLWFmMmEtMDU4OGM0MWQwMGJhIiwidXNlcm5hbWUiOiJncmVlbl90ZXMiLCJpYXQiOjE3ODQ4NjMxNTksImV4cCI6MTc5MjA2MzE1OX0.WTCAmeHp1qpvqjRbVKRHZIbRxEzoVsaeNdLhzSC-GEM
   - name: post_id
     value: 2a611df1-7028-4321-a2d6-4dcb093ed5d9
   - name: topic_id
