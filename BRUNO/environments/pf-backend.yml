@@ -2,17 +2,25 @@ name: pf-backend
 variables:
   - name: base_url
     value: http://localhost:3001
+    description: ""
   - name: token
     value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTk3OWYwYjgtODZiNy00NmViLWFmMmEtMDU4OGM0MWQwMGJhIiwidXNlcm5hbWUiOiJncmVlbl90ZXMiLCJpYXQiOjE3ODQ4NjMxNTksImV4cCI6MTc5MjA2MzE1OX0.WTCAmeHp1qpvqjRbVKRHZIbRxEzoVsaeNdLhzSC-GEM
+    description: ""
   - name: post_id
     value: 2a611df1-7028-4321-a2d6-4dcb093ed5d9
+    description: ""
   - name: topic_id
-    value: 59d0fc57-c4c5-4593-9d41-61f649d2494e
+    value: 42fa09c9-2f6a-44e6-9236-6e1905a6d047
+    description: ""
   - name: user_id
     value: bffa9c34-e414-44c6-943c-1a4bde3507d4
+    description: ""
   - name: activities
     value: 996c5d4e-2fb3-4436-bfbf-00c65e62685c
+    description: ""
   - name: study
     value: 965b6a4c-b18e-41f9-b824-34dbec8ec82a
+    description: ""
   - name: university_life
     value: 42fa09c9-2f6a-44e6-9236-6e1905a6d047
+    description: ""

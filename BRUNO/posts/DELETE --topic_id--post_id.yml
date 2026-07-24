@@ -1,7 +1,7 @@
 info:
   name: DELETE /:topic_id/:post_id
   type: http
-  seq: 5
+  seq: 4
 
 http:
   method: DELETE
