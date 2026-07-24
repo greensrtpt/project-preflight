@@ -64,7 +64,7 @@ router.post("/:topic_id",authenticateToken,async (req, res) => {
           author_id:user_id,
           author_name:username,
           topic_id:topic_id,
-          edit_at:new Date()
+          //edit_at:new Date()
         })
         .returning();
 
