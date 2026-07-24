@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { dbClient } from "@db/client.js";
-import { Posts,Topics } from "@db/schema.js";
+import { Posts,Topics,Groups } from "@db/schema.js";
 import { and,eq } from "drizzle-orm";
 import { Users } from "@db/schema.js";
 import { authenticateToken } from "@src/Middleware/auth.js";
@@ -12,10 +12,11 @@ const router = Router();
 /**
  * POST /posts
  */
-router.post("/:topic_id",authenticateToken,async (req, res) => {
+router.post("/:topic_id/:group_id",authenticateToken,async (req, res) => {
     try {
-      const { topic_id } = req.params as {
+      const { topic_id,group_id } = req.params as {
        topic_id: string;
+       group_id: string;
        };
       const { title, descriptions } = req.body;
 
@@ -30,9 +31,9 @@ router.post("/:topic_id",authenticateToken,async (req, res) => {
       });
       }
  
-      if (!isUUID(topic_id)) {
+      if (!isUUID(topic_id)||!isUUID(group_id)) {
       return res.status(400).json({
-        message: "Invalid topic_id Format. It should be a valid UUID.",
+        message: "Invalid topic_id or group_id Format. It should be a valid UUID.",
       });
       }
 
@@ -43,28 +44,32 @@ router.post("/:topic_id",authenticateToken,async (req, res) => {
       }
 
       // หา post และเช็ค owner
-      const ExistingTopic = await dbClient
-        .select()
-        .from(Topics)
-        .where(
-            eq(Topics.topic_id, topic_id)
-        )
+      const existingGroup = await dbClient
+     .select()
+     .from(Groups)
+     .innerJoin(Topics, eq(Groups.topic_id, Topics.topic_id))
+      .where(
+      and( 
+      eq(Groups.group_id, group_id),
+      eq(Topics.topic_id, topic_id),   
+    )
+    );
 
-      if (ExistingTopic.length === 0) {
+      if (existingGroup.length === 0) {
         return res.status(404).json({
-          message: "Topic not found",
+          message: "Group not found",
         });
       }
 
       const createPost = await dbClient
         .insert(Posts)
         .values({
+          group_id:topic_id,
           title:title,
           descriptions:descriptions,
           author_id:user_id,
           author_name:username,
-          topic_id:topic_id,
-          //edit_at:new Date()
+          edit_at:new Date()
         })
         .returning();
 

@@ -37,12 +37,11 @@ export const Topics = pgTable("Topics", {
  * ตารางโพสต์
  */
 export const Posts = pgTable("Posts", {
-    // รหัสหัวข้อ
-  topic_id: uuid("topic_id")
-    .references(() => Topics.topic_id)
-    .notNull(),
   // รหัสโพสต์
   post_id: uuid("post_id").primaryKey().defaultRandom(),
+  group_id: uuid("group_id")
+    .references(() => Groups.group_id)
+    .notNull(),
 
   // หัวข้อโพสต์
   title: varchar("title", { length: 30 }).notNull(),
@@ -62,3 +61,13 @@ export const Posts = pgTable("Posts", {
   // วันที่สร้าง
   edit_at: timestamp("edit_at").defaultNow().notNull(),
 });
+
+export const Groups = pgTable("Groups",{
+  group_id: uuid("group_id").primaryKey().defaultRandom(),
+  topic_id: uuid("topic_id")
+    .references(() => Topics.topic_id)
+    .notNull(),
+  group_name: varchar("name", { length: 30 })
+    .notNull()
+    .unique(),
+})
