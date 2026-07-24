@@ -18,7 +18,7 @@ export const Users = pgTable("Users", {
     .unique(),/////////////////////////////////
 
   // รหัสผ่าน
-  password: varchar("password", { length: 60 }).notNull(),
+  password: varchar("password", { length: 30 }).notNull(),
 });
 
 /**
@@ -29,9 +29,15 @@ export const Topics = pgTable("Topics", {
   topic_id: uuid("topic_id").primaryKey().defaultRandom(),
     
   // ชื่อหัวข้อ
+<<<<<<< HEAD
   topic_name: varchar("name", { length: 20 })
   .notNull()
   .unique(),
+=======
+  topic_name: varchar("name", { length: 30 })
+    .notNull()
+    .unique(),
+>>>>>>> 7acc655e923c31e486b71b759907588c180220e6
 });
 /*
  * ตารางโพสต์
@@ -45,7 +51,7 @@ export const Posts = pgTable("Posts", {
   post_id: uuid("post_id").primaryKey().defaultRandom(),
 
   // หัวข้อโพสต์
-  title: varchar("title", { length: 20 }).notNull(),
+  title: varchar("title", { length: 30 }).notNull(),
 
   // เนื้อหาโพสต์
   descriptions: varchar("descriptions", { length: 150 }).notNull(),
