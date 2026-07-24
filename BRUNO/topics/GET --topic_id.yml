@@ -5,7 +5,11 @@ info:
 
 http:
   method: GET
+<<<<<<< HEAD
   url: "{{base_url}}/topics/{{activities}}"
+=======
+  url: "{{base_url}}/topics/{{topic_id}}"
+>>>>>>> f6d39d0bf1843b71b7db90c102419a8f38cc163b
   auth: inherit
 
 settings:

@@ -10,8 +10,13 @@ http:
     type: json
     data: |-
       {
+<<<<<<< HEAD
         "username":"noodee",
         "password":"1Aa112233444"
+=======
+        "username": "green_test",
+        "password": "12345678"
+>>>>>>> f6d39d0bf1843b71b7db90c102419a8f38cc163b
       }
   auth: inherit
 

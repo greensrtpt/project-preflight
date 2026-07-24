@@ -3,11 +3,11 @@ variables:
   - name: base_url
     value: http://localhost:3001
   - name: token
-    value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZjEzODAwYjMtZjMyNy00YjRmLWIyZWMtYWRhYzJmN2QyODk1IiwidXNlcm5hbWUiOiJncmVlbl90ZXN0IiwiaWF0IjoxNzg0NzM3ODMyLCJleHAiOjE3OTE5Mzc4MzJ9.FoQ1kVCFbVEZ17thm-i7qdQg7eOFO_vAqZO-8TddBRM
+    value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTk3OWYwYjgtODZiNy00NmViLWFmMmEtMDU4OGM0MWQwMGJhIiwidXNlcm5hbWUiOiJncmVlbl90ZXMiLCJpYXQiOjE3ODQ4NjMxNTksImV4cCI6MTc5MjA2MzE1OX0.WTCAmeHp1qpvqjRbVKRHZIbRxEzoVsaeNdLhzSC-GEM
   - name: post_id
-    value: d3703799-a183-4a50-921e-28dbe18a81ca
+    value: 2a611df1-7028-4321-a2d6-4dcb093ed5d9
   - name: topic_id
-    value: ff1a87aa-3f12-4825-a7d0-b57b8e7991c9
+    value: 59d0fc57-c4c5-4593-9d41-61f649d2494e
   - name: user_id
     value: bffa9c34-e414-44c6-943c-1a4bde3507d4
   - name: activities
