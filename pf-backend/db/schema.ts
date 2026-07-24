@@ -30,11 +30,10 @@ export const Topics = pgTable("Topics", {
     
   // ชื่อหัวข้อ
   topic_name: varchar("name", { length: 20 })
-    .notNull()
-    .unique(),
+  .notNull()
+  .unique(),
 });
-
-/**
+/*
  * ตารางโพสต์
  */
 export const Posts = pgTable("Posts", {

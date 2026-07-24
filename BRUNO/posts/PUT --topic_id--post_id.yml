@@ -1,7 +1,7 @@
 info:
   name: PUT /:topic_id/:post_id
   type: http
-  seq: 4
+  seq: 3
 
 http:
   method: PUT
