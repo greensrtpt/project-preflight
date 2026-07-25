@@ -5,74 +5,94 @@ import { Link, useNavigate } from 'react-router-dom';
 const CreateAccPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
+  const [passwordError,setPasswordError] = useState('');
+
+  const [isPasswordTouched, setIsPasswordTouched] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   // ลอจิกตรวจสอบรหัสผ่านของคุณ (เยี่ยมมาก!)
   const hasMinLength = password.length >= 8;
   const hasUpperCase = /[A-Z]/.test(password);
   const hasLowerCase = /[a-z]/.test(password);
   const hasNumber = /[0-9]/.test(password);
-  const isUsernameEmpty = username.trim() === '';
   const isAllValid = hasMinLength && hasUpperCase && hasLowerCase && hasNumber;
   const navigate = useNavigate();
 
+  const showPasswordError = (isPasswordTouched || isSubmitted) && !isAllValid;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!username.trim()) {
+      setPasswordError("password is required");
+    }
+    else{
+    setPasswordError("");
+    setIsSubmitted(true);}
     alert(`Create Account ${username} Done!`);
     navigate('/'); 
   };
 
+  // 🌟 ฟังก์ชันเมื่อพิมพ์ Username
+    const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      setUsername(value);
+    };
+  
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      setPassword(value);
+      if (!isPasswordTouched) setIsPasswordTouched(true);
+      if (value.trim()) {
+        setPasswordError("");
+      }
+    };
+
   return (
     // 1. กล่องพ่อตัวนอกสุด: ใช้ gap-6 สั่งให้กล่องเทา กับ Back to Homepage ห่างกันกำลังดี
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center font-sans px-4 gap-6">
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4">
       
       {/* 2. กล่องการ์ดสีเทา: เปลี่ยนเป็นแท็ก <form> และใช้ justify-between ดันปุ่มลงล่าง */}
       <form 
         onSubmit={handleSubmit}
-        className="w-full max-w-[480px] min-h-[550px] bg-[#D9D9D9] rounded-[32px] p-10 md:p-12 shadow-sm flex flex-col justify-between"
+        className="w-full max-w-md min-h-[450px] bg-[#D9D9D9] rounded-[32px] md:p-8 shadow-sm flex flex-col justify-between"
       >
         {/* --- ส่วนบน: มัดรวมหัวข้อ และ Input ทั้งหมดไว้ด้วยกัน --- */}
         <div className="flex flex-col gap-4 ">
           
-          <h1 className="text-4xl md:text-5xl font-bold text-black mb-4 tracking-tight w-full ">
+          <h1 className="text-3xl font-bold text-black mb-3 text-left">
             Create Account
           </h1>
 
           {/* ช่องกรอก Username */}
-          <div className="flex flex-col gap-2">
-            <label className="text-lg font-medium text-black pl-1">Username</label>
+          <div className="space-y-1 text-left">
+            <label className="block text-sm font-semibold text-black">Username</label>
             <input
               type="text"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Username is required"
-              className={`w-full bg-white text-black text-lg py-3 px-4 rounded-xl focus:outline-none focus:ring-2 shadow-sm transition-colors ${
-                         isUsernameEmpty
-               ? 'border-2 border-red-500 focus:ring-red-400 placeholder-red-500' // ถ้าว่าง ให้ขอบแดง + ข้อความ placeholder สีแดง
-               : 'border border-transparent focus:ring-gray-400 placeholder-gray-400' // สถานะปกติ
-               }`}
-              required
+              onChange={handleUsernameChange}
+              placeholder="username is required"
+              className={`w-full bg-white text-black text-lg py-3 px-4 rounded-xl focus:outline-none focus:ring-2 shadow-sm transition-colors `}
             />
           </div>
 
           {/* ช่องกรอก Password */}
-          <div className="flex flex-col gap-1">
-            <label className="text-lg font-medium text-black pl-1">Password</label>
+          <div className="space-y-1 text-left">
+            <label className="block text-sm font-semibold text-black">Password</label>
             <input
-              type="password"
+              type="text"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password is required"
+              onChange={handlePasswordChange}
+              placeholder={password?"":passwordError}
               className={`w-full bg-white text-black text-lg py-3 px-4 rounded-xl focus:outline-none focus:ring-2 shadow-sm transition-colors ${
-                         !isAllValid
-               ? 'border-2 border-red-500 focus:ring-red-400 placeholder-red-500' // ถ้าว่าง ให้ขอบแดง + ข้อความ placeholder สีแดง
-               : 'border border-transparent focus:ring-gray-400 placeholder-gray-400' // สถานะปกติ
+                         showPasswordError
+               ? "bg-red-50 border-2 border-red-500 focus:ring-2 focus:ring-red-400 placeholder:text-red-400"
+                  : "bg-white focus:ring-2 focus:ring-gray-400"
                }`}
-              required
             />
           </div>
 
           {/* ข้อความเตือน (ใช้เงื่อนไข && ซ่อนข้อความที่ผ่านแล้ว เพื่อให้ดูสะอาดตา) */}
-          <div className="flex flex-col gap-1">
+          {showPasswordError && (<div className="flex flex-col gap-1">
             {!hasMinLength && (
               <p className="text-xs font-medium text-red-600">Password must be at least 8 characters long</p>
             )}
@@ -86,6 +106,8 @@ const CreateAccPage: React.FC = () => {
               <p className="text-xs font-medium text-red-600">Password must contain at least one number (0-9)</p>
             )}
           </div>
+          )}
+
         </div>
 
         {/* --- ส่วนล่าง: ปุ่ม Create Account ถูกย้ายกลับเข้ามาในกล่องเทาแล้ว --- */}
@@ -93,7 +115,7 @@ const CreateAccPage: React.FC = () => {
         <button 
           type="submit"
           disabled={!isAllValid}
-          className={`w-full text-lg font-medium py-3.5 rounded-xl transition duration-150 shadow-sm mt-6 ${
+          className={`w-full h-11 bg-[#9E9E9E] hover:bg-[#8E8E8E] text-white font-medium rounded-lg transition-colors duration-200 mt-2 ${
             isAllValid 
               ? 'bg-[#9E9E9E] hover:bg-gray-500 text-white cursor-pointer' 
               : 'bg-gray-400 text-gray-200 opacity-50 cursor-not-allowed'
@@ -107,7 +129,7 @@ const CreateAccPage: React.FC = () => {
       {/* 3. ลิงก์ย้อนกลับ (จัดระยะห่างด้วย gap-6 ของกล่องพ่อแล้ว) */}
       <Link 
         to="/" 
-        className="text-gray-400 hover:text-black text-lg font-medium transition duration-150"
+        className="mt-4 text-sm text-[#9E9E9E] hover:text-gray-600 font-medium transition-colors duration-200"
       >
         Back to Homepage
       </Link>

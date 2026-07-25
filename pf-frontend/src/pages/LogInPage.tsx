@@ -8,7 +8,7 @@ export const LoginPage: React.FC = () => {
   const [passwordError, setPasswordError] = useState("");
 
   // 🌟 ฟังก์ชัน Login
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!username.trim()) {
@@ -21,6 +21,7 @@ export const LoginPage: React.FC = () => {
     setUsernameError("");
     setPasswordError("");
     console.log("Logging in with:", { username, password });}
+    const res = await fetch(`http://localhost:3001/users/login`);
     // TODO: ยิง API Login ต่อ
   };
 
