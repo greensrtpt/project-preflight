@@ -11,7 +11,8 @@ router.post("/:topic_id", async (req,res) => {
       const { topic_id } = req.params as {
        topic_id: string;
        };
-      const { group_name } = req.body;
+      // ใช้ {} เป็นค่าเริ่มต้น เพื่อให้กรณีไม่ส่ง Body ตอบ 400 แทน Server error
+      const { group_name } = req.body ?? {};
         
       if (!group_name) {
           return res.status(400).json({
@@ -36,6 +37,50 @@ router.post("/:topic_id", async (req,res) => {
          error: err instanceof Error ? err.message : String(err),
          });
     }
+});
+
+/**
+ * get each group from topic
+ * GET /groups/:topic_id/:group_id
+ */
+router.get("/:topic_id/:group_id", async (req, res) => {
+  try {
+    const { topic_id, group_id } = req.params;
+
+    // ตรวจรูปแบบ ID ก่อนนำไปค้นหาในฐานข้อมูล
+    if (!isUUID(topic_id) || !isUUID(group_id)) {
+      return res.status(400).json({
+        message: "Invalid topic_id or group_id format. It should be a valid UUID.",
+      });
+    }
+
+    const groupResult = await dbClient
+      .select()
+      .from(Groups)
+      // ใช้ทั้งสอง ID เพื่อยืนยันว่า Group อยู่ภายใต้ Topic ที่ระบุจริง
+      .where(
+        and(
+          eq(Groups.topic_id, topic_id),
+          eq(Groups.group_id, group_id),
+        )
+      );
+
+    const group = groupResult[0];
+
+    if (!group) {
+      return res.status(404).json({
+        message: "Group not found",
+      });
+    }
+
+    return res.status(200).json(group);
+  } catch (error) {
+    console.error("GET /groups/:topic_id/:group_id Error:", error);
+
+    return res.status(500).json({
+      message: "Something went wrong with server",
+    });
+  }
 });
 
 /**

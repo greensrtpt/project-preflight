@@ -1,11 +1,11 @@
 info:
-  name: DELETE /:topic_id/:post_id
+  name: GET /:group_id/:post_id
   type: http
-  seq: 4
+  seq: 2
 
 http:
-  method: DELETE
-  url: "{{base_url}}/posts/{{topic_id}}/{{post_id}}"
+  method: GET
+  url: "{{base_url}}/posts/{{group_id}}/{{post_id}}"
   auth: inherit
 
 settings:
