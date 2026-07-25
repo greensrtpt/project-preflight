@@ -106,7 +106,7 @@ const CreateAccPage: React.FC = () => {
           <div className="space-y-1 text-left">
             <label className="block text-sm font-semibold text-black">Password</label>
             <input
-              type="text"
+              type="password"
               value={password}
               onChange={handlePasswordChange}
               placeholder={password?"":passwordError}

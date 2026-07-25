@@ -1,4 +1,4 @@
-import Searchpage from './pages/Searchpage';
+import Searchpage from './pages/Homepage';
 import LogInPage from './pages/LogInpage';
 import CreateAccPage from './pages/CreateAccpage';
 import ShowAllPostPage from './pages/ShowAllPostpage';

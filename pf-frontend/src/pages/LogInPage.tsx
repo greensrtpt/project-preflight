@@ -1,29 +1,66 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const navigate = useNavigate();
 
   // 🌟 ฟังก์ชัน Login
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    let hasError = false;
 
     if (!username.trim()) {
       setUsernameError("username is required");
+      hasError = true;
     }
-    if (!username.trim()) {
+    if (!password.trim()) {
       setPasswordError("password is required");
+      hasError = true;
     }
-    else{
+    if(hasError){ return; }
     setUsernameError("");
     setPasswordError("");
-    console.log("Logging in with:", { username, password });}
-    const res = await fetch(`http://localhost:3001/users/login`);
+    console.log("Logging in with:", { username, password });
     // TODO: ยิง API Login ต่อ
-  };
+    try {
+      // 🚀 2. ยิง POST Request ไปหา Backend API
+      const response = await fetch("http://localhost:3001/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      });
+      const data = await response.json();
+      // ❌ 3. ถ้า Login ไม่ผ่าน (เช่น Status 400, 401, 404, 500)
+      if (!response.ok) {
+        alert(data.message || "Invalid username or password");
+        return;
+      }
+      // ✅ 4. ถ้า Login สำเร็จ (Status 200)
+      console.log("Login Success:", data);
+
+      // 🌟 แอบเซฟ Token และ user_id เก็บไว้ใน Browser (localStorage)
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user_id", data.user_id);
+      localStorage.setItem("username", data.user_name);
+
+      alert("Login successful!");
+
+      // 🚀 5. พา User เด้งไปหน้าแรก (Homepage / Dashboard)
+      navigate(`/`);
+  }catch(err){
+    console.error("Login Error:", err);
+    alert("Cannot connect to server. Please try again.");
+  }
+}
 
   // 🌟 ฟังก์ชันเมื่อพิมพ์ Username
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,7 +114,7 @@ export const LoginPage: React.FC = () => {
               Password
             </label>
             <input
-              type="text"
+              type="password"
               value={password}
               placeholder={password?"":passwordError}
               onChange={handlePasswordChange}
