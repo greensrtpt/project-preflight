@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { dbClient } from "@db/client.js";
-import { Posts, Topics, Users } from "@db/schema.js";
+import { Posts, Topics, Users,Groups } from "@db/schema.js";
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
@@ -9,6 +9,7 @@ import morgan from "morgan";
 import topicRouter from "./routes/Topics.route.js";
 import userRouter from "./routes/Users.route.js";
 import postRouter from "./routes/Posts.route.js";
+import groupRouter from "./routes/Groups.route.js";
 
 const app = express();
 
@@ -36,12 +37,14 @@ app.get("/health/database", async (_req, res) => {
     const users = await dbClient.select().from(Users);
     const topics = await dbClient.select().from(Topics);
     const posts = await dbClient.select().from(Posts);
+    const groups = await dbClient.select().from(Groups);
 
     res.status(200).json({
       message: "Database connection is working",
       tableCounts: {
         users: users.length,
         topics: topics.length,
+        groups: groups.length,
         posts: posts.length,
       },
     });
@@ -61,6 +64,7 @@ app.get("/health/database", async (_req, res) => {
 app.use("/topics", topicRouter);
 app.use("/users", userRouter);
 app.use("/posts", postRouter);
+app.use("/groups",groupRouter)
 
 /**
  * Route ไม่พบ
