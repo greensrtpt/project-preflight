@@ -1,87 +1,128 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
-const LogInPage: React.FC = () => {
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+export const LoginPage: React.FC = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [usernameError, setUsernameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  // 🌟 ฟังก์ชัน Login
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // ใส่ Logic การล็อกอินตรงนี้
-    console.log('Logging in with:', username, password);
+
+    if (!username.trim()) {
+      setUsernameError("username is required");
+    }
+    if (!username.trim()) {
+      setPasswordError("password is required");
+    }
+    else{
+    setUsernameError("");
+    setPasswordError("");
+    console.log("Logging in with:", { username, password });}
+    // TODO: ยิง API Login ต่อ
+  };
+
+  // 🌟 ฟังก์ชันเมื่อพิมพ์ Username
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setUsername(value);
+
+    if (value.trim()) {
+      setUsernameError("");
+    }
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setPassword(value);
+
+    if (value.trim()) {
+      setPasswordError("");
+    }
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center font-sans px-4">
-      
-      {/* การ์ดฟอร์มเข้าสู่ระบบ (Log in Card) */}
-      <div className="w-full max-w-[480px] bg-[#D9D9D9] rounded-[32px] p-10 md:p-12 shadow-sm">
-        
-        {/* หัวข้อ Log in */}
-        <h1 className="text-4xl md:text-5xl font-bold text-black mb-8 tracking-tight">
-          Log in
-        </h1>
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
+      {/* Card Container */}
+      <div className="w-full max-w-md bg-[#D9D9D9] rounded-[32px] p-8 shadow-sm">
+        {/* Header */}
+        <h1 className="text-3xl font-bold text-black mb-6 text-left">Log in</h1>
 
-        <form onSubmit={handleLoginSubmit} className="space-y-6">
-          {/* ช่องกรอก User name */}
-          <div className="flex flex-col gap-2">
-            <label className="text-lg font-medium text-black pl-1">
+        {/* Form */}
+        <form onSubmit={handleLogin} className="space-y-4">
+          {/* Username Field */}
+          <div className="space-y-1 text-left">
+            <label className="block text-sm font-semibold text-black">
               Username
             </label>
             <input
               type="text"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full bg-white text-black text-lg py-3 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-400 shadow-sm"
-              required
+              placeholder={username?"":usernameError}
+              onChange={handleUsernameChange}
+              className={`w-full h-11 px-4 rounded-lg focus:outline-none transition-colors text-black text-sm ${
+                usernameError
+                  ? "bg-red-50 border-2 border-red-500 focus:ring-2 focus:ring-red-400 placeholder:text-red-400"
+                  : "bg-white focus:ring-2 focus:ring-gray-400"
+              }`}
             />
           </div>
 
-          {/* ช่องกรอก Password */}
-          <div className="flex flex-col gap-2">
-            <label className="text-lg font-medium text-black pl-1">
+          {/* Password Field */}
+          <div className="space-y-1 text-left">
+            <label className="block text-sm font-semibold text-black">
               Password
             </label>
             <input
-              type="password"
+              type="text"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-white text-black text-lg py-3 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-400 shadow-sm"
-              required
+              placeholder={password?"":passwordError}
+              onChange={handlePasswordChange}
+              className={`w-full h-11 px-4 rounded-lg focus:outline-none transition-colors text-black text-sm ${
+                passwordError
+                  ? "bg-red-50 border-2 border-red-500 focus:ring-2 focus:ring-red-400 placeholder:text-red-400"
+                  : "bg-white focus:ring-2 focus:ring-gray-400"
+              }`}
             />
           </div>
 
-          {/* ปุ่ม Submit แอบซ่อนไว้เพื่อให้กด Enter ใน Form แล้วทำงานได้ หรือคุณสามารถปรับชิ้นส่วนอื่นเป็นปุ่ม Log in หลักได้ครับ */}
-          <button type="submit" className="hidden">Log In</button>
+          {/* Log In Button */}
+          <button
+            type="submit"
+            className="w-full h-11 bg-[#9E9E9E] hover:bg-[#8E8E8E] text-white font-medium rounded-lg transition-colors duration-200 mt-2"
+          >
+            Log In
+          </button>
         </form>
 
-        {/* เส้นคั่นตัวอักษร Or */}
-        <div className="flex items-center my-8">
-          <div className="flex-grow border-t border-black"></div>
-          <span className="px-4 text-lg text-black font-medium">Or</span>
-          <div className="flex-grow border-t border-black"></div>
+        {/* Divider เส้นกั้น Or */}
+        <div className="relative my-6 flex items-center justify-center">
+          <div className="border-t border-black w-full"></div>
+          <span className="bg-[#D9D9D9] px-3 text-sm text-black font-medium absolute">
+            Or
+          </span>
         </div>
 
-        {/* ปุ่ม Create An Account */}
-        <Link to="/createAcc"
-          type="button"
-          className="flex items-center justify-center w-full bg-[#9E9E9E] hover:bg-gray-500 text-white text-lg font-medium py-3.5 rounded-xl transition duration-150 shadow-sm"
+        {/* Create An Account Button (แต่ง Link ให้เป็นปุ่มตรงๆ) */}
+        <Link
+          to="/createAcc"
+          className="w-full h-11 bg-[#9E9E9E] hover:bg-[#8E8E8E] text-white font-medium rounded-lg transition-colors duration-200 flex items-center justify-center"
         >
           Create An Account
         </Link>
-
       </div>
 
-      {/* ลิงก์ย้อนกลับด้านล่างกล่องเทา */}
-      <Link to="/" 
-        type="button" 
-        className="mt-6 text-gray-500 hover:text-black text-lg font-medium transition duration-150"
+      {/* Back to Homepage Link ด้านล่าง */}
+      <Link
+        to="/"
+        className="mt-4 text-sm text-[#9E9E9E] hover:text-gray-600 font-medium transition-colors duration-200"
       >
         Back to Homepage
       </Link>
-
     </div>
   );
 };
 
-export default LogInPage;
+export default LoginPage;

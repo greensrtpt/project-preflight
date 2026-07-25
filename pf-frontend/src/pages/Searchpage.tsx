@@ -1,11 +1,8 @@
-import React, { useState } from 'react';
 import SmoothDropdown from '../components/SmoothDropdown';
 import type { DropdownOption } from '../Types/dropdown.types';
 import { Link, useNavigate } from 'react-router-dom';
-import type {DataFromTopic} from "../Types/APIresultFromSearchPage.types"
 
 const Searchpage: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
   const navigate = useNavigate();
   // const [Loading, setLoading] = useState<boolean>(false);
 
