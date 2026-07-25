@@ -131,3 +131,82 @@ router.get("/:topic_id/", async (req, res) => {
   }
 });
 
+/**
+ * DELETE post
+ */
+router.delete("/:topic_id/:group_id",authenticateToken,async (req, res) => {
+    try {
+      const { topic_id, group_id } = req.params as {
+       topic_id: string;
+       group_id: string;
+       };
+
+      if (!isUUID(topic_id)) {
+      return res.status(400).json({
+        message: "Invalid topic_id Format. It should be a valid UUID.",
+      });
+      }
+
+      if (!isUUID(group_id)) {
+      return res.status(400).json({
+        message: "Invalid group_id Format. It should be a valid UUID.",
+      });
+      }
+
+      //check existing topic
+      const existingTopic = await dbClient
+        .select()
+        .from(Topics)
+        .where(
+            eq(Topics.topic_id, topic_id),
+        );
+
+      if (existingTopic.length === 0) {
+        return res.status(404).json({
+          message: "Topic not found",
+        });
+      }
+
+      //check existing group
+      const existingGroup = await dbClient
+        .select()
+        .from(Groups)
+        .where(and(
+            eq(Groups.topic_id, topic_id),
+            eq(Groups.group_id, group_id),
+          )
+        );
+
+      if (existingGroup.length === 0) {
+        return res.status(404).json({
+          message: "Group not found",
+        });
+      }
+
+      const deletedGroup = await dbClient
+        .delete(Groups)
+        .where(
+          and(
+            eq(Groups.topic_id, topic_id),
+            eq(Groups.group_id, group_id),
+          ))
+        .returning();
+
+
+      return res.status(200).json({
+      message: "Delete group success",
+      deletedGroup,
+      delete_group_success: true,
+    });
+
+    } catch(err) {
+      console.error(err);
+
+      return res.status(500).json({
+        message: "something went wrong with server",
+      });
+    }
+  }
+);
+
+export default router;

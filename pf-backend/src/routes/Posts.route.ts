@@ -90,122 +90,13 @@ router.post("/:topic_id/:group_id",authenticateToken,async (req, res) => {
 );
 
 /**
- * GET all post from topic_id
- */
-router.get("/:topic_id", async (req, res) => {
-  try {
-    const { topic_id } = req.params;
-
-    if (!isUUID(topic_id)) {
-      return res.status(400).json({
-        message: "Invalid topic_id format. It should be a valid UUID.",
-      });
-    }
-
-    const posts = await dbClient
-      .select({
-        post_id:Posts.post_id,
-        title:Posts.title,
-        descriptions:Posts.descriptions,
-        author_name: Users.username,
-        edit_at:Posts.edit_at
-      })
-      .from(Posts)
-      .innerJoin(Users, eq(Posts.author_id, Users.user_id))
-      .where(eq(Posts.topic_id, topic_id));
-
-    if (!posts || posts.length === 0) {
-      return res.status(404).json({
-        message: "Post not found",
-      });
-    }
-
-    return res.status(200).json({
-      data:posts
-    });
-  } catch (error) {
-    console.error(error);
-
-    return res.status(500).json({
-      message: "Something went wrong with server",
-    });
-  }
-});
-
-/**
- * GET each post from topic_id
- */
-router.get("/:topic_id/:post_id", async (req, res) => {
-  try{
-    const { topic_id,post_id } = req.params;
-
-    if (!topic_id || !post_id) {
-      return res.status(400).json({
-        message: "topic_id and post_id are required",
-      });
-    }
-
-    if (!isUUID(topic_id) || !isUUID(post_id)) {
-    return res.status(400).json({
-    message: "Invalid topic_id or post_id",
-     });
-    }
-
-    const selectTopic = await dbClient
-      .select()
-      .from(Topics)
-      .where(eq(Topics.topic_id, topic_id))
-
-    //not found topic
-    if(selectTopic.length===0){
-      return res.status(404).json({
-        message: "Topic not found",
-      });
-    }
-
-    const selectPost = await dbClient
-      .select({
-        post_id:Posts.post_id,
-        title:Posts.title,
-        descriptions:Posts.descriptions,
-        author_name:Users.username,
-        topic_id:Posts.topic_id,
-        edit_at:Posts.edit_at,
-      })
-      .from(Posts)
-      .innerJoin(Users, eq(Posts.author_id, Users.user_id))
-      .where(and(
-         eq(Posts.post_id, post_id),
-         eq(Posts.topic_id, topic_id)
-      ))
-
-    //not found post
-    if(selectPost.length===0){
-      return res.status(404).json({
-        message: "Post not found",
-      });
-    }
-
-    return res.status(200).json({
-      message:"query a post success",
-      data:selectPost
-     });
-    }
-  catch(err){
-    console.error(err);
-    return res.status(500).json({
-      message: "Something went wrong with server",
-    });
-  }
-});
-
-/**
  * PUT post
  */
-router.put("/:topic_id/:post_id",authenticateToken,async (req, res) => {
+router.put("/:topic_id/:group_id/:post_id",authenticateToken,async (req, res) => {
     try {
-      const { topic_id, post_id } = req.params as {
+      const { topic_id, group_id, post_id } = req.params as {
        topic_id: string;
+       group_id: string;
        post_id: string;
        };
       const { title, descriptions } = req.body;
@@ -216,6 +107,12 @@ router.put("/:topic_id/:post_id",authenticateToken,async (req, res) => {
       if (!isUUID(topic_id)) {
       return res.status(400).json({
         message: "Invalid topic_id Format. It should be a valid UUID.",
+      });
+      }
+
+      if (!isUUID(group_id)) {
+      return res.status(400).json({
+        message: "Invalid group_id Format. It should be a valid UUID.",
       });
       }
 
@@ -231,12 +128,42 @@ router.put("/:topic_id/:post_id",authenticateToken,async (req, res) => {
         });
       }
 
-      // หา post และเช็ค owner
+      //check existing topic
+      const existingTopic = await dbClient
+        .select()
+        .from(Topics)
+        .where(
+            eq(Topics.topic_id, topic_id),
+        );
+
+      if (existingTopic.length === 0) {
+        return res.status(404).json({
+          message: "Topic not found",
+        });
+      }
+
+      //check existing group
+      const existingGroup = await dbClient
+        .select()
+        .from(Groups)
+        .where(and(
+            eq(Groups.topic_id, topic_id),
+            eq(Groups.group_id, group_id),
+          )
+        );
+
+      if (existingGroup.length === 0) {
+        return res.status(404).json({
+          message: "Group not found",
+        });
+      }
+
+      //check existing post
       const existingPost = await dbClient
         .select()
         .from(Posts)
         .where(and(
-            eq(Posts.topic_id, topic_id),
+            eq(Posts.group_id, group_id),
             eq(Posts.post_id, post_id),
           )
         );
@@ -264,14 +191,18 @@ router.put("/:topic_id/:post_id",authenticateToken,async (req, res) => {
         .where(
           and(
             eq(Posts.post_id, post_id),
-            eq(Posts.topic_id, topic_id)
+            eq(Posts.group_id, group_id)
           ))
         .returning();
 
 
       return res.status(200).json({
         message: "Post updated successfully",
-        data: updatedPost[0],
+        data: {
+          topic_id,
+          updatedPost
+        }
+          
       });
 
 
@@ -288,10 +219,11 @@ router.put("/:topic_id/:post_id",authenticateToken,async (req, res) => {
 /**
  * DELETE post
  */
-router.delete("/:topic_id/:post_id",authenticateToken,async (req, res) => {
+router.delete("/:topic_id/:group_id/:post_id",authenticateToken,async (req, res) => {
     try {
-      const { topic_id, post_id } = req.params as {
+      const { topic_id, group_id, post_id } = req.params as {
        topic_id: string;
+       group_id: string;
        post_id: string;
        };
       const { title, descriptions } = req.body;
@@ -302,6 +234,12 @@ router.delete("/:topic_id/:post_id",authenticateToken,async (req, res) => {
       if (!isUUID(topic_id)) {
       return res.status(400).json({
         message: "Invalid topic_id Format. It should be a valid UUID.",
+      });
+      }
+
+      if (!isUUID(group_id)) {
+      return res.status(400).json({
+        message: "Invalid group_id Format. It should be a valid UUID.",
       });
       }
 
@@ -317,12 +255,42 @@ router.delete("/:topic_id/:post_id",authenticateToken,async (req, res) => {
         });
       }
 
-      // หา post และเช็ค owner
+      //check existing topic
+      const existingTopic = await dbClient
+        .select()
+        .from(Topics)
+        .where(
+            eq(Topics.topic_id, topic_id),
+        );
+
+      if (existingTopic.length === 0) {
+        return res.status(404).json({
+          message: "Topic not found",
+        });
+      }
+
+      //check existing group
+      const existingGroup = await dbClient
+        .select()
+        .from(Groups)
+        .where(and(
+            eq(Groups.topic_id, topic_id),
+            eq(Groups.group_id, group_id),
+          )
+        );
+
+      if (existingGroup.length === 0) {
+        return res.status(404).json({
+          message: "Group not found",
+        });
+      }
+
+      //check existing post
       const existingPost = await dbClient
         .select()
         .from(Posts)
         .where(and(
-            eq(Posts.topic_id, topic_id),
+            eq(Posts.group_id, group_id),
             eq(Posts.post_id, post_id),
           )
         );
@@ -345,7 +313,8 @@ router.delete("/:topic_id/:post_id",authenticateToken,async (req, res) => {
         .where(
           and(
             eq(Posts.post_id, post_id),
-            eq(Posts.topic_id, topic_id)
+            eq(Posts.group_id, group_id),
+            eq(Posts.author_id, user_id)
           ))
         .returning();
 
@@ -353,6 +322,7 @@ router.delete("/:topic_id/:post_id",authenticateToken,async (req, res) => {
       return res.status(200).json({
       message: "Delete post success",
       topic_id,
+      group_id,
       post_id,
       delete_post_success: true,
     });
