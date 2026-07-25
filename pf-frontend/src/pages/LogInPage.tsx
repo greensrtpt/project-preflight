@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -7,6 +8,7 @@ export const LoginPage: React.FC = () => {
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
+  const {login} = useAuth();
 
   // 🌟 ฟังก์ชัน Login
   const handleLogin = async (e: React.FormEvent) => {
@@ -44,13 +46,7 @@ export const LoginPage: React.FC = () => {
         alert(data.message || "Invalid username or password");
         return;
       }
-      // ✅ 4. ถ้า Login สำเร็จ (Status 200)
-      console.log("Login Success:", data);
-
-      // 🌟 แอบเซฟ Token และ user_id เก็บไว้ใน Browser (localStorage)
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user_id", data.user_id);
-      localStorage.setItem("username", data.user_name);
+      login(data.token,data.username,data.password);
 
       alert("Login successful!");
 

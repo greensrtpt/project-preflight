@@ -113,7 +113,7 @@ const CreateAccPage: React.FC = () => {
               className={`w-full bg-white text-black text-lg py-3 px-4 rounded-xl focus:outline-none focus:ring-2 shadow-sm transition-colors ${
                          showPasswordError
                ? "bg-red-50 border-2 border-red-500 focus:ring-2 focus:ring-red-400 placeholder:text-red-400"
-                  : "bg-white focus:ring-2 focus:ring-gray-400"
+               : "bg-white focus:ring-2 focus:ring-gray-400"
                }`}
             />
           </div>

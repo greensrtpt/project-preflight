@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import type { DataFromTopic } from '../Types/APIresultFromHomePage.types';
 import { Link,useNavigate } from 'react-router-dom';
+import LogInButton from '../components/LogInButton';
 
 const ShowAllGrouppage: React.FC = () => {
     const navigate = useNavigate();
@@ -42,7 +43,11 @@ const ShowAllGrouppage: React.FC = () => {
    }
 
     return (
+
     <div className="min-h-screen bg-gray-50 p-4 md:p-12">
+        <header className="flex justify-end p-6 md:p-8">
+        <LogInButton></LogInButton>
+      </header>
       {/* แสดงชื่อ Topic */}
       <div className="flex items-start gap-3">
       <Link 
