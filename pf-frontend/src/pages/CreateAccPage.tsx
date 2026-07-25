@@ -20,16 +20,43 @@ const CreateAccPage: React.FC = () => {
 
   const showPasswordError = (isPasswordTouched || isSubmitted) && !isAllValid;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    let hasError = false;
     if (!username.trim()) {
       setPasswordError("password is required");
+      hasError = true;
     }
-    else{
+    
     setPasswordError("");
-    setIsSubmitted(true);}
-    alert(`Create Account ${username} Done!`);
-    navigate('/'); 
+    setIsSubmitted(true);
+
+    if (hasError) return;
+
+    // 🚀 ยิง API สมัครสมาชิกไปยัง Backend
+    try {
+      const response = await fetch("http://localhost:3001/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message || "Failed to create account");
+        return;
+      }
+
+      alert(`Create Account ${username} Success!`);
+      navigate('/login'); 
+
+    } catch (error) {
+      console.error("Create account error:", error);
+      alert("Cannot connect to server. Please try again.");
+    }
   };
 
   // 🌟 ฟังก์ชันเมื่อพิมพ์ Username
