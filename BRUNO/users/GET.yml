@@ -6,9 +6,6 @@ info:
 http:
   method: GET
   url: "{{base_url}}/users"
-  body:
-    type: json
-    data: ""
   auth: inherit
 
 settings:

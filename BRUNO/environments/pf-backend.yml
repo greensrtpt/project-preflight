@@ -7,13 +7,13 @@ variables:
     value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTk3OWYwYjgtODZiNy00NmViLWFmMmEtMDU4OGM0MWQwMGJhIiwidXNlcm5hbWUiOiJncmVlbl90ZXMiLCJpYXQiOjE3ODQ4NjMxNTksImV4cCI6MTc5MjA2MzE1OX0.WTCAmeHp1qpvqjRbVKRHZIbRxEzoVsaeNdLhzSC-GEM
     description: ""
   - name: post_id
-    value: 2a611df1-7028-4321-a2d6-4dcb093ed5d9
+    value: fbe7c014-351b-40b4-b73b-50716476242b
     description: ""
   - name: topic_id
     value: 996c5d4e-2fb3-4436-bfbf-00c65e62685c
     description: ""
   - name: user_id
-    value: 03c9c084-c1d2-48bf-96e8-086367988189
+    value: b2f962e1-e190-453b-ba7c-6a3f4208db06
     description: ""
   - name: activities
     value: 996c5d4e-2fb3-4436-bfbf-00c65e62685c

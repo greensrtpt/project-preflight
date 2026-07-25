@@ -1,11 +1,21 @@
 info:
   name: PUT /:group_id/:post_id
   type: http
-  seq: 3
+  seq: 4
 
 http:
   method: PUT
   url: "{{base_url}}/posts/{{group_id}}/{{post_id}}"
+  body:
+    type: json
+    data: |-
+      {
+        "title": "Updated Post",
+        "descriptions": "Updated post in Board Game"
+      }
+  headers:
+    - name: Authorization
+      value: "Bearer {{token}}"
   auth: inherit
 
 settings:

@@ -6,6 +6,13 @@ info:
 http:
   method: POST
   url: "{{base_url}}/users"
+  body:
+    type: json
+    data: |-
+      {
+        "username": "green_test26",
+        "password": "12345678"
+      }
   auth: inherit
 
 settings:
