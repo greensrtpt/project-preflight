@@ -92,7 +92,7 @@ router.get("/:topic_id", async (req, res) => {
     res.status(200).json({
       topic_id: topic.topic_id,
       topic_name: topic.topic_name,
-      group: groups,
+      group: [groups],
     });
   } catch (error) {
     console.error(error);

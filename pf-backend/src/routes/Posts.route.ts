@@ -90,6 +90,140 @@ router.post("/:topic_id/:group_id",authenticateToken,async (req, res) => {
 );
 
 /**
+ * GET each post
+ */
+router.get("/:topic_id/:group_id/:post_id", async (req,res) => {
+  try{
+    const { topic_id, group_id, post_id } = req.params as {
+       topic_id: string;
+       group_id: string;
+       post_id: string;
+       };
+
+    const topicResult = await dbClient
+      .select()
+      .from(Topics)
+      .where(eq(Topics.topic_id, topic_id));
+
+    const topic = topicResult[0];
+
+    if (!topic) {
+      res.status(404).json({
+        message: "Topic not found",
+      });
+      return;
+    }
+
+    //เลือกระบุ Column เฉพาะที่จะใช้งาน ป้องกัน Error เรื่อง Column mismatch
+    const groupResult = await dbClient
+      .select()
+      .from(Groups)
+      .where(eq(Groups.group_id, group_id));
+
+    const group = groupResult[0];  
+
+    if (!group) {
+      res.status(404).json({
+        message: "Group not found",
+      });
+      return;
+    }
+
+    const postResult = await dbClient
+      .select()
+      .from(Posts)
+      .where(eq(Posts.post_id, post_id));
+
+    const post = postResult[0];  
+
+    if (!post) {
+      res.status(404).json({
+        message: "Post not found",
+      });
+      return;
+    }
+
+    res.status(200).json({
+      topic_id: topic.topic_id,
+      topic_name: topic.topic_name,
+      group_id: group_id,
+      group_name: group.group_name,
+      post: [post]
+    });
+  }catch(err){
+    console.error(err);
+
+    console.error("GET /:topic_id/:group_id/:post_id Error:", err);
+
+    res.status(500).json({
+      message: "Somwthing went wrong with server",
+    });
+  }
+})
+
+/**
+ * GET all post from group
+ */
+router.get("/:topic_id/:group_id", async (req,res) => {
+  try{
+    const { topic_id, group_id } = req.params as {
+       topic_id: string;
+       group_id: string;
+       };
+
+    const topicResult = await dbClient
+      .select()
+      .from(Topics)
+      .where(eq(Topics.topic_id, topic_id));
+
+    const topic = topicResult[0];
+
+    if (!topic) {
+      res.status(404).json({
+        message: "Topic not found",
+      });
+      return;
+    }
+
+    //เลือกระบุ Column เฉพาะที่จะใช้งาน ป้องกัน Error เรื่อง Column mismatch
+    const groupResult = await dbClient
+      .select()
+      .from(Groups)
+      .where(eq(Groups.group_id, group_id));
+
+    const group = groupResult[0];  
+
+    if (!group) {
+      res.status(404).json({
+        message: "Group not found",
+      });
+      return;
+    }
+
+    const postResult = await dbClient
+      .select()
+      .from(Posts)
+      .where(eq(Posts.group_id, group_id));
+
+    res.status(200).json({
+      topic_id: topic.topic_id,
+      topic_name: topic.topic_name,
+      group_id: group_id,
+      group_name: group.group_name,
+      post: [postResult]
+    });
+  }catch(err){
+    console.error(err);
+
+    console.error("GET /:topic_id/:group_id Error:", err);
+
+    res.status(500).json({
+      message: "Somwthing went wrong with server",
+    });
+  }
+})
+
+/**
  * PUT post
  */
 router.put("/:topic_id/:group_id/:post_id",authenticateToken,async (req, res) => {

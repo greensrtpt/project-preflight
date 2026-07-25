@@ -69,7 +69,7 @@ router.get("/:topic_id/", async (req, res) => {
     res.status(200).json({
       topic_id: topic.topic_id,
       topic_name: topic.topic_name,
-      group: groups,
+      group: [groups],
     });
   } catch (error) {
     console.error(error);
@@ -87,7 +87,7 @@ router.get("/:topic_id/", async (req, res) => {
  * get all group from each topic
  * GET /groups/:topic_id
  */
-router.get("/:topic_id/", async (req, res) => {
+router.get("/:topic_id", async (req, res) => {
   try {
     const { topic_id } = req.params;
 
@@ -114,7 +114,7 @@ router.get("/:topic_id/", async (req, res) => {
     res.status(200).json({
       topic_id: topic.topic_id,
       topic_name: topic.topic_name,
-      group: groups,
+      group: [groups],
     });
   } catch (error) {
     console.error(error);
@@ -122,7 +122,7 @@ router.get("/:topic_id/", async (req, res) => {
     console.error("GET /topics/:topic_id Error:", error);
 
     res.status(500).json({
-      message: "Somwthing went wrong with server",
+      message: "Something went wrong with server",
     });
   }
 });
