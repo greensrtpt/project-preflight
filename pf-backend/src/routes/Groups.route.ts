@@ -8,11 +8,10 @@ import { validate as isUUID } from "uuid";
 
 const router = Router();
 
-router.post("/:topic_id/:group_id", async (req,res) => {
+router.post("/:topic_id", async (req,res) => {
     try{
-      const { topic_id,group_id } = req.params as {
+      const { topic_id } = req.params as {
        topic_id: string;
-       group_id: string;
        };
       const { group_name } = req.body;
         
@@ -25,7 +24,6 @@ router.post("/:topic_id/:group_id", async (req,res) => {
       const newGroup = await dbClient
       .insert(Groups)
       .values({
-        group_id:group_id,
         topic_id:topic_id,
         group_name:group_name
       })
