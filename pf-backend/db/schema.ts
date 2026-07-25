@@ -47,7 +47,7 @@ export const Posts = pgTable("Posts", {
   title: varchar("title", { length: 30 }).notNull(),
 
   // เนื้อหาโพสต์
-  descriptions: varchar("descriptions", { length: 150 }).notNull(),
+  descriptions: varchar("descriptions", { length: 500 }).notNull(),
 
   // รหัสผู้สร้างโพสต์
   author_id: uuid("author_id")

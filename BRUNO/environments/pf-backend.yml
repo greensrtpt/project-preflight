@@ -2,31 +2,23 @@ name: pf-backend
 variables:
   - name: base_url
     value: http://localhost:3001
-    description: ""
   - name: token
     value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTk3OWYwYjgtODZiNy00NmViLWFmMmEtMDU4OGM0MWQwMGJhIiwidXNlcm5hbWUiOiJncmVlbl90ZXMiLCJpYXQiOjE3ODQ4NjMxNTksImV4cCI6MTc5MjA2MzE1OX0.WTCAmeHp1qpvqjRbVKRHZIbRxEzoVsaeNdLhzSC-GEM
-    description: ""
   - name: post_id
     value: 2a611df1-7028-4321-a2d6-4dcb093ed5d9
-    description: ""
   - name: topic_id
     value: 996c5d4e-2fb3-4436-bfbf-00c65e62685c
-    description: ""
   - name: user_id
     value: 03c9c084-c1d2-48bf-96e8-086367988189
-    description: ""
   - name: activities
     value: 996c5d4e-2fb3-4436-bfbf-00c65e62685c
-    description: ""
   - name: study
     value: 965b6a4c-b18e-41f9-b824-34dbec8ec82a
-    description: ""
   - name: university_life
     value: 42fa09c9-2f6a-44e6-9236-6e1905a6d047
-    description: ""
   - name: group_id
     value: ""
-    description: ""
   - name: noodee_token
     value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgyNzY1OTYtMTY3NC00NzY2LThjZmQtYzFhYTViYjZjZmNlIiwidXNlcm5hbWUiOiJub29kZWUiLCJpYXQiOjE3ODQ5NTA0NjEsImV4cCI6MTc5MjE1MDQ2MX0.9F4e-Og116_SLFupkQXohox_Wnjx6qInvgtYUcKzLuU
-    description: ""
+  - name: boardgame_club
+    value: 8754aba4-0e8e-41ba-ae81-12df9103df72

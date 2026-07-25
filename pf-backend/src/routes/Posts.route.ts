@@ -64,7 +64,7 @@ router.post("/:topic_id/:group_id",authenticateToken,async (req, res) => {
       const createPost = await dbClient
         .insert(Posts)
         .values({
-          group_id:topic_id,
+          group_id:group_id,
           title:title,
           descriptions:descriptions,
           author_id:user_id,
@@ -148,7 +148,7 @@ router.get("/:topic_id/:group_id/:post_id", async (req,res) => {
       topic_name: topic.topic_name,
       group_id: group_id,
       group_name: group.group_name,
-      post: [post]
+      post: post
     });
   }catch(err){
     console.error(err);
@@ -210,7 +210,7 @@ router.get("/:topic_id/:group_id", async (req,res) => {
       topic_name: topic.topic_name,
       group_id: group_id,
       group_name: group.group_name,
-      post: [postResult]
+      post: postResult
     });
   }catch(err){
     console.error(err);
