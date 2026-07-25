@@ -1,9 +1,7 @@
 import { Router } from "express";
 import { dbClient } from "@db/client.js";
-import { Posts,Topics,Groups } from "@db/schema.js";
+import { Topics,Groups } from "@db/schema.js";
 import { and,eq } from "drizzle-orm";
-import { Users } from "@db/schema.js";
-import { authenticateToken } from "@src/Middleware/auth.js";
 import { validate as isUUID } from "uuid";
 
 const router = Router();
@@ -132,7 +130,7 @@ router.get("/:topic_id/", async (req, res) => {
 /**
  * DELETE post
  */
-router.delete("/:topic_id/:group_id",authenticateToken,async (req, res) => {
+router.delete("/:topic_id/:group_id" ,async (req, res) => {
     try {
       const { topic_id, group_id } = req.params as {
        topic_id: string;
