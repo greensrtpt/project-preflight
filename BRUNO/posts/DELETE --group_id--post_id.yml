@@ -1,11 +1,11 @@
 info:
-  name: PUT /:topic_id/:post_id
+  name: DELETE /:group_id/:post_id
   type: http
-  seq: 3
+  seq: 4
 
 http:
-  method: PUT
-  url: "{{base_url}}/posts/{{topic_id}}/{{post_id}}"
+  method: DELETE
+  url: "{{base_url}}/posts/{{group_id}}/{{post_id}}"
   auth: inherit
 
 settings:

@@ -5,7 +5,7 @@ info:
 
 http:
   method: POST
-  url: "{{base_url}}/posts/{{activities}}/{{boardgame_club}}"
+  url: "{{base_url}}/posts/{{group_id}}"
   auth: inherit
 
 settings:
