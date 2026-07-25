@@ -3,7 +3,6 @@ import { dbClient } from "@db/client.js";
 import { Users } from "@db/schema.js";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcrypt";
-import { authUsers } from "drizzle-orm/supabase";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 import { validate as isUUID } from "uuid";
