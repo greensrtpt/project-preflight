@@ -45,7 +45,7 @@ const ShowAllPostpage: React.FC = () => {
       return (
 
       <div className="min-h-screen bg-gray-50 p-8 md:p-12">
-             <header className="flex justify-end p-6 md:p-8">
+             <header className="flex justify-end">
                 <LogInButton></LogInButton>
               </header>
         {/* แสดงชื่อ Topic */}
@@ -62,21 +62,23 @@ const ShowAllPostpage: React.FC = () => {
         d="M15 19l-7-7 7-7" 
       />
     </svg>
-        <h1 className="text-4xl font-bold text-black mb-8 capitalize">
-          Group: {Data?.group_name || 'Posts'}
+    <div className="fixed top-11 left-25">
+        <h1 className="text-4xl font-bold text-black mb-8 capitalize ">
+          {Data?.group_name || 'Posts'}
         </h1>
+     </div>   
         </div>
   
         {/* 🌟 3. Grid Container: กำหนด grid-cols-1 ถึง grid-cols-4 เพื่อให้ปรับตามขนาดจอ */}
         {Data?.post && Data.post.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 items-stretch">
+          <div className="flex flex-col gap-4 max-w-4xl mx-auto">
             {Data.post.map((item) => {
               console.log(item)
               return (
               /* 🌟 4. ก้อนการ์ดสี่เหลี่ยมแต่ละโพสต์ (แสดงเฉพาะ title, author_name, edit_at) */
               <div
                 key={item.post_id}
-                className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col justify-between h-auto"
+                className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col justify-between gap-4"
               >
                 {/* ส่วนบน: หัวข้อโพสต์ (Title) */}
                 <div>

@@ -68,7 +68,7 @@ const ShowAllGrouppage: React.FC = () => {
     </svg>
    </Link>
       <h1 className="text-4xl font-bold text-black mb-8 capitalize">
-        Topic: {Data?.topic_name || 'Groups'}
+        {Data?.topic_name || 'Groups'}
       </h1>
       </div>
 
