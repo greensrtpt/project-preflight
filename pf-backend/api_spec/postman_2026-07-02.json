@@ -4,154 +4,206 @@
     "name": "pf-backend-community",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:3001" },
+    { "key": "token", "value": "" },
+    { "key": "topic_id", "value": "996c5d4e-2fb3-4436-bfbf-00c65e62685c" },
+    { "key": "group_id", "value": "" },
+    { "key": "post_id", "value": "" },
+    { "key": "user_id", "value": "" }
+  ],
   "item": [
     {
-      "name": "Create Topic",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
+      "name": "Topics",
+      "item": [
+        {
+          "name": "Get All Topics",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/topics/all"
           }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"topic_name\": \"Study\"\n}"
         },
-        "url": {
-          "raw": "http://localhost:3001/topics"
-        }
-      }
-    },
-    {
-      "name": "Get All Topics",
-      "request": {
-        "method": "GET",
-        "url": {
-          "raw": "http://localhost:3001/topics/all"
-        }
-      }
-    },
-    {
-      "name": "Get Topic",
-      "request": {
-        "method": "GET",
-        "url": {
-          "raw": "http://localhost:3001/topics/{topic_id}"
-        }
-      }
-    },
-    {
-      "name": "Create User",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
+        {
+          "name": "Get One Topic",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/topics/{{topic_id}}"
           }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"username\": \"green\",\n  \"password\": \"123456\"\n}"
         },
-        "url": {
-          "raw": "http://localhost:3001/users"
-        }
-      }
-    },
-    {
-      "name": "Get User",
-      "request": {
-        "method": "GET",
-        "url": {
-          "raw": "http://localhost:3001/users/{user_id}"
-        }
-      }
-    },
-    {
-      "name": "Create Post",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
+        {
+          "name": "Delete Topic",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/topics/{{topic_id}}"
           }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"topic_id\": \"UUID\",\n  \"author_id\": \"UUID\",\n  \"title\": \"Need Book\",\n  \"descriptions\": \"Need Calculus book\"\n}"
-        },
-        "url": {
-          "raw": "http://localhost:3001/posts"
         }
-      }
+      ]
     },
     {
-      "name": "Get Posts",
-      "request": {
-        "method": "GET",
-        "url": {
-          "raw": "http://localhost:3001/posts/{topic_id}"
-        }
-      }
-    },
-    {
-      "name": "Get Post",
-      "request": {
-        "method": "GET",
-        "url": {
-          "raw": "http://localhost:3001/posts/{topic_id}/{post_id}"
-        }
-      }
-    },
-    {
-      "name": "Update Post",
-      "request": {
-        "method": "PUT",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
+      "name": "Groups",
+      "item": [
+        {
+          "name": "Get All Groups by Topic",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/groups/{{topic_id}}"
           }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"topic_id\": \"UUID\",\n  \"post_id\": \"UUID\",\n  \"author_id\": \"UUID\",\n  \"title\": \"Updated Title\",\n  \"descriptions\": \"Updated Description\",\n  \"edit_at\": \"2026-07-21\"\n}"
         },
-        "url": {
-          "raw": "http://localhost:3001/posts/{topic_id}/{post_id}"
+        {
+          "name": "Get One Group",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/groups/{{topic_id}}/{{group_id}}"
+          }
+        },
+        {
+          "name": "Create Group",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"group_name\": \"Computer Science\"\n}"
+            },
+            "url": "{{base_url}}/groups/{{topic_id}}"
+          }
+        },
+        {
+          "name": "Delete Group",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/groups/{{topic_id}}/{{group_id}}"
+          }
         }
-      }
+      ]
     },
     {
-      "name": "Delete Topic",
-      "request": {
-        "method": "DELETE",
-        "url": {
-          "raw": "http://localhost:3001/topics/{topic_id}"
+      "name": "Users",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"green_test19\",\n  \"password\": \"12345678\"\n}"
+            },
+            "url": "{{base_url}}/users"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"green_test19\",\n  \"password\": \"12345678\"\n}"
+            },
+            "url": "{{base_url}}/users/login"
+          }
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/users"
+          }
+        },
+        {
+          "name": "Get One User",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/users/{{user_id}}"
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/users/{{user_id}}"
+          }
         }
-      }
+      ]
     },
     {
-      "name": "Delete User",
-      "request": {
-        "method": "DELETE",
-        "url": {
-          "raw": "http://localhost:3001/users/{user_id}"
+      "name": "Posts",
+      "item": [
+        {
+          "name": "Create Post",
+          "request": {
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{token}}", "type": "string" }
+              ]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Test Post\",\n  \"descriptions\": \"Test post description\"\n}"
+            },
+            "url": "{{base_url}}/posts/{{group_id}}"
+          }
+        },
+        {
+          "name": "Get All Posts by Group",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/posts/{{group_id}}"
+          }
+        },
+        {
+          "name": "Get One Post",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/posts/{{group_id}}/{{post_id}}"
+          }
+        },
+        {
+          "name": "Update Post",
+          "request": {
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{token}}", "type": "string" }
+              ]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Post\",\n  \"descriptions\": \"Updated post description\"\n}"
+            },
+            "url": "{{base_url}}/posts/{{group_id}}/{{post_id}}"
+          }
+        },
+        {
+          "name": "Delete Post",
+          "request": {
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{token}}", "type": "string" }
+              ]
+            },
+            "url": "{{base_url}}/posts/{{group_id}}/{{post_id}}"
+          }
         }
-      }
-    },
-    {
-      "name": "Delete Post",
-      "request": {
-        "method": "DELETE",
-        "url": {
-          "raw": "http://localhost:3001/posts/{topic_id}/{post_id}"
-        }
-      }
+      ]
     }
   ]
 }

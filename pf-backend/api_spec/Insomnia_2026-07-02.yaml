@@ -2,49 +2,136 @@ type: collection.insomnia.rest/5.0
 name: pf-backend-community
 
 collection:
+  - name: Get All Topics
+    method: GET
+    url: "{{ base_url }}/topics/all"
 
-  - url: http://localhost:3001/todo
+  - name: Get One Topic
+    method: GET
+    url: "{{ base_url }}/topics/{{ topic_id }}"
 
-    name: Create
+  - name: Delete Topic
+    method: DELETE
+    url: "{{ base_url }}/topics/{{ topic_id }}"
 
-    meta:
-      id: req_71a66379da464dc09de10eeca62f96c8
-      created: 1720142917465
-      modified: 1783052548529
-      isPrivate: false
-      description: ""
-      sortKey: -1720142917466
+  - name: Get All Groups by Topic
+    method: GET
+    url: "{{ base_url }}/groups/{{ topic_id }}"
 
-    method: PUT
+  - name: Get One Group
+    method: GET
+    url: "{{ base_url }}/groups/{{ topic_id }}/{{ group_id }}"
+
+  - name: Create Group
+    method: POST
+    url: "{{ base_url }}/groups/{{ topic_id }}"
     body:
       mimeType: application/json
       text: |-
         {
-          "topic_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-          "post_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-          "author_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-          "title": "Updated Title",
-          "descriptions": "Updated Description",
-          "edit_at": "2026-07-21"
+          "group_name": "Computer Science"
         }
     headers:
       - name: Content-Type
         value: application/json
 
-  - url: http://localhost:3001/topics/{topic_id}
-    name: Delete Topic
+  - name: Delete Group
     method: DELETE
+    url: "{{ base_url }}/groups/{{ topic_id }}/{{ group_id }}"
 
-  - url: http://localhost:3001/users/{user_id}
-    name: Delete User
+  - name: Register
+    method: POST
+    url: "{{ base_url }}/users"
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "username": "green_test19",
+          "password": "12345678"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+
+  - name: Login
+    method: POST
+    url: "{{ base_url }}/users/login"
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "username": "green_test19",
+          "password": "12345678"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+
+  - name: Get All Users
+    method: GET
+    url: "{{ base_url }}/users"
+
+  - name: Get One User
+    method: GET
+    url: "{{ base_url }}/users/{{ user_id }}"
+
+  - name: Delete User
     method: DELETE
+    url: "{{ base_url }}/users/{{ user_id }}"
 
-  - url: http://localhost:3001/posts/{topic_id}/{post_id}
-    name: Delete Post
+  - name: Create Post
+    method: POST
+    url: "{{ base_url }}/posts/{{ group_id }}"
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "title": "Test Post",
+          "descriptions": "Test post description"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: Authorization
+        value: "Bearer {{ token }}"
+
+  - name: Get All Posts by Group
+    method: GET
+    url: "{{ base_url }}/posts/{{ group_id }}"
+
+  - name: Get One Post
+    method: GET
+    url: "{{ base_url }}/posts/{{ group_id }}/{{ post_id }}"
+
+  - name: Update Post
+    method: PUT
+    url: "{{ base_url }}/posts/{{ group_id }}/{{ post_id }}"
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "title": "Updated Post",
+          "descriptions": "Updated post description"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: Authorization
+        value: "Bearer {{ token }}"
+
+  - name: Delete Post
     method: DELETE
+    url: "{{ base_url }}/posts/{{ group_id }}/{{ post_id }}"
+    headers:
+      - name: Authorization
+        value: "Bearer {{ token }}"
 
-
-    {
-      "title":"aaa",
-      "descriptions":"aaa"
-    }
+environments:
+  name: Base Environment
+  data:
+    base_url: http://localhost:3001
+    token: ""
+    topic_id: 996c5d4e-2fb3-4436-bfbf-00c65e62685c
+    group_id: ""
+    post_id: ""
+    user_id: ""
