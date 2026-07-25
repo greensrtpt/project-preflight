@@ -1,7 +1,8 @@
 import Searchpage from './pages/Homepage';
 import LogInPage from './pages/LogInpage';
 import CreateAccPage from './pages/CreateAccpage';
-import ShowAllPostPage from './pages/ShowAllPostpage';
+import ShowAllGroupPage from './pages/ShowAllGrouppage';
+import ShowAllPostpage from './pages/ShowAllPostpage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -16,7 +17,8 @@ function App() {
 
         {/* หน้าสร้างAccount */}
          <Route path="/createAcc" element={<CreateAccPage />} />
-         <Route path="/showAllPost/:topic_id" element={<ShowAllPostPage />} />
+         <Route path="/showAllGroup/:topic_id" element={<ShowAllGroupPage />} />
+         <Route path="/showAllPost/:topic_id/:group_id" element={<ShowAllPostpage />} />
       </Routes>
     </Router>
   );

@@ -1,7 +1,7 @@
 import SmoothDropdown from '../components/SmoothDropdown';
 import type { DropdownOption } from '../Types/dropdown.types';
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useEffect,useState, useRef } from "react";
+import React, { useEffect,useState } from "react";
 
 const Searchpage: React.FC = () => {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const Searchpage: React.FC = () => {
   const handleSelectTopic = async (selectedOption: DropdownOption) => {
     console.log('User chooses topic ID:', selectedOption.topic_id);
     console.log('User chooses topic name:', selectedOption.topic_name);
-    navigate(`/showAllPost/${selectedOption.topic_id}`);
+    navigate(`/showAllGroup/${selectedOption.topic_id}`);
     // finally {
     //   setLoading(false);
     // }
