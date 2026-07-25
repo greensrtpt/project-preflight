@@ -1,19 +1,24 @@
 import React, { useState,useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import type { DataFromTopic } from '../Types/APIresultFromHomePage.types';
-import { Link,useNavigate } from 'react-router-dom';
-import LogInButton from '../components/LogInButton';
+import { useNavigate } from 'react-router-dom';
+import Header from '../components/Header';
 
 const ShowAllGrouppage: React.FC = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   // ดึง topicId ที่แนบมากับ URL ออกมาใช้ยิง API
   const { topic_id } = useParams<{ topic_id: string }>();
   const [Data,setData] = useState<DataFromTopic|null>(null)
   const [Loading,setLoading] = useState<boolean>(false)
+  const [topicName,setTopicName] = useState<string>('');
       
   const handleSelectGroup = async (chooseGroup:string) => {
         navigate(`/showAllPost/${topic_id}/${chooseGroup}`);
   };
+
+  const backToHomePage = () => {
+        navigate(`/`)
+      }
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -22,6 +27,7 @@ const ShowAllGrouppage: React.FC = () => {
         const res = await fetch(`http://localhost:3001/topics/${topic_id}`);
         const resultTopic = (await res.json()) as DataFromTopic;
         setData(resultTopic);
+        setTopicName(resultTopic.topic_name)
       } catch (error) {
         console.error('Error fetching groups:', error);
       } finally {
@@ -45,36 +51,12 @@ const ShowAllGrouppage: React.FC = () => {
     return (
 
     <div className="min-h-screen bg-gray-50 p-4 md:p-12">
-        <header className="flex justify-end p-6 md:p-8">
-        <LogInButton></LogInButton>
-      </header>
-      {/* แสดงชื่อ Topic */}
-      <div className="flex items-start gap-3">
-      <Link 
-    to="/" 
-    className="text-black hover:text-gray-600 transition-colors p-1 rounded-lg flex items-center justify-center"
-    aria-label="Back to home"
-  >
-    <svg 
-      className="w-8 h-8 md:w-10 md:h-10 stroke-current stroke-[3]" 
-      fill="none" 
-      viewBox="0 0 24 24"
-    >
-      <path 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
-        d="M15 19l-7-7 7-7" 
-      />
-    </svg>
-   </Link>
-      <h1 className="text-4xl font-bold text-black mb-8 capitalize">
-        {Data?.topic_name || 'Groups'}
-      </h1>
-      </div>
-
+        <div>
+            <Header onClickBack={backToHomePage} showName={topicName} placeholder='Topics' ></Header>
+        </div>
       {/* 🌟 3. Grid Container: กำหนด grid-cols-1 ถึง grid-cols-4 เพื่อให้ปรับตามขนาดจอ */}
       {Data?.group && Data.group.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-[90px]">
           {Data.group.map((item) => {
             console.log(item)
             return (

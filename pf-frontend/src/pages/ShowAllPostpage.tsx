@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import type { DataFromGroup } from '../Types/APIresultFromHomePage.types';
 import { useNavigate } from 'react-router-dom';
-import LogInButton from '../components/LogInButton';
+import Header from '../components/Header';
 
 const ShowAllPostpage: React.FC = () => {
       const navigate = useNavigate();
@@ -10,6 +10,7 @@ const ShowAllPostpage: React.FC = () => {
     const { topic_id,group_id } = useParams<{ topic_id:string, group_id : string }>();
     const [Data,setData] = useState<DataFromGroup|null>(null)
     const [Loading,setLoading] = useState<boolean>(false)
+    const [groupName,setGroupName] = useState<string>('')
 
       const backToShowAllGroup = () => {
         navigate(`/showAllGroup/${topic_id}`)
@@ -22,6 +23,7 @@ const ShowAllPostpage: React.FC = () => {
             const res = await fetch(`http://localhost:3001/posts/${topic_id}/${group_id}`);
             const resultGroup = (await res.json()) as DataFromGroup;
             setData(resultGroup);
+            setGroupName(resultGroup.group_name);
           } catch (error) {
             console.error('Error fetching groups:', error);
           } finally {
@@ -45,33 +47,12 @@ const ShowAllPostpage: React.FC = () => {
       return (
 
       <div className="min-h-screen bg-gray-50 p-8 md:p-12">
-             <header className="flex justify-end">
-                <LogInButton></LogInButton>
-              </header>
-        {/* แสดงชื่อ Topic */}
-        <div className="flex items-start gap-3"
-        onClick={backToShowAllGroup}>
-    <svg 
-      className="w-8 h-8 md:w-10 md:h-10 stroke-current stroke-[3]" 
-      fill="none" 
-      viewBox="0 0 24 24"
-    >
-      <path 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
-        d="M15 19l-7-7 7-7" 
-      />
-    </svg>
-    <div className="fixed top-11 left-25">
-        <h1 className="text-4xl font-bold text-black mb-8 capitalize ">
-          {Data?.group_name || 'Posts'}
-        </h1>
-     </div>   
-        </div>
-  
+          <div>
+            <Header onClickBack={backToShowAllGroup} showName={groupName} placeholder='Group'></Header>
+          </div>
         {/* 🌟 3. Grid Container: กำหนด grid-cols-1 ถึง grid-cols-4 เพื่อให้ปรับตามขนาดจอ */}
         {Data?.post && Data.post.length > 0 ? (
-          <div className="flex flex-col gap-4 max-w-4xl mx-auto">
+          <div className="flex flex-col gap-4 max-w-4xl mx-auto pt-[90px]">
             {Data.post.map((item) => {
               console.log(item)
               return (
