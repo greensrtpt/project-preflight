@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { dbClient } from "@db/client.js";
-import { Posts, Topics } from "@db/schema.js";
+import { Posts, Topics, Groups } from "@db/schema.js";
 import { eq } from "drizzle-orm";
 
 const router = Router();
@@ -43,15 +43,15 @@ router.post("/", async (req, res) => {
 router.get("/all", async (_req, res) => {
   try {
     const topics = await dbClient.select().from(Topics);
-    const posts = await dbClient.select().from(Posts);
+    const groups = await dbClient.select().from(Groups);
 
-    const topicsWithPosts = topics.map((topic) => ({
+    const topicsWithGroups = topics.map((topic) => ({
       topic_id: topic.topic_id,
       topic_name: topic.topic_name,
-      post: posts.filter((post) => post.topic_id === topic.topic_id),
+      group: groups.filter((group) => group.topic_id === topic.topic_id),
     }));
 
-    res.status(200).json(topicsWithPosts);
+    res.status(200).json(topicsWithGroups);
   } catch (error) {
     console.error(error);
 
@@ -62,54 +62,48 @@ router.get("/all", async (_req, res) => {
 });
  
 /**
+ * get all group from each topic
  * GET /topics/:topic_id
  */
-router.get("/:topic_id", async (req, res) => {
-  try {
-    const { topic_id } = req.params;
+// router.get("/:topic_id", async (req, res) => {
+//   try {
+//     const { topic_id } = req.params;
 
-    const topicResult = await dbClient
-      .select()
-      .from(Topics)
-      .where(eq(Topics.topic_id, topic_id));
+//     const topicResult = await dbClient
+//       .select()
+//       .from(Topics)
+//       .where(eq(Topics.topic_id, topic_id));
 
-    const topic = topicResult[0];
+//     const topic = topicResult[0];
 
-    if (!topic) {
-      res.status(404).json({
-        message: "Topic not found",
-      });
-      return;
-    }
+//     if (!topic) {
+//       res.status(404).json({
+//         message: "Topic not found",
+//       });
+//       return;
+//     }
 
-    //เลือกระบุ Column เฉพาะที่จะใช้งาน ป้องกัน Error เรื่อง Column mismatch
-    const posts = await dbClient
-      .select({
-        post_id: Posts.post_id,
-        title: Posts.title,
-        descriptions: Posts.descriptions,
-        author_id: Posts.author_id,
-        author_name: Posts.author_name, //Posts.username (ตามที่ตั้งใน Schema)
-        edit_at: Posts.edit_at,
-      })
-      .from(Posts)
-      .where(eq(Posts.topic_id, topic_id));
+//     //เลือกระบุ Column เฉพาะที่จะใช้งาน ป้องกัน Error เรื่อง Column mismatch
+//     const groups = await dbClient
+//       .select()
+//       .from(Groups)
+//       .where(eq(Groups.topic_id, topic_id));
 
-    res.status(200).json({
-      topic_id: topic.topic_id,
-      topic_name: topic.topic_name,
-      post: posts,
-    });
-  } catch (error) {
-    console.error(error);
+//     res.status(200).json({
+//       topic_id: topic.topic_id,
+//       topic_name: topic.topic_name,
+//       group: groups,
+//     });
+//   } catch (error) {
+//     console.error(error);
 
-    console.error("GET /topics/:topic_id Error:", error);
+//     console.error("GET /topics/:topic_id Error:", error);
 
-    res.status(500).json({
-      message: "Cannot get topic",
-    });
-  }
-});
+//     res.status(500).json({
+//       message: "Somwthing went wrong with server",
+//     });
+//   }
+// });
 
 /**
  * DELETE /topics/:topic_id
@@ -162,3 +156,23 @@ router.delete("/:topic_id", async (req, res) => {
 });
 
 export default router;
+
+
+
+// [
+//   {
+//     "topic_id": "996c5d4e-2fb3-4436-bfbf-00c65e62685c",
+//     "topic_name": "activities",
+//     "post": []
+//   },
+//   {
+//     "topic_id": "965b6a4c-b18e-41f9-b824-34dbec8ec82a",
+//     "topic_name": "study",
+//     "post": []
+//   },
+//   {
+//     "topic_id": "42fa09c9-2f6a-44e6-9236-6e1905a6d047",
+//     "topic_name": "university life",
+//     "post": []
+//   }
+// ]

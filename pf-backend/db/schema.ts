@@ -29,15 +29,9 @@ export const Topics = pgTable("Topics", {
   topic_id: uuid("topic_id").primaryKey().defaultRandom(),
     
   // ชื่อหัวข้อ
-<<<<<<< HEAD
   topic_name: varchar("name", { length: 20 })
   .notNull()
   .unique(),
-=======
-  topic_name: varchar("name", { length: 30 })
-    .notNull()
-    .unique(),
->>>>>>> 7acc655e923c31e486b71b759907588c180220e6
 });
 /*
  * ตารางโพสต์
