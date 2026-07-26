@@ -8,13 +8,15 @@ import { validate as isUUID } from "uuid";
 
 const router = Router();
 
+// Post ผูกกับ Group โดยตรงผ่าน group_id และ Group เชื่อมกับ Topic อยู่แล้ว
+// ดังนั้น Posts API ใช้ group_id อย่างเดียว ไม่ต้องรับ topic_id ซ้ำใน URL
+
 /**
- * POST /posts
+ * POST /posts/:group_id
  */
-router.post("/:topic_id/:group_id", authenticateToken, async (req, res) => {
+router.post("/:group_id", authenticateToken, async (req, res) => {
     try {
-      const { topic_id,group_id } = req.params as {
-       topic_id: string;
+      const { group_id } = req.params as {
        group_id: string;
        };
       const { title, descriptions } = req.body;
@@ -86,10 +88,10 @@ router.post("/:topic_id/:group_id", authenticateToken, async (req, res) => {
 /**
  * GET each post
  */
-router.get("/:topic_id/:group_id/:post_id", async (req,res) => {
+// URL: GET /posts/:group_id/:post_id
+router.get("/:group_id/:post_id", async (req,res) => {
   try{
-    const { topic_id, group_id, post_id } = req.params as {
-       topic_id: string
+    const { group_id, post_id } = req.params as {
        group_id: string;
        post_id: string;
        };
@@ -134,7 +136,6 @@ router.get("/:topic_id/:group_id/:post_id", async (req,res) => {
     }
 
     res.status(200).json({
-      topic_id: topic_id,
       group_id: group_id,
       group_name: group.group_name,
       post: post
@@ -153,11 +154,10 @@ router.get("/:topic_id/:group_id/:post_id", async (req,res) => {
 /**
  * GET all post from group
  */
-router.get("/:topic_id/:group_id", async (req,res) => {
+// URL: GET /posts/:group_id
+router.get("/:group_id", async (req,res) => {
   try{
-    console.log("params:", req.params)
-    const { topic_id,group_id } = req.params as {
-       topic_id: string;
+    const { group_id } = req.params as {
        group_id: string;
        };
 
@@ -166,7 +166,7 @@ router.get("/:topic_id/:group_id", async (req,res) => {
     const groupResult = await dbClient
       .select()
       .from(Groups)
-      .where(and(eq(Groups.topic_id, topic_id), eq(Groups.group_id, group_id)));
+      .where(eq(Groups.group_id, group_id));
 
     const group = groupResult[0];  
 
@@ -183,7 +183,6 @@ router.get("/:topic_id/:group_id", async (req,res) => {
       .where(eq(Posts.group_id, group_id));
 
     res.status(200).json({
-      topic_id: topic_id,
       group_id: group_id,
       group_name: group.group_name,
       post: postResult
@@ -202,7 +201,8 @@ router.get("/:topic_id/:group_id", async (req,res) => {
 /**
  * PUT post
  */
-router.put("/:topic_id/:group_id/:post_id",authenticateToken,async (req, res) => {
+// URL: PUT /posts/:group_id/:post_id
+router.put("/:group_id/:post_id",authenticateToken,async (req, res) => {
     try {
       const { group_id, post_id } = req.params as {
        group_id: string;
@@ -301,10 +301,10 @@ router.put("/:topic_id/:group_id/:post_id",authenticateToken,async (req, res) =>
 /**
  * DELETE post
  */
-router.delete("/:topic_id/:group_id/:post_id",authenticateToken,async (req, res) => {
+// URL: DELETE /posts/:group_id/:post_id และ DELETE ไม่รับ request body
+router.delete("/:group_id/:post_id",authenticateToken,async (req, res) => {
     try {
-      const { topic_id,group_id, post_id } = req.params as {
-       topic_id: string
+      const { group_id, post_id } = req.params as {
        group_id: string;
        post_id: string;
        };
@@ -373,7 +373,6 @@ router.delete("/:topic_id/:group_id/:post_id",authenticateToken,async (req, res)
 
       return res.status(200).json({
       message: "Delete post success",
-      topic_id,
       group_id,
       post_id,
       delete_post_success: true,
