@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
-import type {CreatePostModalProps} from '../Types/Modal.types.ts'
+import type {EditPostModalProps} from '../Types/Modal.types.ts'
 import { authStorage } from '../utils/storage.ts';
 
-const CreatePostModal: React.FC<CreatePostModalProps> = ({
+const EditPostModal: React.FC<EditPostModalProps> = ({
   isOpen,
   onClose,
-  topic_id,
+  post_id,
   group_id,
   topic_name,
   group_name,
+  old_title,
+  old_description
 }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState(old_title);
+  const [description, setDescription] = useState(old_description);
+  console.log("edit post modal"+group_id);
 
   if (!isOpen) return null;
 
@@ -32,7 +35,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
     }
   };
 
-  const handlePost = async (e: React.FormEvent) => {
+  const handlePut = async (e: React.FormEvent) => {
       e.preventDefault();
       if (!title.trim() || !description.trim()) {
       alert('Please fill both Title and Description');
@@ -42,14 +45,14 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
       const token = authStorage.getToken();
 
       if (!token) {
-      alert('Please Login before create post');
+      alert('Please Login before edit post');
       return;
       }
     // ล้างข้อมูลและปิด Modal
       try {
         // 🚀 2. ยิง POST Request ไปหา Backend API
-        const response = await fetch(`http://localhost:3001/posts/${topic_id}/${group_id}`, {
-          method: "POST",
+        const response = await fetch(`http://localhost:3001/posts/${group_id}/${post_id}`, {
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`,
@@ -62,14 +65,14 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
         const data = await response.json();
 
         if (!response.ok) {
-          alert(data.message || "Cannot create post");
+          alert(data.message || "Cannot edit post");
           return;
         }
 
          setTitle('');
          setDescription('');
          onClose();
-         alert("Create post successful!");
+         alert("Edit post successful!");
          window.location.reload();
   
     }catch(err){
@@ -97,7 +100,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
           X
         </button>
 
-        <form onSubmit={handlePost} className="flex flex-col gap-4">
+        <form onSubmit={handlePut} className="flex flex-col gap-4">
           {/* 🌟 ช่องกรอก Title */}
           <div>
             <input
@@ -138,7 +141,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
               type="submit"
               className="bg-[#9E9E9E] hover:bg-[#8d8d8d] text-white font-bold px-8 py-2.5 rounded-xl transition-colors shadow-sm"
             >
-              CREATE
+              UPDATE
             </button>
           </div>
         </form>
@@ -147,4 +150,4 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
   );
 };
 
-export default CreatePostModal;
+export default EditPostModal;
