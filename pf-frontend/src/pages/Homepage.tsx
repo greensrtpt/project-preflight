@@ -8,9 +8,9 @@ const Searchpage: React.FC = () => {
   const navigate = useNavigate();
   // 1. เตรียมข้อมูล Options (ต้องมี topic_id และ topic_name ตรงตาม Interface)
   const topicList: DropdownOption[] = [
-    { topic_id: '996c5d4e-2fb3-4436-bfbf-00c65e62685c', topic_name: 'activities' },
-    { topic_id: '965b6a4c-b18e-41f9-b824-34dbec8ec82a', topic_name: 'study' },
-    { topic_id: '42fa09c9-2f6a-44e6-9236-6e1905a6d047', topic_name: 'university life' },
+    { topic_id: '3d5b36cf-67b7-46cc-8ee6-0025ba9a0e23', topic_name: 'กิจกรรม' },
+    { topic_id: '98178014-d4ec-4f7e-80e3-67f448ec6ae9', topic_name: 'การเรียน' },
+    { topic_id: '2152929b-fb88-4425-b311-0ce09604e76c', topic_name: 'ชีวิตใน มช' },
   ];
 
   // 2. สร้างฟังก์ชันรับค่าเมื่อ User คลิกเลือก

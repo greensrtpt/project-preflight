@@ -39,7 +39,7 @@ const ShowAllPostpage: React.FC = () => {
         if (Loading) {
         return (
           <div className="flex justify-center items-center min-h-screen text-gray-500 text-xl animate-pulse">
-            Loading groups...
+            Loading posts...
           </div>
         );
        }    
@@ -48,7 +48,7 @@ const ShowAllPostpage: React.FC = () => {
 
       <div className="min-h-screen bg-gray-50 p-8 md:p-12">
           <div>
-            <Header onClickBack={backToShowAllGroup} showName={groupName} placeholder='Group'></Header>
+            <Header onClickBack={backToShowAllGroup} showName={groupName} placeholder='Posts'></Header>
           </div>
         {/* 🌟 3. Grid Container: กำหนด grid-cols-1 ถึง grid-cols-4 เพื่อให้ปรับตามขนาดจอ */}
         {Data?.post && Data.post.length > 0 ? (
@@ -92,7 +92,7 @@ const ShowAllPostpage: React.FC = () => {
         ) : (
           /* กรณีหัวข้อนี้ยังไม่มีโพสต์เลย */
           <div className="text-center text-gray-400 py-20 text-lg">
-            No groups available for this topic.
+            No posts available for this group.
           </div>
         )}
       </div>
