@@ -66,17 +66,22 @@ export const Posts = pgTable("Posts", {
 
 export const Groups = pgTable("Groups",{
   group_id: uuid("group_id").primaryKey().defaultRandom(),
-  // ถ้า Topic ถูกลบ ให้ Group และ Post ภายใน Topic ถูกลบตาม
+
+  // topic ยังมาจาก seed แต่ group ให้ user สร้างเอง
   topic_id: uuid("topic_id")
     .references(() => Topics.topic_id, { onDelete: "cascade" })
     .notNull(),
+
   group_name: varchar("name", { length: 30 })
     .notNull(),
-  // ถ้า User ลบบัญชี ให้ Group ที่เป็นเจ้าของและ Posts ภายในถูกลบตาม
+
+  // เอาไว้เช็คสิทธิ์ตอนแก้หรือลบ group
   owner_id: uuid("owner_id")
     .references(() => Users.user_id, { onDelete: "cascade" })
     .notNull(),
+
   owner_name: varchar("owner_name", { length: 30 }).notNull(),
+
   create_at: timestamp("create_at").defaultNow().notNull(),
   edit_at: timestamp("edit_at").defaultNow().notNull(),
 })

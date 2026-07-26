@@ -7,6 +7,10 @@ import { validate as isUUID } from "uuid";
 
 const router = Router();
 
+/**
+ * POST /groups/:topic_id
+ * รับ group_name จาก body ส่วนข้อมูล owner เอาจาก token
+ */
 router.post("/:topic_id", authenticateToken, async (req,res) => {
   try {
     const { topic_id } = req.params as { topic_id: string };
@@ -175,6 +179,7 @@ router.put("/:topic_id/:group_id", authenticateToken, async (req, res) => {
     if (!group) {
       return res.status(404).json({ message: "Group not found" });
     }
+    // คนสร้างเท่านั้นที่แก้ได้
     if (group.owner_id !== user_id) {
       return res.status(403).json({ message: "Forbidden: You are not the owner of this group" });
     }
@@ -217,6 +222,7 @@ router.delete("/:topic_id/:group_id", authenticateToken, async (req, res) => {
     if (!group) {
       return res.status(404).json({ message: "Group not found" });
     }
+    // คนสร้างเท่านั้นที่ลบได้
     if (group.owner_id !== user_id) {
       return res.status(403).json({ message: "Forbidden: You are not the owner of this group" });
     }

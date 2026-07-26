@@ -21,7 +21,8 @@ const topicsMockData = [
   },
 ];
 
-// สร้างเฉพาะ 3 Topic หลักที่ระบบกำหนดไว้ และไม่ Seed Groups
+// Seed สร้างเฉพาะ 3 Topic หลักที่ระบบกำหนดไว้
+// Groups และ Posts ไม่ Seed เพราะเป็นข้อมูลที่ Member ต้องสร้างผ่าน API
 async function mainSeed() {
   try {
     const insertedTopics = await dbClient
