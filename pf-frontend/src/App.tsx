@@ -1,6 +1,6 @@
 import Searchpage from './pages/Homepage';
-import LogInPage from './pages/LogInpage';
-import CreateAccPage from './pages/CreateAccpage';
+import LogInPage from './pages/LogInPage';
+import CreateAccPage from './pages/CreateAccPage';
 import ShowAllGroupPage from './pages/ShowAllGrouppage';
 import ShowAllPostpage from './pages/ShowAllPostpage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
