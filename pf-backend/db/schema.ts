@@ -71,6 +71,12 @@ export const Groups = pgTable("Groups",{
     .references(() => Topics.topic_id, { onDelete: "cascade" })
     .notNull(),
   group_name: varchar("name", { length: 30 })
-    .notNull()
-    .unique(),
+    .notNull(),
+  // ถ้า User ลบบัญชี ให้ Group ที่เป็นเจ้าของและ Posts ภายในถูกลบตาม
+  owner_id: uuid("owner_id")
+    .references(() => Users.user_id, { onDelete: "cascade" })
+    .notNull(),
+  owner_name: varchar("owner_name", { length: 30 }).notNull(),
+  create_at: timestamp("create_at").defaultNow().notNull(),
+  edit_at: timestamp("edit_at").defaultNow().notNull(),
 })

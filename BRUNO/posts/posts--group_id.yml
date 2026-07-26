@@ -1,11 +1,11 @@
 info:
-  name: posts/:group_id
+  name: GET /:group_id
   type: http
   seq: 2
 
 http:
   method: GET
-  url: "{{base_url}}/posts/{{group_comSci}}"
+  url: "{{base_url}}/posts/{{group_id}}"
   auth: inherit
 
 settings:

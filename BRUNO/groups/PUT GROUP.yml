@@ -1,14 +1,20 @@
 info:
-  name: DELETE /:topic_id/:group_id
+  name: PUT /:topic_id/:group_id
   type: http
-  seq: 5
+  seq: 4
 
 http:
-  method: DELETE
+  method: PUT
   url: "{{base_url}}/groups/{{topic_id}}/{{group_id}}"
   headers:
     - name: Authorization
       value: Bearer {{token}}
+  body:
+    type: json
+    data: |-
+      {
+        "group_name": "Updated Chess Club"
+      }
   auth: inherit
 
 settings:

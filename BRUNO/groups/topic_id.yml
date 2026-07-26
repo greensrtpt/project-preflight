@@ -1,17 +1,20 @@
 info:
-  name: ⚠️ DISABLED - POST GROUP (EXPECT 403)
+  name: POST /:topic_id
   type: http
   seq: 1
 
 http:
   method: POST
   url: "{{base_url}}/groups/{{topic_id}}"
+  headers:
+    - name: Authorization
+      value: Bearer {{token}}
   body:
     type: json
     data: |-
       {
-          "group_name": "Computer Science3"
-        }
+        "group_name": "Chess Club"
+      }
   auth: inherit
 
 settings:

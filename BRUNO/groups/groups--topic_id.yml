@@ -1,5 +1,5 @@
 info:
-  name: " groups/:topic_id"
+  name: GET /:topic_id
   type: http
   seq: 2
 

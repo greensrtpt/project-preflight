@@ -1,11 +1,11 @@
 info:
-  name: POST post
+  name: POST /:group_id
   type: http
   seq: 1
 
 http:
   method: POST
-  url: "{{base_url}}/posts/{{group_comSci}}"
+  url: "{{base_url}}/posts/{{group_id}}"
   headers:
     - name: Authorization
       value: Bearer {{token}}

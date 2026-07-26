@@ -34,10 +34,30 @@ collection:
     headers:
       - name: Content-Type
         value: application/json
+      - name: Authorization
+        value: "Bearer {{ token }}"
+
+  - name: Update Group
+    method: PUT
+    url: "{{ base_url }}/groups/{{ topic_id }}/{{ group_id }}"
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "group_name": "Updated Computer Science"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: Authorization
+        value: "Bearer {{ token }}"
 
   - name: Delete Group
     method: DELETE
     url: "{{ base_url }}/groups/{{ topic_id }}/{{ group_id }}"
+    headers:
+      - name: Authorization
+        value: "Bearer {{ token }}"
 
   - name: Register
     method: POST

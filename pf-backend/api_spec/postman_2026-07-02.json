@@ -60,6 +60,12 @@
           "name": "Create Group",
           "request": {
             "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{token}}", "type": "string" }
+              ]
+            },
             "header": [
               { "key": "Content-Type", "value": "application/json" }
             ],
@@ -71,9 +77,35 @@
           }
         },
         {
+          "name": "Update Group",
+          "request": {
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{token}}", "type": "string" }
+              ]
+            },
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"group_name\": \"Updated Computer Science\"\n}"
+            },
+            "url": "{{base_url}}/groups/{{topic_id}}/{{group_id}}"
+          }
+        },
+        {
           "name": "Delete Group",
           "request": {
             "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{token}}", "type": "string" }
+              ]
+            },
             "url": "{{base_url}}/groups/{{topic_id}}/{{group_id}}"
           }
         }
