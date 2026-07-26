@@ -7,6 +7,7 @@ import { validate as isUUID } from "uuid";
 const router = Router();
 
 router.post("/:topic_id", async (req,res) => {
+  // ผู้ใช้สร้าง Group เองไม่ได้ เพราะ Group ถูกสร้างผ่าน Seed โดย Developer
   return res.status(403).json({
     message: "Groups can only be created through seed by developer",
   });
@@ -149,6 +150,7 @@ router.get("/:topic_id", async (req, res) => {
  * DELETE post
  */
 router.delete("/:topic_id/:group_id" ,async (req, res) => {
+    // ป้องกันผู้ใช้ลบ Group และ Posts ที่อยู่ภายใน Group
     return res.status(403).json({
       message: "Groups cannot be deleted by users",
     });

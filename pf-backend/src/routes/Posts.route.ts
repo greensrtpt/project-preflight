@@ -44,6 +44,7 @@ router.post("/:group_id", authenticateToken, async (req, res) => {
         });
       }
 
+      // ตรวจความยาวก่อนบันทึก เพื่อให้ตรงกับขนาดที่กำหนดใน Database
       if (title.length > 20 || descriptions.length > 150) {
         return res.status(400).json({
           message: "title must not exceed 20 characters and descriptions must not exceed 150 characters",
@@ -237,6 +238,7 @@ router.put("/:group_id/:post_id",authenticateToken,async (req, res) => {
         });
       }
 
+      // ใช้ข้อกำหนดความยาวเดียวกันทั้งตอนสร้างและแก้ไข Post
       if (title.length > 20 || descriptions.length > 150) {
         return res.status(400).json({
           message: "title must not exceed 20 characters and descriptions must not exceed 150 characters",

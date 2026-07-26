@@ -9,6 +9,7 @@ const router = Router();
  * POST /topics
  */
 router.post("/", async (req, res) => {
+  // ผู้ใช้สร้าง Topic เองไม่ได้ เพราะ Topic ถูกสร้างผ่าน Seed โดย Developer
   return res.status(403).json({
     message: "Topics can only be created through seed by developer",
   });
@@ -86,6 +87,7 @@ router.get("/:topic_id", async (req, res) => {
  * DELETE /topics/:topic_id
  */
 router.delete("/:topic_id", async (req, res) => {
+  // ป้องกันผู้ใช้ลบ Topic รวมถึง Groups และ Posts ที่อยู่ภายใน
   return res.status(403).json({
     message: "Topics cannot be deleted by users",
   });

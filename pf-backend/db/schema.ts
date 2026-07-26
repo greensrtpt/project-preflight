@@ -39,6 +39,7 @@ export const Topics = pgTable("Topics", {
 export const Posts = pgTable("Posts", {
   // รหัสโพสต์
   post_id: uuid("post_id").primaryKey().defaultRandom(),
+  // ถ้า Group ถูกลบ ให้ Post ที่อยู่ใน Group นั้นถูกลบตาม
   group_id: uuid("group_id")
     .references(() => Groups.group_id, { onDelete: "cascade" })
     .notNull(),
@@ -50,6 +51,7 @@ export const Posts = pgTable("Posts", {
   descriptions: varchar("descriptions", { length: 150 }).notNull(),
 
   // รหัสผู้สร้างโพสต์
+  // ถ้า User ลบบัญชี ให้ Post ของ User คนนั้นถูกลบตาม
   author_id: uuid("author_id")
     .references(() => Users.user_id, { onDelete: "cascade" })
     .notNull(),
@@ -64,6 +66,7 @@ export const Posts = pgTable("Posts", {
 
 export const Groups = pgTable("Groups",{
   group_id: uuid("group_id").primaryKey().defaultRandom(),
+  // ถ้า Topic ถูกลบ ให้ Group และ Post ภายใน Topic ถูกลบตาม
   topic_id: uuid("topic_id")
     .references(() => Topics.topic_id, { onDelete: "cascade" })
     .notNull(),
