@@ -25,5 +25,6 @@ export interface Post {
 export interface DataFromGroup {
   group_id: string;
   group_name: string;
+  topic_name: string;
   post: Post[]; 
 }

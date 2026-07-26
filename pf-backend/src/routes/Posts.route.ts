@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { dbClient } from "@db/client.js";
-import { Posts,Groups } from "@db/schema.js";
+import { Posts,Groups,Topics } from "@db/schema.js";
 import { and,eq } from "drizzle-orm";
 import { authenticateToken } from "@src/Middleware/auth.js";
 import { validate as isUUID } from "uuid";
@@ -142,7 +142,14 @@ router.get("/:group_id/:post_id", async (req,res) => {
       return;
     }
 
+    const topicResult = await dbClient
+      .select()
+      .from(Topics)
+      .where(eq(Topics.topic_id, group.topic_id));
+
     res.status(200).json({
+      topic_id: topicResult[0].topic_id,
+      topic_name: topicResult[0].topic_name,
       group_id: group_id,
       group_name: group.group_name,
       post: post
@@ -153,7 +160,7 @@ router.get("/:group_id/:post_id", async (req,res) => {
     console.error("GET /:group_id/:post_id Error:", err);
 
     res.status(500).json({
-      message: "Somwthing went wrong with server",
+      message: "Something went wrong with server",
     });
   }
 })
@@ -189,7 +196,14 @@ router.get("/:group_id", async (req,res) => {
       .from(Posts)
       .where(eq(Posts.group_id, group_id));
 
+    const topicResult = await dbClient
+      .select()
+      .from(Topics)
+      .where(eq(Topics.topic_id, group.topic_id));
+
     res.status(200).json({
+      topic_id: topicResult[0].topic_id,
+      topic_name: topicResult[0].topic_name,
       group_id: group_id,
       group_name: group.group_name,
       post: postResult
