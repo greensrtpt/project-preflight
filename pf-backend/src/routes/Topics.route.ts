@@ -126,14 +126,18 @@ router.delete("/:topic_id", async (req, res) => {
       return;
     }
 
-    const groups = await dbClient
+    const deleteGroup = await dbClient
       .select()
       .from(Groups)
       .where(eq(Groups.topic_id, topic_id));
 
-    const groupIds = groups.map((group) => group.group_id);
+    const deletedPost = deleteGroup.map(async(group)=>{
+      await dbClient
+      .delete(Posts)
+      .where(eq(Posts.group_id, group.group_id));
+    })
 
-    await dbClient
+      await dbClient
       .delete(Groups)
       .where(eq(Groups.topic_id, topic_id));
 
@@ -143,7 +147,8 @@ router.delete("/:topic_id", async (req, res) => {
 
     res.status(200).json({
       topic_id,
-      group_id: groupIds,
+      groups: deleteGroup,
+      posts: deletedPost,
       delete_topic_success: true,
     });
   } catch (error) {
