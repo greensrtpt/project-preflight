@@ -11,9 +11,10 @@ const router = Router();
 /**
  * POST /posts
  */
-router.post("/:group_id", authenticateToken, async (req, res) => {
+router.post("/:topic_id/:group_id", authenticateToken, async (req, res) => {
     try {
-      const { group_id } = req.params as {
+      const { topic_id,group_id } = req.params as {
+       topic_id: string;
        group_id: string;
        };
       const { title, descriptions } = req.body;
@@ -85,9 +86,10 @@ router.post("/:group_id", authenticateToken, async (req, res) => {
 /**
  * GET each post
  */
-router.get("/:group_id/:post_id", async (req,res) => {
+router.get("/:topic_id/:group_id/:post_id", async (req,res) => {
   try{
-    const { group_id, post_id } = req.params as {
+    const { topic_id, group_id, post_id } = req.params as {
+       topic_id: string
        group_id: string;
        post_id: string;
        };
@@ -132,6 +134,7 @@ router.get("/:group_id/:post_id", async (req,res) => {
     }
 
     res.status(200).json({
+      topic_id: topic_id,
       group_id: group_id,
       group_name: group.group_name,
       post: post
@@ -150,17 +153,20 @@ router.get("/:group_id/:post_id", async (req,res) => {
 /**
  * GET all post from group
  */
-router.get("/:group_id", async (req,res) => {
+router.get("/:topic_id/:group_id", async (req,res) => {
   try{
-    const { group_id } = req.params as {
+    console.log("params:", req.params)
+    const { topic_id,group_id } = req.params as {
+       topic_id: string;
        group_id: string;
        };
 
+    
     //เลือกระบุ Column เฉพาะที่จะใช้งาน ป้องกัน Error เรื่อง Column mismatch
     const groupResult = await dbClient
       .select()
       .from(Groups)
-      .where(eq(Groups.group_id, group_id));
+      .where(and(eq(Groups.topic_id, topic_id), eq(Groups.group_id, group_id)));
 
     const group = groupResult[0];  
 
@@ -177,6 +183,7 @@ router.get("/:group_id", async (req,res) => {
       .where(eq(Posts.group_id, group_id));
 
     res.status(200).json({
+      topic_id: topic_id,
       group_id: group_id,
       group_name: group.group_name,
       post: postResult
@@ -187,7 +194,7 @@ router.get("/:group_id", async (req,res) => {
     console.error("GET /:group_id Error:", err);
 
     res.status(500).json({
-      message: "Somwthing went wrong with server",
+      message: "Something went wrong with server",
     });
   }
 })
@@ -195,7 +202,7 @@ router.get("/:group_id", async (req,res) => {
 /**
  * PUT post
  */
-router.put("/:group_id/:post_id",authenticateToken,async (req, res) => {
+router.put("/:topic_id/:group_id/:post_id",authenticateToken,async (req, res) => {
     try {
       const { group_id, post_id } = req.params as {
        group_id: string;
@@ -294,9 +301,10 @@ router.put("/:group_id/:post_id",authenticateToken,async (req, res) => {
 /**
  * DELETE post
  */
-router.delete("/:group_id/:post_id",authenticateToken,async (req, res) => {
+router.delete("/:topic_id/:group_id/:post_id",authenticateToken,async (req, res) => {
     try {
-      const { group_id, post_id } = req.params as {
+      const { topic_id,group_id, post_id } = req.params as {
+       topic_id: string
        group_id: string;
        post_id: string;
        };
@@ -365,6 +373,7 @@ router.delete("/:group_id/:post_id",authenticateToken,async (req, res) => {
 
       return res.status(200).json({
       message: "Delete post success",
+      topic_id,
       group_id,
       post_id,
       delete_post_success: true,
