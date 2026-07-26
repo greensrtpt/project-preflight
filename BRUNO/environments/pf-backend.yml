@@ -2,23 +2,34 @@ name: pf-backend
 variables:
   - name: base_url
     value: http://localhost:3001
+    description: ""
   - name: token
     value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTk3OWYwYjgtODZiNy00NmViLWFmMmEtMDU4OGM0MWQwMGJhIiwidXNlcm5hbWUiOiJncmVlbl90ZXMiLCJpYXQiOjE3ODQ4NjMxNTksImV4cCI6MTc5MjA2MzE1OX0.WTCAmeHp1qpvqjRbVKRHZIbRxEzoVsaeNdLhzSC-GEM
+    description: ""
   - name: post_id
-    value: fbe7c014-351b-40b4-b73b-50716476242b
+    value: 2d93426a-9351-4596-aeed-318b91b0ea11
+    description: ""
   - name: topic_id
     value: 996c5d4e-2fb3-4436-bfbf-00c65e62685c
+    description: ""
   - name: user_id
     value: b2f962e1-e190-453b-ba7c-6a3f4208db06
+    description: ""
   - name: noodee_token
     value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgyNzY1OTYtMTY3NC00NzY2LThjZmQtYzFhYTViYjZjZmNlIiwidXNlcm5hbWUiOiJub29kZWUiLCJpYXQiOjE3ODQ5NTA0NjEsImV4cCI6MTc5MjE1MDQ2MX0.9F4e-Og116_SLFupkQXohox_Wnjx6qInvgtYUcKzLuU
+    description: ""
   - name: activity
     value: 3d5b36cf-67b7-46cc-8ee6-0025ba9a0e23
+    description: ""
   - name: study
     value: 98178014-d4ec-4f7e-80e3-67f448ec6ae9
+    description: ""
   - name: cmu_life
     value: 2152929b-fb88-4425-b311-0ce09604e76c
+    description: ""
   - name: group_comSci
-    value: 301a9aad-3a2f-49a5-8dee-5f77012031d0
+    value: 3d97eed7-914e-4303-beaf-8b24b2316cb5
+    description: ""
   - name: group_bas
     value: fc636475-22aa-4d59-89e0-015bc5c78aba
+    description: ""

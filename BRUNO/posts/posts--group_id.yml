@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{base_url}}/posts/{{group_id}}"
+  url: "{{base_url}}/posts/{{group_comSci}}"
   auth: inherit
 
 settings:

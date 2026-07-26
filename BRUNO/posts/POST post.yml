@@ -5,7 +5,10 @@ info:
 
 http:
   method: POST
-  url: "{{base_url}}/posts/{{group_id}}"
+  url: "{{base_url}}/posts/{{group_comSci}}"
+  headers:
+    - name: Authorization
+      value: Bearer {{token}}
   body:
     type: json
     data: |-
@@ -13,9 +16,6 @@ http:
         "title": "Test Post",
         "descriptions": "Test post in Board Game"
       }
-  headers:
-    - name: Authorization
-      value: "Bearer {{token}}"
   auth: inherit
 
 settings:

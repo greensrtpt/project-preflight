@@ -1,14 +1,14 @@
 info:
-  name: DELETE /:group_id/:post_id
+  name: /:group_id/:post_id
   type: http
   seq: 5
 
 http:
   method: DELETE
-  url: "{{base_url}}/posts/{{group_id}}/{{post_id}}"
+  url: "{{base_url}}/posts/{{group_comSci}}/{{post_id}}"
   headers:
     - name: Authorization
-      value: "Bearer {{token}}"
+      value: Bearer {{token}}
   auth: inherit
 
 settings:

@@ -1,11 +1,11 @@
 info:
-  name: DELETE GROUP
+  name: ⚠️ DEV ONLY - DELETE GROUP
   type: http
   seq: 4
 
 http:
   method: DELETE
-  url: /groups
+  url: "{{base_url}}/groups/{{topic_id}}/{{group_comSci}}"
   auth: inherit
 
 settings:

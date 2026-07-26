@@ -1,11 +1,17 @@
 info:
   name: POST topic
   type: http
-  seq: 4
+  seq: 1
 
 http:
   method: POST
-  url: ""
+  url: "{{base_url}}/topics"
+  body:
+    type: json
+    data: |-
+      {
+        "topic_name": "test topic"
+      }
   auth: inherit
 
 settings:
