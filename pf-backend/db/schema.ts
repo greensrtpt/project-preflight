@@ -40,18 +40,18 @@ export const Posts = pgTable("Posts", {
   // รหัสโพสต์
   post_id: uuid("post_id").primaryKey().defaultRandom(),
   group_id: uuid("group_id")
-    .references(() => Groups.group_id)
+    .references(() => Groups.group_id, { onDelete: "cascade" })
     .notNull(),
 
   // หัวข้อโพสต์
-  title: varchar("title", { length: 30 }).notNull(),
+  title: varchar("title", { length: 20 }).notNull(),
 
   // เนื้อหาโพสต์
-  descriptions: varchar("descriptions", { length: 500 }).notNull(),
+  descriptions: varchar("descriptions", { length: 150 }).notNull(),
 
   // รหัสผู้สร้างโพสต์
   author_id: uuid("author_id")
-    .references(() => Users.user_id)
+    .references(() => Users.user_id, { onDelete: "cascade" })
     .notNull(),
 
   author_name: varchar("author_name", { length: 30 })
@@ -65,7 +65,7 @@ export const Posts = pgTable("Posts", {
 export const Groups = pgTable("Groups",{
   group_id: uuid("group_id").primaryKey().defaultRandom(),
   topic_id: uuid("topic_id")
-    .references(() => Topics.topic_id)
+    .references(() => Topics.topic_id, { onDelete: "cascade" })
     .notNull(),
   group_name: varchar("name", { length: 30 })
     .notNull()

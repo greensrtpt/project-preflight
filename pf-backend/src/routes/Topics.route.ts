@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { dbClient } from "@db/client.js";
-import { Posts, Topics, Groups } from "@db/schema.js";
+import { Topics, Groups } from "@db/schema.js";
 import { eq } from "drizzle-orm";
 
 const router = Router();
@@ -9,32 +9,9 @@ const router = Router();
  * POST /topics
  */
 router.post("/", async (req, res) => {
-  try {
-    const { topic_name } = req.body;
-
-    if (!topic_name) {
-      res.status(400).json({
-        message: "topic_name is required",
-      });
-      return;
-    }
-
-    const newTopic = await dbClient
-      .insert(Topics)
-      .values({
-        topic_name,
-      })
-      .returning();
-
-    res.status(201).json(newTopic[0]);
-  } catch (error) {
-  console.error(error);
-
-  res.status(500).json({
-    message: "Cannot create topic",
-    error: error instanceof Error ? error.message : String(error),
+  return res.status(403).json({
+    message: "Topics can only be created through seed by developer",
   });
-}
 });
 
 /**
@@ -109,55 +86,9 @@ router.get("/:topic_id", async (req, res) => {
  * DELETE /topics/:topic_id
  */
 router.delete("/:topic_id", async (req, res) => {
-  try {
-    const { topic_id } = req.params;
-
-    const topicResult = await dbClient
-      .select()
-      .from(Topics)
-      .where(eq(Topics.topic_id, topic_id));
-
-    const topic = topicResult[0];
-
-    if (!topic) {
-      res.status(404).json({
-        message: "Topic not found",
-      });
-      return;
-    }
-
-    const deleteGroup = await dbClient
-      .select()
-      .from(Groups)
-      .where(eq(Groups.topic_id, topic_id));
-
-    const deletedPost = deleteGroup.map(async(group)=>{
-      await dbClient
-      .delete(Posts)
-      .where(eq(Posts.group_id, group.group_id));
-    })
-
-      await dbClient
-      .delete(Groups)
-      .where(eq(Groups.topic_id, topic_id));
-
-    await dbClient
-      .delete(Topics)
-      .where(eq(Topics.topic_id, topic_id));
-
-    res.status(200).json({
-      topic_id,
-      groups: deleteGroup,
-      posts: deletedPost,
-      delete_topic_success: true,
-    });
-  } catch (error) {
-    console.error(error);
-
-    res.status(500).json({
-      message: "Cannot delete topic",
-    });
-  }
+  return res.status(403).json({
+    message: "Topics cannot be deleted by users",
+  });
 });
 
 export default router;

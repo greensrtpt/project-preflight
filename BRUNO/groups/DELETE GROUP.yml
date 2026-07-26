@@ -1,5 +1,5 @@
 info:
-  name: ⚠️ DEV ONLY - DELETE GROUP
+  name: ⚠️ DISABLED - DELETE GROUP (EXPECT 403)
   type: http
   seq: 4
 

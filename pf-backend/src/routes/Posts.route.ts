@@ -44,6 +44,12 @@ router.post("/:group_id", authenticateToken, async (req, res) => {
         });
       }
 
+      if (title.length > 20 || descriptions.length > 150) {
+        return res.status(400).json({
+          message: "title must not exceed 20 characters and descriptions must not exceed 150 characters",
+        });
+      }
+
       // หา post และเช็ค owner
       const existingGroup = await dbClient
      .select()
@@ -228,6 +234,12 @@ router.put("/:group_id/:post_id",authenticateToken,async (req, res) => {
       if (!title || !descriptions) {
         return res.status(400).json({
           message: "title and descriptions are required",
+        });
+      }
+
+      if (title.length > 20 || descriptions.length > 150) {
+        return res.status(400).json({
+          message: "title must not exceed 20 characters and descriptions must not exceed 150 characters",
         });
       }
 

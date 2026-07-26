@@ -1,5 +1,5 @@
 info:
-  name: ⚠️ DEV ONLY - DELETE TOPIC
+  name: ⚠️ DISABLED - DELETE TOPIC (EXPECT 403)
   type: http
   seq: 3
 
