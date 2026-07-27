@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Background } from '../components/Background';
 // ลบ import useEffect ออกได้เลยครับ เพราะเราไม่ได้ใช้แล้ว
 
 const CreateAccPage: React.FC = () => {
@@ -75,45 +76,45 @@ const CreateAccPage: React.FC = () => {
     };
 
   return (
-    // 1. กล่องพ่อตัวนอกสุด: ใช้ gap-6 สั่งให้กล่องเทา กับ Back to Homepage ห่างกันกำลังดี
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4">
+    <Background>
+    <div className="min-h-screen flex flex-col items-center justify-center px-4">
       
       {/* 2. กล่องการ์ดสีเทา: เปลี่ยนเป็นแท็ก <form> และใช้ justify-between ดันปุ่มลงล่าง */}
       <form 
         onSubmit={handleSubmit}
-        className="w-full max-w-md min-h-[450px] bg-[#D9D9D9] rounded-[32px] md:p-8 shadow-sm flex flex-col justify-between"
+        className="w-full max-w-md min-h-[450px] bg-[#FFFCFC] rounded-[32px] md:p-8 shadow-sm flex flex-col justify-between"
       >
         {/* --- ส่วนบน: มัดรวมหัวข้อ และ Input ทั้งหมดไว้ด้วยกัน --- */}
         <div className="flex flex-col gap-4 ">
           
-          <h1 className="text-3xl font-bold text-black mb-3 text-left">
+          <h1 className="text-3xl font-bold text-[#626161] mb-3 text-left">
             Create Account
           </h1>
 
           {/* ช่องกรอก Username */}
           <div className="space-y-1 text-left">
-            <label className="block text-sm font-semibold text-black">Username</label>
+            <label className="block text-sm font-semibold text-[#626161]">Username</label>
             <input
               type="text"
               value={username}
               onChange={handleUsernameChange}
               placeholder="username is required"
-              className={`w-full bg-white text-black text-lg py-3 px-4 rounded-xl focus:outline-none focus:ring-2 shadow-sm transition-colors `}
+              className={`w-full bg-[#DED2E2] text-[#626161] text-lg py-3 px-4 rounded-xl focus:outline-none focus:ring-2 shadow-sm transition-colors `}
             />
           </div>
 
           {/* ช่องกรอก Password */}
           <div className="space-y-1 text-left">
-            <label className="block text-sm font-semibold text-black">Password</label>
+            <label className="block text-sm font-semibold text-[#626161]">Password</label>
             <input
               type="password"
               value={password}
               onChange={handlePasswordChange}
               placeholder={password?"":passwordError}
-              className={`w-full bg-white text-black text-lg py-3 px-4 rounded-xl focus:outline-none focus:ring-2 shadow-sm transition-colors ${
+              className={`w-full bg-[#DED2E2] text-[#626161] text-lg py-3 px-4 rounded-xl focus:outline-none focus:ring-2 shadow-sm transition-colors ${
                          showPasswordError
                ? "bg-red-50 border-2 border-red-500 focus:ring-2 focus:ring-red-400 placeholder:text-red-400"
-               : "bg-white focus:ring-2 focus:ring-gray-400"
+               : "bg-[#DED2E2] focus:ring-2 focus:ring-gray-400"
                }`}
             />
           </div>
@@ -142,9 +143,9 @@ const CreateAccPage: React.FC = () => {
         <button 
           type="submit"
           disabled={!isAllValid}
-          className={`w-full h-11 bg-[#9E9E9E] hover:bg-[#8E8E8E] text-white font-medium rounded-lg transition-colors duration-200 mt-2 ${
-            isAllValid 
-              ? 'bg-[#9E9E9E] hover:bg-gray-500 text-white cursor-pointer' 
+          className={`w-full h-11 bg-[#C39AF6] text-white font-medium rounded-lg transition-colors duration-200 mt-2 ${
+            isAllValid && username
+              ? 'bg-[#C39AF6] hover:bg-[#B478FF] text-white cursor-pointer' 
               : 'bg-gray-400 text-gray-200 opacity-50 cursor-not-allowed'
           }`}
         >
@@ -156,12 +157,13 @@ const CreateAccPage: React.FC = () => {
       {/* 3. ลิงก์ย้อนกลับ (จัดระยะห่างด้วย gap-6 ของกล่องพ่อแล้ว) */}
       <Link 
         to="/" 
-        className="mt-4 text-sm text-[#9E9E9E] hover:text-gray-600 font-medium transition-colors duration-200"
+        className="mt-4 text-sm text-[#626161] hover:text-gray-600 font-medium transition-colors duration-200"
       >
         Back to Homepage
       </Link>
 
     </div>
+    </Background>
   );
 };
 

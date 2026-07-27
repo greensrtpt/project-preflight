@@ -87,7 +87,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
     /* Background Overlay */
     <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
       {/* Modal Card Container */}
-      <div className="relative bg-[#D9D9D9] w-full max-w-2xl rounded-3xl p-8 shadow-xl flex flex-col gap-4">
+      <div className="relative bg-[#FFFCFC] w-full max-w-2xl rounded-3xl p-8 shadow-xl flex flex-col gap-4 border-2 border-[#626161]">
         
         {/* 🌟 ปุ่ม X สีแดงตรงมุมซ้ายบน */}
         <button
@@ -105,20 +105,19 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
               placeholder="Title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full bg-[#EAEAEA] text-2xl font-bold placeholder-black/40 text-black px-4 py-3 rounded-xl border-none focus:outline-none focus:ring-2 focus:ring-gray-400"
+              className="w-full bg-[#D7C8DD] text-2xl font-bold placeholder-black/40 text-black px-4 py-3 rounded-xl border-none focus:outline-none focus:ring-2 focus:ring-gray-400"
             />
           </div>
 
           {/* 🌟 ช่องกรอก Description พร้อม Word Counter */}
-          <div className="relative bg-[#EAEAEA] rounded-xl p-4 flex flex-col h-64">
+          <div className="relative flex flex-col h-72">
             <textarea
               placeholder="Description"
               value={description}
               onChange={handleDescriptionChange}
-              className="w-full flex-1 bg-transparent resize-none text-base text-black placeholder-black/40 border-none focus:outline-none"
-            />
+              className="w-full flex-1 bg-[#D7C8DD] rounded-xl p-4 resize-none text-base text-black placeholder-black/40 border-none focus:outline-none focus:ring-2 focus:ring-gray-400"/>
             {/* ตัวนับจำนวนคำด้านขวาล่าง */}
-            <div className="text-right text-sm text-gray-500 font-medium pt-2 select-none">
+            <div className="text-right text-sm text-[#626161] font-medium pt-2 select-none">
               {wordCount}/{maxWords} words
             </div>
           </div>
@@ -126,7 +125,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
           {/* 🌟 ส่วนล่าง: Metadata & ปุ่ม CREATE */}
           <div className="flex items-end justify-between pt-2">
             {/* รายละเอียด Topic / Writer / Date */}
-            <div className="text-sm text-gray-600 flex flex-col gap-0.5 font-medium">
+            <div className="text-sm text-[#626161] flex flex-col gap-0.5 font-medium">
               <div>Topic : {topic_name}</div>
               <div>Group : {group_name}</div>
               <div>Writer : {username}</div>
@@ -135,10 +134,15 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
 
             {/* ปุ่ม CREATE */}
             <button
-              type="submit"
-              className="bg-[#9E9E9E] hover:bg-[#8d8d8d] text-white font-bold px-8 py-2.5 rounded-xl transition-colors shadow-sm"
+               type="submit"
+               disabled={!title}
+               className={`border-2 border-[#626161] font-bold px-8 py-2.5 rounded-xl transition-colors shadow-sm ${
+                title 
+               ? 'bg-[#63BF52] hover:bg-[#45B331] text-white cursor-pointer' 
+               : 'bg-gray-400 text-gray-200 opacity-50 cursor-not-allowed'
+            }`}
             >
-              CREATE
+           CREATE
             </button>
           </div>
         </form>

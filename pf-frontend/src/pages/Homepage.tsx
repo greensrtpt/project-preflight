@@ -3,6 +3,7 @@ import type { DropdownOption } from '../Types/dropdown.types';
 import { useNavigate } from 'react-router-dom';
 import React from "react";
 import LogInButton from '../components/LogInButton';
+import { Background } from '../components/Background';
 
 const Searchpage: React.FC = () => {
   const navigate = useNavigate();
@@ -24,15 +25,16 @@ const Searchpage: React.FC = () => {
   };
   
   return (
-    <div className="min-h-screen bg-white font-sans">
+    <Background>
+    <div className="font-sans">
       {/* ส่วนหัว (Header) */}
-      <header className="flex justify-end p-6 md:p-8">
-        <LogInButton></LogInButton>
+      <header className="w-full mx-auto flex justify-end items-center px-8">
+        <LogInButton/>
       </header>
       {/* ส่วนเนื้อหาหลัก (Main Content) */}
       <main className="flex flex-col items-center justify-center pt-20 md:pt-32">
         {/* ข้อความหัวข้อ */}
-        <h1 className="text-6xl md:text-7xl font-bold text-black mb-12 tracking-tight">
+        <h1 className="text-6xl md:text-7xl font-bold text-[#626161] mb-12 mt-25 tracking-tight">
           Select Topic
         </h1>
 
@@ -44,6 +46,7 @@ const Searchpage: React.FC = () => {
         </div>
       </main>
     </div>
+    </Background>
   );
 };
 

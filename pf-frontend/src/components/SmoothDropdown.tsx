@@ -22,8 +22,8 @@ const SmoothDropdown: React.FC<DropdownProps> = ({ options, onSelectOption }) =>
     <div className="relative w-full max-w-[650px] px-6">
       {/* ตัวกล่อง Dropdown หลัก */}
       <div
-        className={`w-full bg-[#E2E2E2] text-black text-xl shadow-inner transition-all duration-300 ease-in-out overflow-hidden ${
-          isOpen ? 'rounded-[28px]' : 'rounded-full'
+        className={`w-full bg-[#FFFCFC] text-[#626161] text-xl shadow-inner transition-all duration-300 ease-in-out overflow-hidden ${
+          isOpen ? 'rounded-[28px] border-2 border-[#626161]' : 'rounded-full border-2 border-[#626161]'
         }`}
       >
         {/* ปุ่มกดเปิด/ปิด Dropdown */}
@@ -40,7 +40,7 @@ const SmoothDropdown: React.FC<DropdownProps> = ({ options, onSelectOption }) =>
           {/* ไอคอนลูกศรหมุนกลับหัวตอนเปิด */}
           <div className="absolute right-10 top-1/2 -translate-y-1/2">
             <ChevronDown
-              className={`h-7 w-7 text-gray-700 transition-transform duration-300 ${
+              className={`h-7 w-7 text-[#626161] transition-transform duration-300 ${
                 isOpen ? 'rotate-180' : 'rotate-0'
               }`}
               strokeWidth={2.5}
@@ -51,7 +51,7 @@ const SmoothDropdown: React.FC<DropdownProps> = ({ options, onSelectOption }) =>
         {/* เมนูรายการตัวเลือกที่จะยืดลงมาแบบ Smooth */}
         <div
           className={`transition-all duration-300 ease-in-out grid ${
-            isOpen ? 'grid-rows-[1fr] opacity-100 pb-3' : 'grid-rows-[0fr] opacity-0'
+            isOpen ? 'grid-rows-[1fr] opacity-100 pb-3 ' : 'grid-rows-[0fr] opacity-0'
           }`}
         >
           <div className="overflow-hidden flex flex-col">
@@ -65,7 +65,7 @@ const SmoothDropdown: React.FC<DropdownProps> = ({ options, onSelectOption }) =>
                    ใช้อย่าง hover:bg-gray-300/80 และ hover:text-blue-600 
                    เปลี่ยนสีอัตโนมัติเมื่อเมาส์ไปชี้โดยไม่ต้องใส่ใน Type ครับ
                 */
-                className="w-full text-left py-3 pl-8 pr-16 text-lg text-black hover:bg-gray-300/80 hover:text-blue-600 transition-colors duration-150 cursor-pointer"
+                className="w-full text-left py-3 pl-8 pr-16 text-lg text-[#626161] hover:bg-[#73D7C7] hover:text-[#626161] transition-colors duration-150 cursor-pointer"
               >
                 {option.topic_name}
               </button>

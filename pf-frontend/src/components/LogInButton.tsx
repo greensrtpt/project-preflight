@@ -53,7 +53,7 @@ const LogInButton: React.FC = () => {
   }
 
     return(
-    <div className="fixed top-6 right-6">
+    <div className="relative top-6 right-6">
   {username ? (
     /* 🌟 กรณี Log in แล้ว: แสดงปุ่มตามรูปแรก */
     <div className="absolute top-full right-0 mt-2 flex flex-col items-end z-20">
@@ -62,7 +62,7 @@ const LogInButton: React.FC = () => {
         onClick={(e) => {
           e.stopPropagation();
           setIsOpen(!isOpen)}}
-        className="bg-[#D9D9D9] hover:bg-gray-300 transition-colors rounded-full px-5 py-2 flex items-center gap-3 shadow-sm cursor-pointer border-none outline-none"
+        className="bg-[#FFFCFC] hover:bg-[#DED2E2] transition-colors rounded-full px-5 py-2 flex items-center gap-3 shadow-sm cursor-pointer border-2 border-[#626161] outline-none "
       >
         <span className="text-black font-semibold text-base">{username}</span>
         <div className="w-8 h-8 bg-[#EBEBEB] rounded-full flex items-center justify-center">
@@ -77,17 +77,17 @@ const LogInButton: React.FC = () => {
         <div className="absolute top-full mt-2 flex flex-col items-end z-50" 
         onClick={(e) => e.stopPropagation()}>
           {/* หางสามเหลี่ยมชี้ขึ้น (Tooltip Arrow) */}
-          <div className="w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-b-[12px] border-b-[#D9D9D9] mr-6"></div>
+          <div className="w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-b-[12px] border-b-[#626161] mr-6 drop-shadow-[0_-1.5px_0px_#605F5F]"></div>
 
           {/* กล่องเมนูสีเทา */}
-          <div className="bg-[#D9D9D9] rounded-2xl p-3 shadow-md flex flex-col gap-2 w-48">
+          <div className="bg-[#FFFCFC] rounded-2xl p-3 shadow-md flex flex-col gap-2 w-48 border-2 border[#626161]">
             {/* ปุ่ม Log Out */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 handleLogout()
               }}
-              className="w-full bg-[#FF8A8A] hover:bg-[#FF7575] text-[#D00000] font-bold py-2 px-4 rounded-xl transition-colors cursor-pointer text-center text-sm z-50"
+              className="w-full bg-[#FD9F9D] hover:bg-[#FF7575] text-[#626161] hover:text-[#FFFCFC] font-bold py-2 px-4 rounded-xl transition-colors cursor-pointer text-center text-sm z-50"
             >
               log out
             </button>
@@ -97,7 +97,7 @@ const LogInButton: React.FC = () => {
               onClick={ (e) => {
                 e.stopPropagation();
                 handleDelete()}}
-               className="w-full bg-[#FF8A8A] hover:bg-[#FF7575] text-[#D00000] font-bold py-2 px-4 rounded-xl transition-colors cursor-pointer text-center text-sm z-50"
+               className="w-full bg-[#FD9F9D] hover:bg-[#FF7575] hover:text-[#FFFCFC] text-[#626161] font-bold py-2 px-4 rounded-xl transition-colors cursor-pointer text-center text-sm z-50"
             >
               delete account
             </button>
@@ -109,7 +109,7 @@ const LogInButton: React.FC = () => {
     /* 🌟 กรณีที่ยังไม่ได้ Log in: แสดงปุ่ม log in ปกติ */
     <Link
       to="/login"
-      className="h-11 bg-[#D9D9D9] hover:bg-gray-300 text-black text-sm font-semibold px-6 rounded-full transition-colors flex items-center justify-center leading-none"
+      className="h-11 bg-[#FFFCFC] hover:bg-[#DED2E2] text-[#626161] text-sm font-semibold px-6 rounded-full transition-colors flex items-center justify-center leading-none border-2"
     >
       log in
     </Link>

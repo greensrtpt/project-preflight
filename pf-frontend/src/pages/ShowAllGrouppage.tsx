@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import type { DataFromTopic } from '../Types/APIresultFromHomePage.types';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import { Background } from '../components/Background';
+import Cardcolors from '../constants/Cardcolors'
 
 const ShowAllGrouppage: React.FC = () => {
   const navigate = useNavigate();
@@ -49,26 +51,26 @@ const ShowAllGrouppage: React.FC = () => {
    }
 
     return (
-
-    <div className="min-h-screen bg-gray-50 p-4 md:p-12">
-        <div>
-            <Header onClickBack={backToHomePage} showName={topicName} placeholder='Topics' ></Header>
+      <Background>
+    <div className="p-4 md:p-12">
+        <div >
+          <Header onClickBack={backToHomePage} showName={topicName} placeholder="Groups" />
         </div>
       {/* 🌟 3. Grid Container: กำหนด grid-cols-1 ถึง grid-cols-4 เพื่อให้ปรับตามขนาดจอ */}
       {Data?.group && Data.group.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-[90px]">
-          {Data.group.map((item) => {
-            console.log(item)
+          {Data.group.map((item,index) => {
+            const colorStyle = Cardcolors[index % Cardcolors.length];
             return (
             /* 🌟 4. ก้อนการ์ดสี่เหลี่ยมแต่ละโพสต์ (แสดงเฉพาะ title, author_name, edit_at) */
             <div
               key={item.group_id}
-              className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between h-[220px] cursor-pointer hover:border-gray-300"
+              className={`${colorStyle} p-6 rounded-2xl border-2 border-[#626161] shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between h-[220px] cursor-pointer`}
               onClick={()=>handleSelectGroup(item.group_id)}
             >
               {/* ส่วนบน: หัวข้อโพสต์ (Title) */}
               <div>
-                <h2 className="text-xl font-bold text-black line-clamp-2 mb-2">
+                <h2 className="text-xl font-bold text-[#626161] line-clamp-2 mb-2">
                   {item.group_name}
                 </h2>
               </div>
@@ -83,6 +85,7 @@ const ShowAllGrouppage: React.FC = () => {
         </div>
       )}
     </div>
+    </Background>
   );
 }
 
