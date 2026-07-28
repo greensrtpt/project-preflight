@@ -10,7 +10,20 @@ collection:
     method: GET
     url: "{{ base_url }}/topics/{{ topic_id }}"
 
-  - name: Delete Topic
+  - name: Create Topic (Forbidden for Users - returns 403)
+    method: POST
+    url: "{{ base_url }}/topics"
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "topic_name": "User-created topic"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+
+  - name: Delete Topic (Forbidden for Users - returns 403)
     method: DELETE
     url: "{{ base_url }}/topics/{{ topic_id }}"
 
@@ -98,6 +111,9 @@ collection:
   - name: Delete User
     method: DELETE
     url: "{{ base_url }}/users/{{ user_id }}"
+    headers:
+      - name: Authorization
+        value: "Bearer {{ token }}"
 
   - name: Create Post
     method: POST

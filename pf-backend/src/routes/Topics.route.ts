@@ -2,6 +2,7 @@ import { Router } from "express";
 import { dbClient } from "@db/client.js";
 import { Topics, Groups } from "@db/schema.js";
 import { eq } from "drizzle-orm";
+import { validate as isUUID } from "uuid";
 
 const router = Router();
 
@@ -46,6 +47,12 @@ router.get("/all", async (_req, res) => {
 router.get("/:topic_id", async (req, res) => {
   try {
     const { topic_id } = req.params;
+
+    if (!isUUID(topic_id)) {
+      return res.status(400).json({
+        message: "Invalid topic_id format. It should be a valid UUID.",
+      });
+    }
 
     const topicResult = await dbClient
       .select()

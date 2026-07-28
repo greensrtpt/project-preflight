@@ -4,7 +4,7 @@ variables:
     value: http://localhost:3001
     description: ""
   - name: token
-    value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTk3OWYwYjgtODZiNy00NmViLWFmMmEtMDU4OGM0MWQwMGJhIiwidXNlcm5hbWUiOiJncmVlbl90ZXMiLCJpYXQiOjE3ODQ4NjMxNTksImV4cCI6MTc5MjA2MzE1OX0.WTCAmeHp1qpvqjRbVKRHZIbRxEzoVsaeNdLhzSC-GEM
+    value: ""
     description: ""
   - name: post_id
     value: 150825b9-3b83-44bd-b7b8-f7b2ab021980

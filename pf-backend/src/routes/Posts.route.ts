@@ -38,14 +38,19 @@ router.post("/:group_id", authenticateToken, async (req, res) => {
       });
       }
 
-      if (!title || !descriptions) {
+      if (
+        typeof title !== "string" ||
+        typeof descriptions !== "string" ||
+        !title.trim() ||
+        !descriptions.trim()
+      ) {
         return res.status(400).json({
           message: "title and descriptions are required",
         });
       }
 
       // ตรวจความยาวก่อนบันทึก เพื่อให้ตรงกับขนาดที่กำหนดใน Database
-      if (title.length > 20 || descriptions.length > 150) {
+      if (title.trim().length > 20 || descriptions.trim().length > 150) {
         return res.status(400).json({
           message: "title must not exceed 20 characters and descriptions must not exceed 150 characters",
         });
@@ -68,8 +73,8 @@ router.post("/:group_id", authenticateToken, async (req, res) => {
         .insert(Posts)
         .values({
           group_id:group_id,
-          title:title,
-          descriptions:descriptions,
+          title: title.trim(),
+          descriptions: descriptions.trim(),
           author_id:user_id,
           author_name:username,
           edit_at:new Date()
@@ -175,6 +180,12 @@ router.get("/:group_id", async (req,res) => {
        group_id: string;
        };
 
+    if (!isUUID(group_id)) {
+      return res.status(400).json({
+        message: "Invalid group_id Format. It should be a valid UUID.",
+      });
+    }
+
     
     //เลือกระบุ Column เฉพาะที่จะใช้งาน ป้องกัน Error เรื่อง Column mismatch
     const groupResult = await dbClient
@@ -246,14 +257,19 @@ router.put("/:group_id/:post_id",authenticateToken,async (req, res) => {
       });
       }
 
-      if (!title || !descriptions) {
+      if (
+        typeof title !== "string" ||
+        typeof descriptions !== "string" ||
+        !title.trim() ||
+        !descriptions.trim()
+      ) {
         return res.status(400).json({
           message: "title and descriptions are required",
         });
       }
 
       // ใช้ข้อกำหนดความยาวเดียวกันทั้งตอนสร้างและแก้ไข Post
-      if (title.length > 20 || descriptions.length > 150) {
+      if (title.trim().length > 20 || descriptions.trim().length > 150) {
         return res.status(400).json({
           message: "title must not exceed 20 characters and descriptions must not exceed 150 characters",
         });
@@ -297,8 +313,8 @@ router.put("/:group_id/:post_id",authenticateToken,async (req, res) => {
       const updatedPost = await dbClient
         .update(Posts)
         .set({
-          title,
-          descriptions,
+          title: title.trim(),
+          descriptions: descriptions.trim(),
           edit_at: new Date(),
         })
         .where(

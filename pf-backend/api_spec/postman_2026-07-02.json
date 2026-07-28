@@ -31,7 +31,21 @@
           }
         },
         {
-          "name": "Delete Topic",
+          "name": "Create Topic (Forbidden for Users - returns 403)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"topic_name\": \"User-created topic\"\n}"
+            },
+            "url": "{{base_url}}/topics"
+          }
+        },
+        {
+          "name": "Delete Topic (Forbidden for Users - returns 403)",
           "request": {
             "method": "DELETE",
             "url": "{{base_url}}/topics/{{topic_id}}"
@@ -160,6 +174,12 @@
           "name": "Delete User",
           "request": {
             "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{token}}", "type": "string" }
+              ]
+            },
             "url": "{{base_url}}/users/{{user_id}}"
           }
         }

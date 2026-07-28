@@ -1,0 +1,21 @@
+info:
+  name: POST / (Forbidden - 403)
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{base_url}}/topics"
+  body:
+    type: json
+    data: |-
+      {
+        "topic_name": "User-created topic"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 import { validate as isUUID } from "uuid";
+import { authenticateToken } from "@src/Middleware/auth.js";
 
 const router = Router();
 /**
@@ -16,9 +17,17 @@ router.post("/", async (req: Request, res: Response) => {
   try {
     const { username, password } = req.body;
 
-    if (!username || !password) {
+    if (typeof username !== "string" || typeof password !== "string") {
       return res.status(400).json({
         message: "Please provide both username and password",
+      });
+    }
+
+    const normalizedUsername = username.trim();
+
+    if (!normalizedUsername || normalizedUsername.length > 30) {
+      return res.status(400).json({
+        message: "Username must contain between 1 and 30 characters",
       });
     }
 
@@ -28,10 +37,16 @@ router.post("/", async (req: Request, res: Response) => {
       });
     }
 
+    if (password.length > 30) {
+      return res.status(400).json({
+        message: "Password must not exceed 30 characters",
+      });
+    }
+
     const existingUser = await dbClient
       .select()
       .from(Users)
-      .where(eq(Users.username, username))
+      .where(eq(Users.username, normalizedUsername))
       .limit(1);
 
     if (existingUser.length > 0) {
@@ -47,7 +62,7 @@ router.post("/", async (req: Request, res: Response) => {
     const newUser = await dbClient
       .insert(Users)
       .values({
-        username,
+        username: normalizedUsername,
         password: hashedPassword,
       })
       .returning({
@@ -73,7 +88,7 @@ router.post("/login", async (req: Request, res: Response) => {
   try {
     const { username, password } = req.body;
 
-    if (!username || !password) {
+    if (typeof username !== "string" || typeof password !== "string" || !username.trim() || !password) {
     return res.status(400).json({
      message: "Username and password are required",
     });
@@ -82,7 +97,7 @@ router.post("/login", async (req: Request, res: Response) => {
     const existingUser = await dbClient
       .select()
       .from(Users)
-      .where(eq(Users.username, username))
+      .where(eq(Users.username, username.trim()))
       .limit(1);
 
     if (existingUser.length === 0) {
@@ -199,7 +214,7 @@ router.get("/:user_id", async (req, res) => {
 /**
  * DELETE /users/:user_id
  */
-router.delete("/:user_id", async (req, res) => {
+router.delete("/:user_id", authenticateToken, async (req, res) => {
   try {
     const { user_id } = req.params;
 
@@ -208,6 +223,12 @@ router.delete("/:user_id", async (req, res) => {
         message: "Invalid user_id format. It should be a valid UUID.",
       });
 
+    }
+
+    if (req.user?.user_id !== user_id) {
+      return res.status(403).json({
+        message: "Forbidden: You can only delete your own account",
+      });
     }
 
     const deletedUsers = await dbClient
