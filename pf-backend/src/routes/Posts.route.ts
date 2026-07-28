@@ -50,9 +50,9 @@ router.post("/:group_id", authenticateToken, async (req, res) => {
       }
 
       // ตรวจความยาวก่อนบันทึก เพื่อให้ตรงกับขนาดที่กำหนดใน Database
-      if (title.trim().length > 20 || descriptions.trim().length > 150) {
+      if (title.trim().length > 30 || descriptions.trim().length > 500) {
         return res.status(400).json({
-          message: "title must not exceed 20 characters and descriptions must not exceed 150 characters",
+          message: "title must not exceed 30 characters and descriptions must not exceed 500 characters",
         });
       }
 
@@ -83,7 +83,7 @@ router.post("/:group_id", authenticateToken, async (req, res) => {
 
       return res.status(201).json({
         message: "Post created successfully",
-        data:createPost
+        data:createPost[0]
       });
 
 
@@ -269,9 +269,9 @@ router.put("/:group_id/:post_id",authenticateToken,async (req, res) => {
       }
 
       // ใช้ข้อกำหนดความยาวเดียวกันทั้งตอนสร้างและแก้ไข Post
-      if (title.trim().length > 20 || descriptions.trim().length > 150) {
+      if (title.trim().length > 30 || descriptions.trim().length > 500) {
         return res.status(400).json({
-          message: "title must not exceed 20 characters and descriptions must not exceed 150 characters",
+          message: "title must not exceed 30 characters and descriptions must not exceed 500 characters",
         });
       }
 
@@ -327,7 +327,7 @@ router.put("/:group_id/:post_id",authenticateToken,async (req, res) => {
 
       return res.status(200).json({
         message: "Post updated successfully",
-        data: updatedPost
+        data: updatedPost[0]
           
       });
 

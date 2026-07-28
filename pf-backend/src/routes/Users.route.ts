@@ -101,8 +101,8 @@ router.post("/login", async (req: Request, res: Response) => {
       .limit(1);
 
     if (existingUser.length === 0) {
-      return res.status(404).json({
-        message: "User not found",
+      return res.status(401).json({
+        message: "Invalid username or password",
       });
     }
 
@@ -110,7 +110,7 @@ router.post("/login", async (req: Request, res: Response) => {
 
     if (!isMatch) {
       return res.status(401).json({
-        message: "Invalid password",
+        message: "Invalid username or password",
       });
     }
 

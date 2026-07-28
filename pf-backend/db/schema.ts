@@ -45,10 +45,10 @@ export const Posts = pgTable("Posts", {
     .notNull(),
 
   // หัวข้อโพสต์
-  title: varchar("title", { length: 20 }).notNull(),
+  title: varchar("title", { length: 30 }).notNull(),
 
   // เนื้อหาโพสต์
-  descriptions: varchar("descriptions", { length: 150 }).notNull(),
+  descriptions: varchar("descriptions", { length: 500 }).notNull(),
 
   // รหัสผู้สร้างโพสต์
   // ถ้า User ลบบัญชี ให้ Post ของ User คนนั้นถูกลบตาม

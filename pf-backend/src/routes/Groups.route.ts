@@ -227,11 +227,15 @@ router.delete("/:topic_id/:group_id", authenticateToken, async (req, res) => {
       return res.status(403).json({ message: "Forbidden: You are not the owner of this group" });
     }
 
-    await dbClient.delete(Groups).where(and(
+    const deletedGroups = await dbClient.delete(Groups).where(and(
       eq(Groups.topic_id, topic_id),
       eq(Groups.group_id, group_id),
-    ));
-    return res.status(200).json({ message: "Group deleted successfully" });
+    )).returning();
+    return res.status(200).json({
+      message: "Group deleted successfully",
+      deletedGroup: deletedGroups[0],
+      delete_group_success: true,
+    });
   } catch (error) {
     console.error("DELETE /groups/:topic_id/:group_id Error:", error);
     return res.status(500).json({ message: "Something went wrong with server" });

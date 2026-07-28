@@ -72,11 +72,16 @@ Authorization: Bearer <token>
 Group รับเฉพาะ `group_name` ความยาวไม่เกิน 30 ตัวอักษร ส่วน `owner_id` และ
 `owner_name` มาจาก JWT เท่านั้น
 
-Post รับข้อความเท่านั้น โดย `title` ยาวไม่เกิน 20 ตัวอักษร และ `descriptions`
-ยาวไม่เกิน 150 ตัวอักษร ส่วน `author_id` และ `author_name` มาจาก JWT เท่านั้น
+Post รับข้อความเท่านั้น โดย `title` ยาวไม่เกิน 30 ตัวอักษร และ `descriptions`
+ยาวไม่เกิน 500 ตัวอักษร ส่วน `author_id` และ `author_name` มาจาก JWT เท่านั้น
 DELETE Post ไม่รับ request body
 
 รหัสผ่านต้องมีความยาว 8–30 ตัวอักษร และจะถูก hash ด้วย bcrypt ก่อนบันทึก
+
+Create และ Update API คืนข้อมูลที่ฟิลด์ `data` เป็น object ส่วน Delete API
+คืนสถานะ `200` พร้อม JSON response เพื่อให้ผู้เรียกตรวจสอบ ID และผลการลบได้
+การลบ Group คืน `deletedGroup` และ `delete_group_success` ส่วนการลบ Post คืน
+`group_id`, `post_id` และ `delete_post_success`
 
 ## Database cascade
 
