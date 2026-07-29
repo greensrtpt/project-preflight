@@ -41,7 +41,6 @@ router.post("/:topic_id", authenticateToken, async (req,res) => {
       group_name: group_name.trim(),
       owner_id,
       owner_name,
-      create_at: new Date(),
       edit_at: new Date(),
     }).returning();
 

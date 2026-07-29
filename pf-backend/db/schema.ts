@@ -13,7 +13,7 @@ export const Users = pgTable("Users", {
   user_id: uuid("user_id").primaryKey().defaultRandom(),
 
   // ชื่อผู้ใช้
-  username: varchar("username", { length: 30 })
+  username: varchar("username", { length: 100 })
     .notNull()
     .unique(),/////////////////////////////////
 
@@ -29,7 +29,7 @@ export const Topics = pgTable("Topics", {
   topic_id: uuid("topic_id").primaryKey().defaultRandom(),
     
   // ชื่อหัวข้อ
-  topic_name: varchar("name", { length: 20 })
+  topic_name: varchar("name", { length: 100 })
   .notNull()
   .unique(),
 });
@@ -72,7 +72,7 @@ export const Groups = pgTable("Groups",{
     .references(() => Topics.topic_id, { onDelete: "cascade" })
     .notNull(),
 
-  group_name: varchar("name", { length: 30 })
+  group_name: varchar("name", { length: 100 })
     .notNull(),
 
   // เอาไว้เช็คสิทธิ์ตอนแก้หรือลบ group
@@ -82,6 +82,5 @@ export const Groups = pgTable("Groups",{
 
   owner_name: varchar("owner_name", { length: 30 }).notNull(),
 
-  create_at: timestamp("create_at").defaultNow().notNull(),
   edit_at: timestamp("edit_at").defaultNow().notNull(),
 })

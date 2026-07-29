@@ -79,6 +79,7 @@ router.get("/:topic_id", async (req, res) => {
       topic_name: topic.topic_name,
       group: groups,
     });
+    
   } catch (error) {
     console.error(error);
 
