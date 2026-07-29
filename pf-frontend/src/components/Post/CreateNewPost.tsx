@@ -1,4 +1,4 @@
-import type { CreatePostClicked } from "../Types/Modal.types"
+import type { CreatePostClicked } from "../../Types/Modal.types"
 
 const CreateNewPost: React.FC<CreatePostClicked> = ({onClick}) => {
     return(

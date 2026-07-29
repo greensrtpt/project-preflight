@@ -3,6 +3,9 @@ export interface Group {
   group_id:string;
   topic_id:string;
   group_name:string;
+  owner_id: string;
+  owner_name: string;
+  edit_at: string;
 }
 
 export interface DataFromTopic {

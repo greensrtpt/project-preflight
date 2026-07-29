@@ -47,7 +47,8 @@ export const LoginPage: React.FC = () => {
         alert(data.message || "Invalid username or password");
         return;
       }
-      login(data.token,data.username,data.password);
+      // console.log("Response Data:", data);
+      login(data.token,data.username,data.user_id);
 
       alert("Login successful!");
 

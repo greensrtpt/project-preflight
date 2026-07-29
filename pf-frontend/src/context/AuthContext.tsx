@@ -4,7 +4,7 @@ import { authStorage } from '../utils/storage'; // 🌟 ดึง helper storage
 
 interface AuthContextType {
   username: string | null;
-  login: (token: string, username: string, userId: string) => void;
+  login: (token: string, username: string, user_id: string) => void;
   logout: () => void;
 }
 

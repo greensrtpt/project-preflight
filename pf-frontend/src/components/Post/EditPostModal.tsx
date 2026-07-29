@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
-import type {CreatePostModalProps} from '../Types/Modal.types.ts'
-import { authStorage } from '../utils/storage.ts';
+import type {EditPostModalProps} from '../../Types/Modal.types.ts'
+import { authStorage } from '../../utils/storage.ts';
 
-const CreatePostModal: React.FC<CreatePostModalProps> = ({
+const EditPostModal: React.FC<EditPostModalProps> = ({
   isOpen,
   onClose,
-  topic_id,
+  post_id,
   group_id,
   topic_name,
   group_name,
+  old_title,
+  old_description
 }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState(old_title);
+  const [description, setDescription] = useState(old_description);
+  console.log("edit post modal"+group_id);
 
   if (!isOpen) return null;
 
@@ -32,7 +35,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
     }
   };
 
-  const handlePost = async (e: React.FormEvent) => {
+  const handlePut = async (e: React.FormEvent) => {
       e.preventDefault();
       if (!title.trim() || !description.trim()) {
       alert('Please fill both Title and Description');
@@ -42,14 +45,14 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
       const token = authStorage.getToken();
 
       if (!token) {
-      alert('Please Login before create post');
+      alert('Please Login before edit post');
       return;
       }
     // ล้างข้อมูลและปิด Modal
       try {
         // 🚀 2. ยิง POST Request ไปหา Backend API
-        const response = await fetch(`http://localhost:3001/posts/${topic_id}/${group_id}`, {
-          method: "POST",
+        const response = await fetch(`http://localhost:3001/posts/${group_id}/${post_id}`, {
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`,
@@ -62,14 +65,14 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
         const data = await response.json();
 
         if (!response.ok) {
-          alert(data.message || "Cannot create post");
+          alert(data.message || "Cannot edit post");
           return;
         }
 
          setTitle('');
          setDescription('');
          onClose();
-         alert("Create post successful!");
+         alert("Edit post successful!");
          window.location.reload();
   
     }catch(err){
@@ -85,20 +88,21 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
 
   return (
     /* Background Overlay */
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4 ">
       {/* Modal Card Container */}
       <div className="relative bg-[#FFFCFC] w-full max-w-2xl rounded-3xl p-8 shadow-xl flex flex-col gap-4 border-2 border-[#626161]">
         
         {/* 🌟 ปุ่ม X สีแดงตรงมุมซ้ายบน */}
         <button
           onClick={onClose}
-          className="absolute -top-3 -left-3 bg-red-400 hover:bg-red-500 text-white font-bold w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-colors"
+          className="absolute -top-3 -left-3 bg-red-400 hover:bg-red-500 text-white font-bold w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-colors "
         >
           X
         </button>
 
-        <form onSubmit={handlePost} className="flex flex-col gap-4">
+        <form onSubmit={handlePut} className="flex flex-col gap-4">
           {/* 🌟 ช่องกรอก Title */}
+
           <div>
             <input
               type="text"
@@ -109,7 +113,6 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
             />
           </div>
 
-          {/* 🌟 ช่องกรอก Description พร้อม Word Counter */}
           <div className="relative flex flex-col h-72">
             <textarea
               placeholder="Description"
@@ -132,7 +135,6 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
               <div>Date : {currentDate}</div>
             </div>
 
-            {/* ปุ่ม CREATE */}
             <button
                type="submit"
                disabled={!title}
@@ -142,8 +144,10 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
                : 'bg-gray-400 text-gray-200 opacity-50 cursor-not-allowed'
             }`}
             >
-           CREATE
+           UPDATE
             </button>
+
+
           </div>
         </form>
       </div>
@@ -151,4 +155,4 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
   );
 };
 
-export default CreatePostModal;
+export default EditPostModal;
