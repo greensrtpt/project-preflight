@@ -30,7 +30,7 @@ const LogInButton: React.FC = () => {
         return;
       } 
 
-    const response = await fetch(`/users/${userId}`, {
+    const response = await fetch(`/api/users/${userId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

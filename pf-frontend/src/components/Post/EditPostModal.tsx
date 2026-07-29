@@ -51,7 +51,7 @@ const EditPostModal: React.FC<EditPostModalProps> = ({
     // ล้างข้อมูลและปิด Modal
       try {
         // 🚀 2. ยิง POST Request ไปหา Backend API
-        const response = await fetch(`/posts/${group_id}/${post_id}`, {
+        const response = await fetch(`/api/posts/${group_id}/${post_id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

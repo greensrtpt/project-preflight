@@ -41,7 +41,7 @@ const ShowAllPostpage: React.FC = () => {
   const fetchGroups = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/posts/${group_id}`);
+      const res = await fetch(`/api/posts/${group_id}`);
       if (!res.ok) throw new Error("Failed to fetch posts");
       
       const resultGroup = (await res.json()) as DataFromGroup;
@@ -90,7 +90,7 @@ const ShowAllPostpage: React.FC = () => {
     }
 
     try {
-      const res = await fetch(`/posts/${group_id}/${post_id}`, {
+      const res = await fetch(`/api/posts/${group_id}/${post_id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

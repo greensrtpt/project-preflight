@@ -36,7 +36,7 @@ const CreateAccPage: React.FC = () => {
 
     // 🚀 ยิง API สมัครสมาชิกไปยัง Backend
     try {
-      const response = await fetch("/users", {
+      const response = await fetch("/api/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
