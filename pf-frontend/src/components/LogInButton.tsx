@@ -30,7 +30,7 @@ const LogInButton: React.FC = () => {
         return;
       } 
 
-    const response = await fetch(`http://localhost:3001/users/${userId}`, {
+    const response = await fetch(`/users/${userId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

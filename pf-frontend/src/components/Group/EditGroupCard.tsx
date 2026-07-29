@@ -29,7 +29,7 @@ export const EditGroupCard: React.FC<EditGroupCardProps> = ({
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`http://localhost:3001/groups/${topic_id}/${group_id}`, {
+      const response = await fetch(`/groups/${topic_id}/${group_id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

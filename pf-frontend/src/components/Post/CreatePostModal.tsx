@@ -49,7 +49,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
 
       try {
         // 🚀 2. ยิง POST Request ไปหา Backend API
-        const response = await fetch(`http://localhost:3001/posts/${group_id}`, {
+        const response = await fetch(`/posts/${group_id}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

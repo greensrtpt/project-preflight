@@ -32,7 +32,7 @@ const ShowAllGrouppage: React.FC = () => {
     if (!topic_id) return;
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:3001/topics/${topic_id}`);
+      const res = await fetch(`/topics/${topic_id}`);
       if (!res.ok) throw new Error("Failed to fetch topic");
       const resultTopic = (await res.json()) as DataFromTopic;
       setData(resultTopic);
@@ -79,7 +79,7 @@ const ShowAllGrouppage: React.FC = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:3001/groups/${topic_id}`, {
+      const res = await fetch(`/groups/${topic_id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -113,7 +113,7 @@ const ShowAllGrouppage: React.FC = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:3001/groups/${topic_id}/${groupId}`, {
+      const res = await fetch(`/groups/${topic_id}/${groupId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -149,7 +149,7 @@ const ShowAllGrouppage: React.FC = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:3001/groups/${topic_id}/${groupId}`, {
+      const res = await fetch(`/groups/${topic_id}/${groupId}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${token}`

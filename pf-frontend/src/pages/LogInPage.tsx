@@ -31,7 +31,7 @@ export const LoginPage: React.FC = () => {
     // TODO: ยิง API Login ต่อ
     try {
       // 🚀 2. ยิง POST Request ไปหา Backend API
-      const response = await fetch("http://localhost:3001/users/login", {
+      const response = await fetch("/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

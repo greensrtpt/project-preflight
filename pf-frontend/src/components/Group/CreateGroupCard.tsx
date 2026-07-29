@@ -22,7 +22,7 @@ export const CreateGroupCard: React.FC<CreateGroupCardProps> = ({ onCancel,
 
 try {
     setIsSubmitting(true);
-            const response = await fetch(`http://localhost:3001/groups/${topic_id}`, {
+            const response = await fetch(`/groups/${topic_id}`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
