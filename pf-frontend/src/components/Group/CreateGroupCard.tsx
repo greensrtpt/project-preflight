@@ -20,8 +20,8 @@ export const CreateGroupCard: React.FC<CreateGroupCardProps> = ({ onSubmit, onCa
     return;
     }
 
-    try {
-            // 🚀 2. ยิง POST Request ไปหา Backend API
+try {
+    setIsSubmitting(true);
             const response = await fetch(`http://localhost:3001/groups/${topic_id}`, {
               method: "POST",
               headers: {
@@ -46,10 +46,12 @@ export const CreateGroupCard: React.FC<CreateGroupCardProps> = ({ onSubmit, onCa
              alert("Create group successful!");
              window.location.reload();
       
-    }catch(err){
-          console.error("Login Error:", err);
-          alert("Cannot connect to server. Please try again.");
-          return;
+            }catch(err){
+      console.error("Login Error:", err);
+      alert("Cannot connect to server. Please try again.");
+      return;
+            } finally {
+      setIsSubmitting(false);
     }
   };
 
