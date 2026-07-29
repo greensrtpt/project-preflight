@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { CreateGroupCardProps } from '../../Types/Modal.types';
 import { authStorage } from '../../utils/storage.ts';
 
-export const CreateGroupCard: React.FC<CreateGroupCardProps> = ({ onSubmit, onCancel,
+export const CreateGroupCard: React.FC<CreateGroupCardProps> = ({ onCancel,
   topic_id}) => {
   const [groupName, setGroupName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
